@@ -8,6 +8,10 @@ public final class TimeAccumulator {
         accumulator += elapsedTime;
     }
 
+    public void drop() {
+        accumulator = 0f;
+    }
+
     public float getAccumulator() {
         return accumulator;
     }

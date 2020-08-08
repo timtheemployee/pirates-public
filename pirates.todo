@@ -10,17 +10,31 @@
 
 
 Свап фишек:
-    ☐ Клики
+    ✔ Клики @done(20-08-08 15:21)
         - setBounds
         - InputMultiplixer
+        - Передача кликов через глобальную сцену
 
     ☐ Переходы
         - https://github.com/libgdx/libgdx/wiki/Actions
-
+    
+     ✔ Механизм границ фишек: @done(20-08-08 18:08)
+         - Ограничения на target фишки
     
 FieldManagmentSystem:
-    ☐ Fix метода act, чтобы ничего не перерисовывалась
+    
+    ☐ Научиться считать match-3
+        - Горизонтально
+        - Вертикально
+        - Больше 3х
+        - Нет ходов
     
 Tiles: 
-    ☐ Пофиксить анимацию, только для IDLE или для PICKED (DRAFT)
+    ✔ Пофиксить анимацию, только для IDLE или для PICKED @done(20-08-08 15:36)
+
+Tech Debt & Refactoring:
+    ☐ Переименовать FieldManagmentSystem в GenerateFieldSystem
+    ☐ Вынести из FieldManagmentSystem логику нажатий на tiles
+    ☐ Вынести данные из FieldManagmentSystem в энтити и шарить его между системами
+    ☐ Fix метода act, чтобы ничего не перерисовывалась
 

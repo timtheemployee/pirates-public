@@ -1,10 +1,17 @@
 package com.wxxtfxrmx.pirates.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.component.TileSize;
 import com.wxxtfxrmx.pirates.system.FieldManagementSystem;
+
+import java.util.Locale;
 
 public final class Field extends Actor {
     private final int tileWidth;
@@ -14,7 +21,6 @@ public final class Field extends Actor {
     private float verticalOffset;
     private final FieldManagementSystem fieldManagementSystem;
 
-    //TODO: Заюзать ssid для генератора
     public Field(final TileSize tileSize, final FieldManagementSystem fieldManagementSystem) {
         this.fieldManagementSystem = fieldManagementSystem;
 
@@ -44,7 +50,7 @@ public final class Field extends Actor {
                 }
 
                 final Actor tile = fieldManagementSystem.getTile(width, height);
-                tile.setPosition(width, height);
+                tile.setBounds(width, height, tileWidth, tileHeight);
                 tile.draw(batch, parentAlpha);
             }
         }
@@ -95,5 +101,14 @@ public final class Field extends Actor {
         final int verticalCount = (int) (getY(Align.top) / tileHeight) * tileHeight;
 
         fieldManagementSystem.setSize(verticalCount, horizontalCount);
+    }
+
+    public boolean onTouchDown(float x, float y) {
+        if (x <= getX(Align.right) && y <= getY(Align.top)) {
+            Gdx.app.error("Field", String.format(Locale.ENGLISH, "On field clicked (%f, %f)", x, y));
+            return fieldManagementSystem.onTouchDown(x, y);
+        } else {
+            return false;
+        }
     }
 }
