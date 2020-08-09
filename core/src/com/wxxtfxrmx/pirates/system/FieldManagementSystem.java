@@ -12,6 +12,7 @@ public final class FieldManagementSystem {
 
     private final TileFactory factory;
     private final Random random;
+
     private Tile[][] tiles;
 
     private Tile pickedTile = null;
@@ -26,7 +27,6 @@ public final class FieldManagementSystem {
 
     public void setSize(final int tilesInColumn, final int tilesInRow) {
         tiles = new Tile[tilesInColumn][tilesInRow];
-
         for (int i = 0; i < tilesInColumn; i++) {
             tiles[i] = generate(tilesInRow);
         }
@@ -58,6 +58,8 @@ public final class FieldManagementSystem {
         }
 
         makeSwapIfPossible();
+        match3();
+        replaceMatched();
     }
 
     private Tile generate() {
@@ -176,5 +178,69 @@ public final class FieldManagementSystem {
         boolean isAfterTop = y > tileTop && y <= tileTop + tileSize;
 
         return isBeforeBottom || isAfterTop;
+    }
+
+    private void replaceMatched() {
+        for (int column = 0; column < tiles.length; column++) {
+            Tile[] row = tiles[column];
+
+            for (int rowIndex = 0; rowIndex < row.length; rowIndex++) {
+                final Tile tile = row[rowIndex];
+
+                if (tile.isMatched()) {
+                    final Tile newTile = generate();
+                    tiles[column][rowIndex] = newTile;
+                }
+            }
+        }
+    }
+
+    private void match3() {
+        for (int column = 0; column < tiles.length; column++) {
+            Tile[] row = tiles[column];
+            final IndexesPair boardSize = new IndexesPair(tiles.length - 1, row.length - 1);
+            for (int rowIndex = 0; rowIndex < row.length; rowIndex++) {
+                final IndexesPair indexes = new IndexesPair(column, rowIndex);
+                final Tile tile = tiles[column][rowIndex];
+
+                horizontalMatch(tile, indexes, boardSize);
+                verticalMatch(tile, indexes, boardSize);
+            }
+        }
+    }
+
+    private void horizontalMatch(final Tile tile, final IndexesPair indexes, final IndexesPair boardSize) {
+        if (!isOnBorder(indexes, boardSize) && !tile.isMatched()) {
+            final Tile[] row = tiles[indexes.column];
+            final Tile leftNeighbor = row[indexes.row - 1];
+            final Tile rightNeighbor = row[indexes.row + 1];
+
+            if (leftNeighbor.getType() == tile.getType() && rightNeighbor.getType() == tile.getType()) {
+                leftNeighbor.setMatched(true);
+                tile.setMatched(true);
+                rightNeighbor.setMatched(true);
+            }
+        }
+    }
+
+    private void verticalMatch(final Tile tile, final IndexesPair indexes, final IndexesPair boardSize) {
+        if (!isOnBorder(indexes, boardSize) && !tile.isMatched()) {
+            final Tile[] topRow = tiles[indexes.column + 1];
+            final Tile[] bottomRow = tiles[indexes.column - 1];
+
+            final Tile topNeighbor = topRow[indexes.row];
+            final Tile bottomNeighbor = bottomRow[indexes.row];
+
+            if (topNeighbor.getType() == tile.getType() && bottomNeighbor.getType() == tile.getType()) {
+                topNeighbor.setMatched(true);
+                tile.setMatched(true);
+                bottomNeighbor.setMatched(true);
+            }
+        }
+    }
+
+    private boolean isOnBorder(final IndexesPair indexes, final IndexesPair boardSize) {
+        return indexes.column == 0 || indexes.column == boardSize.column
+                || indexes.row == 0 || indexes.row == boardSize.row;
     }
 }

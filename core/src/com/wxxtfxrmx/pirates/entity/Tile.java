@@ -13,6 +13,7 @@ public final class Tile extends Actor {
     private final Animation<TextureRegion> animation;
     private final TileType type;
     private TileState state = TileState.IDLE;
+    private boolean matched = false;
 
     public Tile(final Animation<TextureRegion> animation,
                 final TimeAccumulator accumulator,
@@ -42,6 +43,14 @@ public final class Tile extends Actor {
 
     public TileType getType() {
         return type;
+    }
+
+    public boolean isMatched() {
+        return matched;
+    }
+
+    public void setMatched(boolean matched) {
+        this.matched = matched;
     }
 
     public void updateState() {
