@@ -1,7 +1,9 @@
 package com.wxxtfxrmx.pirates.system;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.component.IndexesPair;
+import com.wxxtfxrmx.pirates.component.Size;
 import com.wxxtfxrmx.pirates.entity.Tile;
 import com.wxxtfxrmx.pirates.entity.TileType;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
@@ -14,6 +16,7 @@ public final class FieldManagementSystem {
     private final Random random;
 
     private Tile[][] tiles;
+    private Size boardSize;
 
     private Tile pickedTile = null;
     private Tile targetTile = null;
@@ -26,22 +29,25 @@ public final class FieldManagementSystem {
     }
 
     public void setSize(final int tilesInColumn, final int tilesInRow) {
+        boardSize = new Size(tilesInColumn, tilesInRow);
         tiles = new Tile[tilesInColumn][tilesInRow];
         for (int i = 0; i < tilesInColumn; i++) {
             tiles[i] = generate(tilesInRow);
         }
+
+        Gdx.app.error("TAG", "TEST");
     }
 
     public Tile getTile(final float x, final float y) {
-        int column = (int) x / 64;
-        int row = (int) y / 64;
+        int column = (int) (x / 64);
+        int row = (int) (y / 64);
 
         return tiles[column][row];
     }
 
     private Tile[] generate(final int tilesInRow) {
-        final Tile[] row = new Tile[tilesInRow];
-
+        Tile[] row = new Tile[tilesInRow];
+        Gdx.app.error("TAG", "Generate tile row");
         for (int i = 0; i < tilesInRow; i++) {
             row[i] = generate();
         }
@@ -51,9 +57,9 @@ public final class FieldManagementSystem {
 
     //FIXME: Перерисовывать когда были совершены изменения
     public void act(float delta) {
-        for (Tile[] row : tiles) {
-            for (Tile tile : row) {
-                tile.act(delta);
+        for (int column = 0; column < boardSize.getWidth(); column++) {
+            for (int row = 0; row < boardSize.getHeight(); row++) {
+                tiles[column][row].act(delta);
             }
         }
 
@@ -63,8 +69,8 @@ public final class FieldManagementSystem {
     }
 
     private Tile generate() {
-        final int index = random.nextInt(TileType.values().length);
-        final TileType type = TileType.values()[index];
+        int index = random.nextInt(TileType.values().length);
+        TileType type = TileType.values()[index];
 
         return factory.of(type);
     }
@@ -81,11 +87,11 @@ public final class FieldManagementSystem {
     }
 
     private void makeSwapTransaction(Tile pickedTile, Tile targetTile) {
-        final IndexesPair pickedTileIndexes = getTileIndexes(pickedTile);
-        final IndexesPair targetTileIndexes = getTileIndexes(targetTile);
+        IndexesPair pickedTileIndexes = getTileIndexes(pickedTile);
+        IndexesPair targetTileIndexes = getTileIndexes(targetTile);
 
-        final float pickedX = pickedTile.getX();
-        final float pickedY = pickedTile.getY();
+        float pickedX = pickedTile.getX();
+        float pickedY = pickedTile.getY();
 
         pickedTile.setPosition(targetTile.getX(), targetTile.getY());
         targetTile.setPosition(pickedX, pickedY);
@@ -97,9 +103,8 @@ public final class FieldManagementSystem {
     }
 
     private IndexesPair getTileIndexes(Tile tile) {
-        for (int i = 0; i < tiles.length; i++) {
-            final Tile[] column = tiles[i];
-            for (int j = 0; j < column.length; j++) {
+        for (int i = 0; i < boardSize.getWidth(); i++) {
+            for (int j = 0; j < boardSize.getHeight(); j++) {
                 if (tiles[i][j] == tile) {
                     return new IndexesPair(i, j);
                 }
@@ -110,13 +115,14 @@ public final class FieldManagementSystem {
     }
 
     public boolean onTouchDown(float x, float y) {
-        for (Tile[] value : tiles) {
-            for (final Tile tile : value) {
-                final float startX = tile.getX();
-                final float endX = tile.getX(Align.right);
+        for (int i = 0; i < boardSize.getWidth(); i++) {
+            for (int j = 0; j < boardSize.getHeight(); j++) {
+                Tile tile =  tiles[i][j];
+                float startX = tile.getX();
+                float endX = tile.getX(Align.right);
 
-                final float bottomY = tile.getY();
-                final float topY = tile.getY(Align.top);
+                float bottomY = tile.getY();
+                float topY = tile.getY(Align.top);
 
                 if (x >= startX && x <= endX && y >= bottomY && y <= topY) {
                     if (pickedTile == null) {
@@ -143,11 +149,11 @@ public final class FieldManagementSystem {
         if (pickedTile == null)
             throw new IllegalStateException("Call this method after picking pickedActor");
 
-        final float pickedStart = pickedTile.getX();
-        final float pickedEnd = pickedTile.getX(Align.right);
+        float pickedStart = pickedTile.getX();
+        float pickedEnd = pickedTile.getX(Align.right);
 
-        final float pickedBottom = pickedTile.getY();
-        final float pickedTop = pickedTile.getY(Align.top);
+        float pickedBottom = pickedTile.getY();
+        float pickedTop = pickedTile.getY(Align.top);
 
         return isInHorizontalBounds(
                 x, y,
@@ -181,14 +187,12 @@ public final class FieldManagementSystem {
     }
 
     private void replaceMatched() {
-        for (int column = 0; column < tiles.length; column++) {
-            Tile[] row = tiles[column];
-
-            for (int rowIndex = 0; rowIndex < row.length; rowIndex++) {
-                final Tile tile = row[rowIndex];
+        for (int column = 0; column < boardSize.getWidth(); column++) {
+            for (int rowIndex = 0; rowIndex < boardSize.getHeight(); rowIndex++) {
+                Tile tile = tiles[column][rowIndex];
 
                 if (tile.isMatched()) {
-                    final Tile newTile = generate();
+                    Tile newTile = generate();
                     tiles[column][rowIndex] = newTile;
                 }
             }
@@ -211,9 +215,8 @@ public final class FieldManagementSystem {
 
     private void horizontalMatch(final Tile tile, final IndexesPair indexes, final IndexesPair boardSize) {
         if (!isOnBorder(indexes, boardSize) && !tile.isMatched()) {
-            final Tile[] row = tiles[indexes.column];
-            final Tile leftNeighbor = row[indexes.row - 1];
-            final Tile rightNeighbor = row[indexes.row + 1];
+            Tile leftNeighbor = tiles[indexes.column][indexes.row - 1];
+            Tile rightNeighbor = tiles[indexes.column][indexes.row + 1];
 
             if (leftNeighbor.getType() == tile.getType() && rightNeighbor.getType() == tile.getType()) {
                 leftNeighbor.setMatched(true);
@@ -225,11 +228,8 @@ public final class FieldManagementSystem {
 
     private void verticalMatch(final Tile tile, final IndexesPair indexes, final IndexesPair boardSize) {
         if (!isOnBorder(indexes, boardSize) && !tile.isMatched()) {
-            final Tile[] topRow = tiles[indexes.column + 1];
-            final Tile[] bottomRow = tiles[indexes.column - 1];
-
-            final Tile topNeighbor = topRow[indexes.row];
-            final Tile bottomNeighbor = bottomRow[indexes.row];
+            Tile topNeighbor = tiles[indexes.column + 1][indexes.row];
+            Tile bottomNeighbor = tiles[indexes.column - 1][indexes.row];
 
             if (topNeighbor.getType() == tile.getType() && bottomNeighbor.getType() == tile.getType()) {
                 topNeighbor.setMatched(true);

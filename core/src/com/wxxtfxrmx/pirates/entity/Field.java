@@ -36,20 +36,20 @@ public final class Field extends Actor {
         super.draw(batch, parentAlpha);
 
         for (float height = getFieldBottom(); height < getFieldTop(); height += tileHeight) {
-            final float tileTopY = height + tileHeight;
+            float tileTopY = height + tileHeight;
 
             if (tileTopY > getFieldTop()) {
                 continue;
             }
 
             for (float width = getFieldStart(); width < getFieldEnd(); width += tileWidth) {
-                final float tileRightX = width + tileWidth;
+                float tileRightX = width + tileWidth;
 
                 if (tileRightX > getFieldEnd()) {
                     continue;
                 }
 
-                final Actor tile = fieldManagementSystem.getTile(width, height);
+                Actor tile = fieldManagementSystem.getTile(width, height);
                 tile.setBounds(width, height, tileWidth, tileHeight);
                 tile.draw(batch, parentAlpha);
             }
@@ -73,15 +73,15 @@ public final class Field extends Actor {
     }
 
     private float getHorizontalOffset() {
-        final float rawWidth = getX(Align.right);
-        final float fieldWidth = rawWidth - (int) (rawWidth / tileWidth) * tileWidth;
+        float rawWidth = getX(Align.right);
+        float fieldWidth = rawWidth - (int) (rawWidth / tileWidth) * tileWidth;
 
         return fieldWidth / 2;
     }
 
     private float getVerticalOffset() {
-        final float rawHeight = getY(Align.top);
-        final float fieldHeight = rawHeight - (int) (rawHeight / tileWidth) * tileWidth;
+        float rawHeight = getY(Align.top);
+        float fieldHeight = rawHeight - (int) (rawHeight / tileWidth) * tileWidth;
 
         return fieldHeight / 2;
     }
@@ -97,10 +97,10 @@ public final class Field extends Actor {
         super.setSize(width, height);
         horizontalOffset = getHorizontalOffset();
         verticalOffset = getVerticalOffset();
-        final int horizontalCount = (int) (getX(Align.right) / tileWidth) * tileWidth;
-        final int verticalCount = (int) (getY(Align.top) / tileHeight) * tileHeight;
+        final int horizontalCount = (int) (getX(Align.right) / tileWidth);
+        final int verticalCount = (int) (getY(Align.top) / tileHeight);
 
-        fieldManagementSystem.setSize(verticalCount, horizontalCount);
+        fieldManagementSystem.setSize(horizontalCount, verticalCount);
     }
 
     public boolean onTouchDown(float x, float y) {
