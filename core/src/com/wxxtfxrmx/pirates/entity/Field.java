@@ -1,17 +1,10 @@
 package com.wxxtfxrmx.pirates.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.component.TileSize;
 import com.wxxtfxrmx.pirates.system.FieldManagementSystem;
-
-import java.util.Locale;
 
 public final class Field extends Actor {
     private final int tileWidth;
@@ -50,7 +43,9 @@ public final class Field extends Actor {
                 }
 
                 Actor tile = fieldManagementSystem.getTile(width, height);
+                getStage().addActor(tile);
                 tile.setBounds(width, height, tileWidth, tileHeight);
+                tile.setPosition(width, height);
                 tile.draw(batch, parentAlpha);
             }
         }
@@ -105,7 +100,6 @@ public final class Field extends Actor {
 
     public boolean onTouchDown(float x, float y) {
         if (x <= getX(Align.right) && y <= getY(Align.top)) {
-            Gdx.app.error("Field", String.format(Locale.ENGLISH, "On field clicked (%f, %f)", x, y));
             return fieldManagementSystem.onTouchDown(x, y);
         } else {
             return false;
