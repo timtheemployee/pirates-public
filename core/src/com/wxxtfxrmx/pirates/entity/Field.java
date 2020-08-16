@@ -85,7 +85,6 @@ public final class Field extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
-        getChildren().sort();
         fieldManagementSystem.act(delta);
     }
 
