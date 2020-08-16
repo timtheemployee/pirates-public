@@ -1,6 +1,5 @@
 package com.wxxtfxrmx.pirates.screen.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.wxxtfxrmx.pirates.component.TileSize;
@@ -42,8 +41,6 @@ public final class LevelScreen extends BaseScreen {
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
-
-        Gdx.app.error("TAG", "TEST");
     }
 
     @Override

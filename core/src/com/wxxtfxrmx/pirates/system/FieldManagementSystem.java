@@ -1,13 +1,5 @@
 package com.wxxtfxrmx.pirates.system;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.AlphaAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.component.IndexesPair;
 import com.wxxtfxrmx.pirates.component.Size;
@@ -15,7 +7,6 @@ import com.wxxtfxrmx.pirates.entity.Tile;
 import com.wxxtfxrmx.pirates.entity.TileType;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 
-import java.util.Locale;
 import java.util.Random;
 
 public final class FieldManagementSystem {
@@ -24,6 +15,7 @@ public final class FieldManagementSystem {
     private final Random random;
 
     private Tile[][] tiles;
+
     private Size boardSize;
 
     private Tile pickedTile = null;
@@ -40,7 +32,7 @@ public final class FieldManagementSystem {
         boardSize = new Size(tilesInColumn, tilesInRow);
         tiles = new Tile[tilesInColumn][tilesInRow];
         for (int i = 0; i < tilesInColumn; i++) {
-            tiles[i] = generate(tilesInRow);
+            tiles[i] = createTile(tilesInRow);
         }
     }
 
@@ -51,10 +43,11 @@ public final class FieldManagementSystem {
         return tiles[column][row];
     }
 
-    private Tile[] generate(final int tilesInRow) {
+    private Tile[] createTile(final int tilesInRow) {
         Tile[] row = new Tile[tilesInRow];
         for (int i = 0; i < tilesInRow; i++) {
-            row[i] = generate();
+            Tile tile = createTile();
+            row[i] = tile;
         }
 
         return row;
@@ -65,7 +58,9 @@ public final class FieldManagementSystem {
         for (int column = 0; column < boardSize.getWidth(); column++) {
             for (int row = 0; row < boardSize.getHeight(); row++) {
                 Tile tile = tiles[column][row];
-                tile.act(delta);
+                if (tile.isChanged()) {
+                    tile.act(delta);
+                }
             }
         }
 
@@ -74,7 +69,7 @@ public final class FieldManagementSystem {
         replaceMatched();
     }
 
-    private Tile generate() {
+    private Tile createTile() {
         int index = random.nextInt(TileType.values().length);
         TileType type = TileType.values()[index];
 
@@ -123,7 +118,7 @@ public final class FieldManagementSystem {
     public boolean onTouchDown(float x, float y) {
         for (int i = 0; i < boardSize.getWidth(); i++) {
             for (int j = 0; j < boardSize.getHeight(); j++) {
-                Tile tile =  tiles[i][j];
+                Tile tile = tiles[i][j];
                 float startX = tile.getX();
                 float endX = tile.getX(Align.right);
 
@@ -198,27 +193,16 @@ public final class FieldManagementSystem {
                 Tile tile = tiles[column][rowIndex];
 
                 if (tile.isMatched()) {
+                    //push tile to end of field's child list
                     final int col = column;
                     final int row = rowIndex;
 
-                    tile.addAction(Actions.sequence(
-                            Actions.alpha(0.1f, 0.3f),
-                            Actions.run(tile::remove),
-                            Actions.run(() -> {
-                                Tile newTile = generate();
-                                newTile.setScale(0.1f, 0.1f);
-                                tiles[col][row] = newTile;
-
-                                newTile.addAction(Actions.sequence(
-                                        Actions.scaleTo(1, 1, 0.3f),
-                                        Actions.run(newTile::clearActions)
-                                ));
-                            })
-                    ));
-
-//                    Gdx.app.debug("TAG", String.format("STAGE STATUS %b", tile.getStage() != null));
-//                    Tile newTile = generate();
-//                    tiles[column][rowIndex] = newTile;
+                    tile.onMatch(() -> {
+                        Tile newTile = createTile();
+                        newTile.setScale(0.1f, 0.1f);
+                        tiles[col][row] = newTile;
+                        newTile.onCreate();
+                    });
                 }
             }
         }
@@ -247,16 +231,6 @@ public final class FieldManagementSystem {
                 leftNeighbor.setMatched(true);
                 tile.setMatched(true);
                 rightNeighbor.setMatched(true);
-
-//                Gdx.app.error("TAG", String.format(Locale.ENGLISH, "HORIZONTAL MATCH FOR TYPE %s, at positions [ (%d, %d), (%d, %d), (%d, %d) ]",
-//                        tile.getType(),
-//                        indexes.column,
-//                        indexes.row - 1,
-//                        indexes.column,
-//                        indexes.row,
-//                        indexes.column,
-//                        indexes.row + 1
-//                        ));
             }
         }
     }
@@ -270,16 +244,6 @@ public final class FieldManagementSystem {
                 topNeighbor.setMatched(true);
                 tile.setMatched(true);
                 bottomNeighbor.setMatched(true);
-
-//                Gdx.app.error("TAG", String.format(Locale.ENGLISH,"VERTICAL MATCH FOR TYPE %s, at positions [ (%d, %d), (%d, %d), (%d, %d) ]",
-//                        tile.getType(),
-//                        indexes.column + 1,
-//                        indexes.row,
-//                        indexes.column,
-//                        indexes.row,
-//                        indexes.column - 1,
-//                        indexes.row
-//                ));
             }
         }
     }

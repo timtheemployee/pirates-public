@@ -2,11 +2,13 @@ package com.wxxtfxrmx.pirates.entity;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Collections;
 import com.wxxtfxrmx.pirates.component.TileSize;
 import com.wxxtfxrmx.pirates.system.FieldManagementSystem;
 
-public final class Field extends Actor {
+public final class Field extends Group {
     private final int tileWidth;
     private final int tileHeight;
 
@@ -27,7 +29,6 @@ public final class Field extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-
         for (float height = getFieldBottom(); height < getFieldTop(); height += tileHeight) {
             float tileTopY = height + tileHeight;
 
@@ -43,7 +44,7 @@ public final class Field extends Actor {
                 }
 
                 Actor tile = fieldManagementSystem.getTile(width, height);
-                getStage().addActor(tile);
+                addActor(tile);
                 tile.setBounds(width, height, tileWidth, tileHeight);
                 tile.setPosition(width, height);
                 tile.draw(batch, parentAlpha);
@@ -84,6 +85,7 @@ public final class Field extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
+        getChildren().sort();
         fieldManagementSystem.act(delta);
     }
 
