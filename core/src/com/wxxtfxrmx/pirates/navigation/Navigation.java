@@ -21,6 +21,7 @@ public final class Navigation {
     public void openLevelScreen() {
         game.setScreen(new LevelScreen(
                 level.tiles(),
+                level.images(),
                 this
         ));
     }

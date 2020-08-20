@@ -1,16 +1,16 @@
 package com.wxxtfxrmx.pirates.screen.splash;
 
-import com.wxxtfxrmx.pirates.system.AnimationsSystem;
+import com.wxxtfxrmx.pirates.system.AssetsSystem;
 
 public final class SplashScreenAssembly {
 
-    private final AnimationsSystem animations;
+    private final AssetsSystem animations;
 
-    public SplashScreenAssembly(AnimationsSystem animations) {
+    public SplashScreenAssembly(AssetsSystem animations) {
         this.animations = animations;
     }
 
-    public AnimationsSystem animations() {
+    public AssetsSystem animations() {
         return animations;
     }
 }

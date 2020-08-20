@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Collections;
 import com.wxxtfxrmx.pirates.component.TileSize;
 import com.wxxtfxrmx.pirates.system.FieldManagementSystem;
 
-public final class Field extends Group {
+public final class Board extends Group {
     private final int tileWidth;
     private final int tileHeight;
 
@@ -16,7 +16,7 @@ public final class Field extends Group {
     private float verticalOffset;
     private final FieldManagementSystem fieldManagementSystem;
 
-    public Field(final TileSize tileSize, final FieldManagementSystem fieldManagementSystem) {
+    public Board(final TileSize tileSize, final FieldManagementSystem fieldManagementSystem) {
         this.fieldManagementSystem = fieldManagementSystem;
 
         this.tileWidth = tileSize.getWidth();

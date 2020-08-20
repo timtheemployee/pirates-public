@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class AnimationsSystem {
+public final class AssetsSystem {
 
     private static final Size defaultSize = new Size(8, 1);
     private Map<String, Texture> cache = new HashMap<>();
@@ -18,7 +18,7 @@ public final class AnimationsSystem {
 
     private final AssetManager assets;
 
-    public AnimationsSystem(AssetManager assets) {
+    public AssetsSystem(AssetManager assets) {
         this.assets = assets;
     }
 
@@ -54,6 +54,10 @@ public final class AnimationsSystem {
         animationCache.put(file, animation);
 
         return animation;
+    }
+
+    public Texture getTexture(final String file) {
+        return getOrCreate(file);
     }
 
     private Texture getOrCreate(final String file) {

@@ -6,16 +6,16 @@ import com.wxxtfxrmx.pirates.component.Size;
 import com.wxxtfxrmx.pirates.component.TimeAccumulator;
 import com.wxxtfxrmx.pirates.entity.Tile;
 import com.wxxtfxrmx.pirates.entity.TileType;
-import com.wxxtfxrmx.pirates.system.AnimationsSystem;
+import com.wxxtfxrmx.pirates.system.AssetsSystem;
 
 import java.util.Locale;
 
 public class TileFactory {
 
-    private final AnimationsSystem animationsSystem;
+    private final AssetsSystem assetsSystem;
 
-    public TileFactory(AnimationsSystem animationsSystem) {
-        this.animationsSystem = animationsSystem;
+    public TileFactory(AssetsSystem assetsSystem) {
+        this.assetsSystem = assetsSystem;
     }
 
     public Tile of(TileType type) {
@@ -25,16 +25,16 @@ public class TileFactory {
     private Animation<TextureRegion> animationFor(TileType type) {
         switch (type) {
             case COIN:
-                return animationsSystem.getAnimation("coin_sheet.png");
+                return assetsSystem.getAnimation("coin_sheet.png");
 
             case BOMB:
-                return animationsSystem.getAnimation("bomb_sheet.png", new Size(9, 1));
+                return assetsSystem.getAnimation("bomb_sheet.png", new Size(9, 1));
 
             case HELM:
-                return animationsSystem.getAnimation("helm_sheet.png", new Size(3, 1));
+                return assetsSystem.getAnimation("helm_sheet.png", new Size(3, 1));
 
             case SAMPLE:
-                return animationsSystem.getAnimation("sample.png", new Size(1, 1));
+                return assetsSystem.getAnimation("sample.png", new Size(1, 1));
         }
 
         throw new IllegalArgumentException(String.format(Locale.ENGLISH, "Unsupported Tile type %s", type.toString()));
