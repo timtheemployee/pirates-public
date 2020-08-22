@@ -17,7 +17,13 @@ public class SplashScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-        animations.preload("coin_sheet.png", "bomb_sheet.png", "helm_sheet.png", "sample.png", "back.png");
+        animations.preload(
+                "coin_sheet.png",
+                "bomb_sheet.png",
+                "helm_sheet.png",
+                "sample.png",
+                "back.png",
+                "picked_border.png");
     }
 
     @Override

@@ -19,7 +19,11 @@ public class TileFactory {
     }
 
     public Tile of(TileType type) {
-        return new Tile(animationFor(type), new TimeAccumulator(), type);
+        return new Tile(
+                animationFor(type),
+                assetsSystem.getTextureRegion("picked_border.png"),
+                new TimeAccumulator(), type
+        );
     }
 
     private Animation<TextureRegion> animationFor(TileType type) {

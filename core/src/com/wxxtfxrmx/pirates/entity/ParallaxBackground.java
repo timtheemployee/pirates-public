@@ -8,11 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public final class ParallaxBackground extends Actor {
 
     private final Texture background;
+    private float scaledWidth;
+    private float scaledHeight;
     private int srcX = 1;
 
     public ParallaxBackground(final Texture background) {
         this.background = background;
-        background.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat);
+        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+
+        int ratio = Gdx.graphics.getHeight() / background.getHeight();
+
+        scaledHeight = background.getHeight() * ratio;
+        scaledWidth = background.getWidth() * ratio;
     }
 
     @Override
@@ -24,8 +31,8 @@ public final class ParallaxBackground extends Actor {
                 0,
                 0,
                 0,
-                Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight(),
+                scaledWidth,
+                scaledHeight,
                 1,
                 1,
                 0,
@@ -38,5 +45,14 @@ public final class ParallaxBackground extends Actor {
         );
 
         srcX += 1;
+    }
+
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+        int ratio = Gdx.graphics.getHeight() / background.getHeight();
+
+        scaledHeight = background.getHeight() * ratio;
+        scaledWidth = background.getWidth() * ratio;
     }
 }

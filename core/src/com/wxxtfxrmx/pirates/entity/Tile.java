@@ -13,20 +13,23 @@ import com.wxxtfxrmx.pirates.component.TimeAccumulator;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.action;
 
-public final class Tile extends Actor implements Comparable<Actor>{
+public final class Tile extends Actor implements Comparable<Actor> {
 
     private final TimeAccumulator accumulator;
     private final Animation<TextureRegion> animation;
+    private final TextureRegion pickedBorder;
     private final TileType type;
     private TileState state = TileState.IDLE;
     private boolean matched = false;
     private boolean isChanged = false;
 
     public Tile(final Animation<TextureRegion> animation,
+                final TextureRegion pickedBorder,
                 final TimeAccumulator accumulator,
                 final TileType type) {
 
         this.animation = animation;
+        this.pickedBorder = pickedBorder;
         this.accumulator = accumulator;
         this.type = type;
         toBack();
@@ -49,6 +52,22 @@ public final class Tile extends Actor implements Comparable<Actor>{
         setPosition(getX(), getY(), Align.bottomLeft);
         setScale(getScaleX(), getScaleY());
         setSize(getWidth(), getHeight());
+
+
+        if (state == TileState.PICKED) {
+            batch.draw(pickedBorder,
+                    getX(),
+                    getY(Align.bottomLeft),
+                    getOriginX() + getWidth() / 2,
+                    getOriginY() + getHeight() / 2,
+                    getWidth(),
+                    getHeight(),
+                    getScaleX(),
+                    getScaleY(),
+                    getRotation()
+            );
+        }
+
         batch.draw(animation.getKeyFrame(accumulator.getAccumulator()),
                 getX(),
                 getY(Align.bottomLeft),
@@ -121,7 +140,6 @@ public final class Tile extends Actor implements Comparable<Actor>{
         RunnableAction afterCreatingAction = action(RunnableAction.class);
         afterCreatingAction.setRunnable(this::clearActions);
         actionSequence.addAction(afterCreatingAction);
-
 
         addAction(actionSequence);
     }

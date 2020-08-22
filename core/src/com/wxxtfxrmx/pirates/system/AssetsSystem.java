@@ -13,8 +13,8 @@ import java.util.Map;
 public final class AssetsSystem {
 
     private static final Size defaultSize = new Size(8, 1);
-    private Map<String, Texture> cache = new HashMap<>();
-    private Map<String, Animation<TextureRegion>> animationCache = new HashMap<>();
+    private Map<String, Texture> texturesCache = new HashMap<>();
+    private Map<String, Animation<TextureRegion>> animationsCache = new HashMap<>();
 
     private final AssetManager assets;
 
@@ -29,8 +29,8 @@ public final class AssetsSystem {
     public Animation<TextureRegion> getAnimation(final String file,
                                                  final Size spriteSheetSize) {
 
-        if (animationCache.containsKey(file)) {
-            return animationCache.get(file);
+        if (animationsCache.containsKey(file)) {
+            return animationsCache.get(file);
         }
 
         int width = spriteSheetSize.getWidth();
@@ -51,9 +51,16 @@ public final class AssetsSystem {
         Animation<TextureRegion> animation = new Animation<>(0.300f, flattenTextures);
         animation.setPlayMode(Animation.PlayMode.LOOP);
 
-        animationCache.put(file, animation);
+        animationsCache.put(file, animation);
 
         return animation;
+    }
+
+    //FIXME: Maybe cache it
+    public TextureRegion getTextureRegion(final String file) {
+        Texture texture = getOrCreate(file);
+
+        return new TextureRegion(texture, 0, 0, 64, 64);
     }
 
     public Texture getTexture(final String file) {
@@ -61,18 +68,18 @@ public final class AssetsSystem {
     }
 
     private Texture getOrCreate(final String file) {
-        if (cache.containsKey(file)) {
-            return cache.get(file);
+        if (texturesCache.containsKey(file)) {
+            return texturesCache.get(file);
         } else {
             Texture texture = assets.get(file, Texture.class);
-            cache.put(file, texture);
+            texturesCache.put(file, texture);
 
             return texture;
         }
     }
 
     public void release() {
-        for(Texture texture: cache.values()) {
+        for(Texture texture: texturesCache.values()) {
             texture.dispose();
         }
     }
