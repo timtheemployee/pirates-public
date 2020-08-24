@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.wxxtfxrmx.pirates.component.Size;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +62,19 @@ public final class AssetsSystem {
         Texture texture = getOrCreate(file);
 
         return new TextureRegion(texture, 0, 0, 64, 64);
+    }
+
+    public List<TextureRegion> getTextureRegion(final String file, final Size size, final int count) {
+        Texture texture = getOrCreate(file);
+
+        List<TextureRegion> regions = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            regions.add(
+                    new TextureRegion(texture, size.getWidth() * count, 0, size.getWidth(), size.getHeight())
+            );
+        }
+
+        return regions;
     }
 
     public Texture getTexture(final String file) {

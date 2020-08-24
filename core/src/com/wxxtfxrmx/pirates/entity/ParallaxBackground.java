@@ -7,52 +7,53 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public final class ParallaxBackground extends Actor {
 
-    private final Texture background;
-    private float scaledWidth;
-    private float scaledHeight;
-    private int srcX = 1;
+    private final Texture frontClouds;
+    private final Texture backClouds;
+    private final Texture water;
+    private int speed = 0;
 
-    public ParallaxBackground(final Texture background) {
-        this.background = background;
-        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-
-        int ratio = Gdx.graphics.getHeight() / background.getHeight();
-
-        scaledHeight = background.getHeight() * ratio;
-        scaledWidth = background.getWidth() * ratio;
+    public ParallaxBackground(final Texture frontClouds,
+                              final Texture backClouds,
+                              final Texture water) {
+        this.frontClouds = frontClouds;
+        this.backClouds = backClouds;
+        this.water = water;
+        frontClouds.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat);
+        backClouds.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat);
+        water.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        batch.draw(
-                background,
+        renderAt(batch, Gdx.graphics.getHeight() - 1.6f * backClouds.getHeight(), backClouds, true, 2f);
+        renderAt(batch, Gdx.graphics.getHeight() - frontClouds.getHeight(), frontClouds, false, 2f);
+        renderAt(batch, Gdx.graphics.getHeight() / 2f, water, false, 1.5f);
+        speed += 1;
+    }
+
+    private void renderAt(Batch batch, float y, Texture clouds, boolean reverse, float scale) {
+        batch.draw(clouds,
+                0,
+                y,
                 0,
                 0,
+                clouds.getWidth(),
+                clouds.getHeight(),
+                scale,
+                scale,
+                getRotation(),
+                reverse ? speed : -speed,
                 0,
-                0,
-                scaledWidth,
-                scaledHeight,
-                1,
-                1,
-                0,
-                srcX,
-                0,
-                background.getWidth(),
-                background.getHeight(),
+                clouds.getWidth(),
+                clouds.getHeight(),
                 false,
                 false
         );
-
-        srcX += 1;
     }
 
     @Override
-    public void setSize(float width, float height) {
-        super.setSize(width, height);
-        int ratio = Gdx.graphics.getHeight() / background.getHeight();
-
-        scaledHeight = background.getHeight() * ratio;
-        scaledWidth = background.getWidth() * ratio;
+    public void act(float delta) {
+        super.act(delta);
     }
 }

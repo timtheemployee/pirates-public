@@ -1,5 +1,6 @@
 package com.wxxtfxrmx.pirates.screen.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.wxxtfxrmx.pirates.component.TileSize;
@@ -15,16 +16,18 @@ public final class LevelScreen extends BaseScreen {
 
     private final Navigation navigation;
     private final TileFactory tiles;
-    private final TextureFactory images;
     private Board board;
     private final ParallaxBackground parallaxBackground;
 
     public LevelScreen(TileFactory tiles, TextureFactory images, Navigation navigation) {
         this.tiles = tiles;
-        this.images = images;
         this.navigation = navigation;
 
-        parallaxBackground = new ParallaxBackground(images.getTexture("back.png"));
+        parallaxBackground = new ParallaxBackground(
+                images.getTexture("clouds_front.png"),
+                images.getTexture("clouds_back.png"),
+                images.getTexture("water_sprite.png")
+        );
     }
 
     @Override
@@ -37,6 +40,7 @@ public final class LevelScreen extends BaseScreen {
         board = new Board(size, fieldManagementSystem);
         board.setSize(scene.getViewport().getWorldWidth(), scene.getViewport().getWorldHeight() * 0.5f);
 
+        parallaxBackground.setBounds(0, 0, scene.getViewport().getWorldWidth(), scene.getViewport().getWorldHeight());
         scene.addActor(parallaxBackground);
 
         scene.addActor(board);
@@ -54,6 +58,7 @@ public final class LevelScreen extends BaseScreen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0.18f, 0.74f, 1f, 1f);
         super.render(delta);
     }
 }

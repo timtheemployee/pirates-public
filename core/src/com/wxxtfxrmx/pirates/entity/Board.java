@@ -1,5 +1,7 @@
 package com.wxxtfxrmx.pirates.entity;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -24,6 +26,8 @@ public final class Board extends Group {
 
         this.horizontalOffset = getHorizontalOffset();
         this.verticalOffset = getVerticalOffset();
+
+        setColor(Color.BLUE);
     }
 
     @Override
