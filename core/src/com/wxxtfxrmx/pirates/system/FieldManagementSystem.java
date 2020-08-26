@@ -65,7 +65,7 @@ public final class FieldManagementSystem {
         }
 
         makeSwapIfPossible();
-        match3();
+        match();
         replaceMatched();
     }
 
@@ -134,7 +134,8 @@ public final class FieldManagementSystem {
                             targetTile = tile;
                         } else {
                             pickedTile.updateState();
-                            pickedTile = null;
+                            pickedTile = tile;
+                            pickedTile.updateState();
                         }
                     }
 
@@ -208,7 +209,7 @@ public final class FieldManagementSystem {
         }
     }
 
-    private void match3() {
+    private void match() {
         for (int column = 0; column < tiles.length; column++) {
             Tile[] row = tiles[column];
             final IndexesPair boardSize = new IndexesPair(tiles.length - 1, row.length - 1);
@@ -216,40 +217,69 @@ public final class FieldManagementSystem {
                 final IndexesPair indexes = new IndexesPair(column, rowIndex);
                 final Tile tile = tiles[column][rowIndex];
 
-                horizontalMatch(tile, indexes, boardSize);
                 verticalMatch(tile, indexes, boardSize);
-            }
-        }
-    }
-
-    private void horizontalMatch(final Tile tile, final IndexesPair indexes, final IndexesPair boardSize) {
-        if (!isOnBorder(indexes, boardSize) && !tile.isMatched()) {
-            Tile leftNeighbor = tiles[indexes.column][indexes.row - 1];
-            Tile rightNeighbor = tiles[indexes.column][indexes.row + 1];
-
-            if (leftNeighbor.getType() == tile.getType() && rightNeighbor.getType() == tile.getType()) {
-                leftNeighbor.setMatched(true);
-                tile.setMatched(true);
-                rightNeighbor.setMatched(true);
+                horizontalMatch(tile, indexes, boardSize);
             }
         }
     }
 
     private void verticalMatch(final Tile tile, final IndexesPair indexes, final IndexesPair boardSize) {
-        if (!isOnBorder(indexes, boardSize) && !tile.isMatched()) {
+        if (isOnBorder(indexes, boardSize)) {
+            borderVerticalMatch(tile, indexes, boardSize);
+        } else {
+            Tile leftNeighbor = tiles[indexes.column][indexes.row - 1];
+            Tile rightNeighbor = tiles[indexes.column][indexes.row + 1];
+            compareAndMark(tile, leftNeighbor, rightNeighbor);
+        }
+    }
+
+    private void borderVerticalMatch(final Tile tile, final IndexesPair indexes, final IndexesPair boardSize) {
+        if (isOnVerticalBorder(indexes, boardSize)) {
+            Tile neighbor = tiles[indexes.column][indexes.row - 1];
+            Tile anotherNeighbor = tiles[indexes.column][indexes.row + 1];
+
+            compareAndMark(tile, neighbor, anotherNeighbor);
+        }
+    }
+
+    private void horizontalMatch(final Tile tile, final IndexesPair indexes, final IndexesPair boardSize) {
+        if (isOnBorder(indexes, boardSize)) {
+            borderHorizontalMatch(tile, indexes, boardSize);
+        } else {
             Tile topNeighbor = tiles[indexes.column + 1][indexes.row];
             Tile bottomNeighbor = tiles[indexes.column - 1][indexes.row];
 
-            if (topNeighbor.getType() == tile.getType() && bottomNeighbor.getType() == tile.getType()) {
-                topNeighbor.setMatched(true);
-                tile.setMatched(true);
-                bottomNeighbor.setMatched(true);
-            }
+            compareAndMark(tile, topNeighbor, bottomNeighbor);
+        }
+    }
+
+    private void borderHorizontalMatch(final Tile tile, final IndexesPair indexes, final IndexesPair boardSize) {
+        if (isOnHorizontalBorder(indexes, boardSize)) {
+            Tile neighbor = tiles[indexes.column + 1][indexes.row];
+            Tile anotherNeighbor = tiles[indexes.column - 1][indexes.row];
+
+            compareAndMark(tile, neighbor, anotherNeighbor);
+        }
+    }
+
+    private void compareAndMark(Tile target, Tile neighbor, Tile anotherNeighbor) {
+        if (neighbor.getType() == target.getType() && anotherNeighbor.getType() == target.getType()) {
+            neighbor.setMatched(true);
+            target.setMatched(true);
+            anotherNeighbor.setMatched(true);
         }
     }
 
     private boolean isOnBorder(final IndexesPair indexes, final IndexesPair boardSize) {
         return indexes.column == 0 || indexes.column == boardSize.column
-                || indexes.row == 0 || indexes.row == boardSize.row;
+                || indexes.row == boardSize.row || indexes.row == 0;
+    }
+
+    private boolean isOnVerticalBorder(final IndexesPair indexes, final IndexesPair boardSize) {
+        return (indexes.column == 0 || indexes.column == boardSize.column) && !(indexes.row == 0 || indexes.row == boardSize.row);
+    }
+
+    private boolean isOnHorizontalBorder(final IndexesPair indexes, final IndexesPair boardSize) {
+        return (indexes.row == 0 || indexes.row == boardSize.row) && !(indexes.column == 0 || indexes.column == boardSize.column);
     }
 }

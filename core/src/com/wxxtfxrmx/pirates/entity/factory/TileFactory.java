@@ -29,13 +29,13 @@ public class TileFactory {
     private Animation<TextureRegion> animationFor(TileType type) {
         switch (type) {
             case COIN:
-                return assetsSystem.getAnimation("coin_sheet.png");
+                return assetsSystem.getAnimation("coin_sheet.png", new Size(9, 1));
 
             case BOMB:
-                return assetsSystem.getAnimation("bomb_sheet.png", new Size(9, 1));
+                return assetsSystem.getAnimation("bomb_sheet.png", new Size(7, 1));
 
             case HELM:
-                return assetsSystem.getAnimation("helm_sheet.png", new Size(3, 1));
+                return assetsSystem.getAnimation("helm_sheet.png", new Size(9, 1));
 
             case SAMPLE:
                 return assetsSystem.getAnimation("sample.png", new Size(1, 1));
