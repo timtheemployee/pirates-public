@@ -12,6 +12,8 @@ import com.wxxtfxrmx.pirates.navigation.Navigation;
 import com.wxxtfxrmx.pirates.screen.BaseScreen;
 import com.wxxtfxrmx.pirates.system.FieldManagementSystem;
 
+import java.util.Random;
+
 public final class LevelScreen extends BaseScreen {
 
     private final Navigation navigation;
@@ -37,7 +39,8 @@ public final class LevelScreen extends BaseScreen {
         final TileSize size = new TileSize(64, 64);
         final FieldManagementSystem fieldManagementSystem = new FieldManagementSystem(tiles, 888);
 
-        board = new Board(size, fieldManagementSystem);
+        Random random = new Random(888);
+        board = new Board(size, tiles, random);
         board.setSize(scene.getViewport().getWorldWidth(), scene.getViewport().getWorldHeight() * 0.5f);
 
         parallaxBackground.setBounds(0, 0, scene.getViewport().getWorldWidth(), scene.getViewport().getWorldHeight());

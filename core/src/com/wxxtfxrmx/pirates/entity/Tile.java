@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -109,12 +110,12 @@ public final class Tile extends Actor implements Comparable<Actor> {
 
         Group parent = getParent();
 
-//        if (parent != null) {
-//            MoveToAction topRightCorner = action(MoveToAction.class);
-//            topRightCorner.setPosition(getParent().getX(Align.right), getParent().getY(Align.top));
-//            topRightCorner.setDuration(1.5f);
-//            actionsSequence.addAction(topRightCorner);
-//        }
+        if (parent != null) {
+            MoveToAction topRightCorner = action(MoveToAction.class);
+            topRightCorner.setPosition(getParent().getX(Align.right), getParent().getY(Align.top));
+            topRightCorner.setDuration(1.5f);
+            actionsSequence.addAction(topRightCorner);
+        }
 
         RunnableAction tileRemoveAction = action(RunnableAction.class);
         tileRemoveAction.setRunnable(this::remove);
