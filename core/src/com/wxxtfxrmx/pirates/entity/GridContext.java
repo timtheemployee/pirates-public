@@ -1,6 +1,5 @@
 package com.wxxtfxrmx.pirates.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -61,8 +60,8 @@ public class GridContext {
     }
 
     public void act(float delta) {
-        for (Tile[] row: grid) {
-            for (Tile tile: row) {
+        for (Tile[] row : grid) {
+            for (Tile tile : row) {
                 if (tile != null && tile.isChanged()) {
                     tile.act(delta);
                 }

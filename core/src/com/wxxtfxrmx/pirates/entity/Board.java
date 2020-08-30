@@ -52,6 +52,7 @@ public final class Board extends Group {
         gridContext.act(delta);
         swapTileSystem.swap(gridContext);
         matchTileSystem.match(gridContext);
+        swapTileSystem.skipOrRestore(gridContext);
         removeMatchedTilesSystem.update(gridContext);
         fillEmptyTilesSystem.fill(gridContext);
     }

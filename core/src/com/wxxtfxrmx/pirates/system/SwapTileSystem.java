@@ -26,6 +26,20 @@ public class SwapTileSystem {
         target.setPosition(pickedX, pickedY);
 
         picked.updateState();
+    }
+
+    public void skipOrRestore(GridContext gridContext) {
+        if (gridContext.getPicked() == null || gridContext.getTarget() == null) return;
+
+        if (gridContext.getPicked().isMatched() || gridContext.getTarget().isMatched()) {
+            gridContext.setPicked(null);
+            gridContext.setTarget(null);
+
+            return;
+        }
+
+        swap(gridContext);
+        gridContext.getPicked().updateState();
 
         gridContext.setPicked(null);
         gridContext.setTarget(null);
