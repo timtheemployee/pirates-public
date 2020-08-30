@@ -10,7 +10,6 @@ import com.wxxtfxrmx.pirates.entity.factory.TextureFactory;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.navigation.Navigation;
 import com.wxxtfxrmx.pirates.screen.BaseScreen;
-import com.wxxtfxrmx.pirates.system.FieldManagementSystem;
 
 import java.util.Random;
 
@@ -37,7 +36,6 @@ public final class LevelScreen extends BaseScreen {
         super.show();
 
         final TileSize size = new TileSize(64, 64);
-        final FieldManagementSystem fieldManagementSystem = new FieldManagementSystem(tiles, 888);
 
         Random random = new Random(888);
         board = new Board(size, tiles, random);

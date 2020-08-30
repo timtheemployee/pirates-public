@@ -88,7 +88,6 @@ public class GridContext {
 
     public void setPicked(Tile picked) {
         this.picked = picked;
-        Gdx.app.error("PICKED", "SET PICKED");
     }
 
     public Tile getTarget() {
@@ -97,6 +96,5 @@ public class GridContext {
 
     public void setTarget(Tile target) {
         this.target = target;
-        Gdx.app.error("TARGET", "SET TARGET");
     }
 }
