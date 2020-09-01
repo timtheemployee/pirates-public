@@ -15,6 +15,8 @@ public class GridContext {
 
     private Tile[][] grid;
 
+    private boolean isGridBorderDrawn = false;
+
     public GridContext(float tileSize) {
         this.tileSize = tileSize;
     }
@@ -29,6 +31,7 @@ public class GridContext {
     public void draw(Batch batch, float parentAlpha, Group parent, UiContext uiContext) {
         for (float height = uiContext.bottom(); height < uiContext.top(); height += uiContext.tileSize()) {
             float tileTopY = height + uiContext.tileSize();
+
 
             if (tileTopY > uiContext.top()) {
                 continue;
@@ -50,10 +53,10 @@ public class GridContext {
 
                 if (!tile.hasParent()) {
                     parent.addActor(tile);
+                    tile.setBounds(width, height, uiContext.tileSize(), uiContext.tileSize());
+                    tile.setPosition(width, height);
                 }
 
-                tile.setBounds(width, height, uiContext.tileSize(), uiContext.tileSize());
-                tile.setPosition(width, height);
                 tile.draw(batch, parentAlpha);
             }
         }
@@ -62,8 +65,10 @@ public class GridContext {
     public void act(float delta) {
         for (Tile[] row : grid) {
             for (Tile tile : row) {
-                if (tile != null && tile.isChanged()) {
-                    tile.act(delta);
+                if (tile != null) {
+                    if (tile.isChanged()) {
+                        tile.act(delta);
+                    }
                 }
             }
         }

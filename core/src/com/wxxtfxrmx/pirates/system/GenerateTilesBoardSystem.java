@@ -39,7 +39,6 @@ public class GenerateTilesBoardSystem {
 
     private Tile createTile() {
         TileType type = TileType.values()[random.nextInt(TileType.values().length)];
-
         return factory.of(type);
     }
 }

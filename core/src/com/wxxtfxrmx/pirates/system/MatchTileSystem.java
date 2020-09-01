@@ -30,9 +30,7 @@ public class MatchTileSystem {
         if (top == null || bottom == null) return;
 
         if (haveEqualTypes(tile, top, bottom)) {
-            top.setMatched(true);
-            bottom.setMatched(true);
-            tile.setMatched(true);
+            match(top, bottom, tile);
         }
     }
 
@@ -45,8 +43,13 @@ public class MatchTileSystem {
         if (left == null || right == null) return;
 
         if (haveEqualTypes(tile, left, right)) {
-            left.setMatched(true);
-            right.setMatched(true);
+            match(left, right, tile);
+        }
+    }
+
+    private void match(Tile... tiles) {
+        for (Tile tile: tiles) {
+            tile.toFront();
             tile.setMatched(true);
         }
     }

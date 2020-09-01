@@ -2,6 +2,7 @@ package com.wxxtfxrmx.pirates.entity;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.component.TimeAccumulator;
+
+import java.util.Locale;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.action;
 
@@ -23,6 +26,7 @@ public final class Tile extends Actor implements Comparable<Actor> {
     private TileState state = TileState.IDLE;
     private boolean matched = false;
     private boolean isChanged = false;
+    private final BitmapFont font = new BitmapFont();
 
     public Tile(final Animation<TextureRegion> animation,
                 final TextureRegion pickedBorder,
@@ -33,7 +37,6 @@ public final class Tile extends Actor implements Comparable<Actor> {
         this.pickedBorder = pickedBorder;
         this.accumulator = accumulator;
         this.type = type;
-        toBack();
     }
 
     @Override
@@ -54,6 +57,8 @@ public final class Tile extends Actor implements Comparable<Actor> {
         setScale(getScaleX(), getScaleY());
         setSize(getWidth(), getHeight());
 
+        String index = String.format(Locale.ENGLISH, "%d", getZIndex());
+        font.draw(batch, index, getX(), getY());
 
         if (state == TileState.PICKED) {
             batch.draw(pickedBorder,
@@ -79,6 +84,7 @@ public final class Tile extends Actor implements Comparable<Actor> {
                 getScaleX(),
                 getScaleY(),
                 getRotation());
+
     }
 
     public TileType getType() {
@@ -111,10 +117,14 @@ public final class Tile extends Actor implements Comparable<Actor> {
         Group parent = getParent();
 
         if (parent != null) {
-            MoveToAction topRightCorner = action(MoveToAction.class);
-            topRightCorner.setPosition(getParent().getX(Align.right), getParent().getY(Align.top));
-            topRightCorner.setDuration(1.5f);
-            actionsSequence.addAction(topRightCorner);
+            MoveToAction toLeftCorner = action(MoveToAction.class);
+            toLeftCorner.setPosition(getParent().getX(Align.left), getParent().getY(Align.top));
+            toLeftCorner.setDuration(1.5f);
+            actionsSequence.addAction(toLeftCorner);
+//            MoveToAction topRightCorner = action(MoveToAction.class);
+//            topRightCorner.setPosition(getParent().getX(Align.right), getParent().getY(Align.top));
+//            topRightCorner.setDuration(1.5f);
+//            actionsSequence.addAction(topRightCorner);
         }
 
         RunnableAction tileRemoveAction = action(RunnableAction.class);
@@ -149,21 +159,18 @@ public final class Tile extends Actor implements Comparable<Actor> {
     protected void positionChanged() {
         super.positionChanged();
         isChanged = true;
-        toFront();
     }
 
     @Override
     protected void sizeChanged() {
         super.sizeChanged();
         isChanged = true;
-        toFront();
     }
 
     @Override
     protected void rotationChanged() {
         super.rotationChanged();
         isChanged = true;
-        toFront();
     }
 
     @Override

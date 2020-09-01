@@ -21,12 +21,14 @@ public class SplashScreen extends BaseScreen {
                 "coin_sheet.png",
                 "bomb_sheet.png",
                 "helm_sheet.png",
+                "repair_sheet.png",
                 "sample.png",
                 "back.png",
                 "picked_border.png",
                 "clouds_back.png",
                 "clouds_front.png",
-                "water_sprite.png");
+                "water_sprite.png"
+                );
     }
 
     @Override

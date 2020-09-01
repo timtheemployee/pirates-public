@@ -39,6 +39,9 @@ public class TileFactory {
 
             case SAMPLE:
                 return assetsSystem.getAnimation("sample.png", new Size(1, 1));
+
+            case REPAIR:
+                return assetsSystem.getAnimation("repair_sheet.png", new Size(11, 1));
         }
 
         throw new IllegalArgumentException(String.format(Locale.ENGLISH, "Unsupported Tile type %s", type.toString()));

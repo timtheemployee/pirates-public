@@ -6,10 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.component.TileSize;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.system.FillEmptyTilesSystem;
-import com.wxxtfxrmx.pirates.system.RemoveMatchedTilesSystem;
 import com.wxxtfxrmx.pirates.system.GenerateTilesBoardSystem;
 import com.wxxtfxrmx.pirates.system.MatchTileSystem;
 import com.wxxtfxrmx.pirates.system.PickTileSystem;
+import com.wxxtfxrmx.pirates.system.RemoveMatchedTilesSystem;
 import com.wxxtfxrmx.pirates.system.SwapTileSystem;
 
 import java.util.Random;

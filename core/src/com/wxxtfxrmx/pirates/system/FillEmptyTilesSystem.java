@@ -24,7 +24,8 @@ public class FillEmptyTilesSystem {
             for (int row = 0; row < gridContext.getTilesInRow(); row++) {
                 Tile target = tiles[column][row];
                 if (target == null) {
-                    tiles[column][row] = createTile();
+                    Tile tile = createTile();
+                    tiles[column][row] = tile;
                 }
             }
         }

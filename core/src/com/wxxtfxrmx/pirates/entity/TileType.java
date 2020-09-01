@@ -4,5 +4,6 @@ public enum TileType {
     COIN,
     BOMB,
     HELM,
-    SAMPLE
+    SAMPLE,
+    REPAIR
 }
