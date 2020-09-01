@@ -26,6 +26,7 @@ public class FillEmptyTilesSystem {
                 if (target == null) {
                     Tile tile = createTile();
                     tiles[column][row] = tile;
+                    tile.onCreate();
                 }
             }
         }

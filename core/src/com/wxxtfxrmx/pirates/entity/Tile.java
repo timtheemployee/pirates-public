@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RemoveAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -16,6 +17,7 @@ import com.wxxtfxrmx.pirates.component.TimeAccumulator;
 import java.util.Locale;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.action;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 
 public final class Tile extends Actor implements Comparable<Actor> {
 
@@ -56,9 +58,6 @@ public final class Tile extends Actor implements Comparable<Actor> {
         setPosition(getX(), getY(), Align.bottomLeft);
         setScale(getScaleX(), getScaleY());
         setSize(getWidth(), getHeight());
-
-        String index = String.format(Locale.ENGLISH, "%d", getZIndex());
-        font.draw(batch, index, getX(), getY());
 
         if (state == TileState.PICKED) {
             batch.draw(pickedBorder,
@@ -114,18 +113,10 @@ public final class Tile extends Actor implements Comparable<Actor> {
     public void onMatch(Runnable afterMatch) {
         SequenceAction actionsSequence = action(SequenceAction.class);
 
-        Group parent = getParent();
-
-        if (parent != null) {
-            MoveToAction toLeftCorner = action(MoveToAction.class);
-            toLeftCorner.setPosition(getParent().getX(Align.left), getParent().getY(Align.top));
-            toLeftCorner.setDuration(1.5f);
-            actionsSequence.addAction(toLeftCorner);
-//            MoveToAction topRightCorner = action(MoveToAction.class);
-//            topRightCorner.setPosition(getParent().getX(Align.right), getParent().getY(Align.top));
-//            topRightCorner.setDuration(1.5f);
-//            actionsSequence.addAction(topRightCorner);
-        }
+        ScaleToAction tileScale = action(ScaleToAction.class);
+        tileScale.setScale(0.1f, 0.1f);
+        tileScale.setDuration(0.3f);
+        actionsSequence.addAction(tileScale);
 
         RunnableAction tileRemoveAction = action(RunnableAction.class);
         tileRemoveAction.setRunnable(this::remove);
@@ -144,6 +135,7 @@ public final class Tile extends Actor implements Comparable<Actor> {
         SequenceAction actionSequence = action(SequenceAction.class);
 
         ScaleToAction tileScale = action(ScaleToAction.class);
+        setScale(0.1f, 0.1f);
         tileScale.setScale(1, 1);
         tileScale.setDuration(0.3f);
         actionSequence.addAction(tileScale);
