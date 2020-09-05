@@ -11,6 +11,7 @@ import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.navigation.Navigation;
 import com.wxxtfxrmx.pirates.screen.BaseScreen;
 
+
 import java.util.Random;
 
 public final class LevelScreen extends BaseScreen {
@@ -29,6 +30,7 @@ public final class LevelScreen extends BaseScreen {
                 images.getTexture("clouds_back.png"),
                 images.getTexture("water_sprite.png")
         );
+
     }
 
     @Override

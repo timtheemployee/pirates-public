@@ -2,22 +2,15 @@ package com.wxxtfxrmx.pirates.entity;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RemoveAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.component.TimeAccumulator;
 
-import java.util.Locale;
-
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.action;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 
 public final class Tile extends Actor implements Comparable<Actor> {
 
@@ -28,7 +21,6 @@ public final class Tile extends Actor implements Comparable<Actor> {
     private TileState state = TileState.IDLE;
     private boolean matched = false;
     private boolean isChanged = false;
-    private final BitmapFont font = new BitmapFont();
 
     public Tile(final Animation<TextureRegion> animation,
                 final TextureRegion pickedBorder,
