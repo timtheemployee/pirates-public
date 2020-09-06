@@ -1,8 +1,8 @@
 package com.wxxtfxrmx.pirates.system;
 
-import com.wxxtfxrmx.pirates.entity.GridContext;
-import com.wxxtfxrmx.pirates.entity.Tile;
-import com.wxxtfxrmx.pirates.entity.TileType;
+import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
+import com.wxxtfxrmx.pirates.screen.level.board.Tile;
+import com.wxxtfxrmx.pirates.screen.level.board.TileType;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 
 import java.util.Random;

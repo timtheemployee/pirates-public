@@ -4,14 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.wxxtfxrmx.pirates.component.TileSize;
-import com.wxxtfxrmx.pirates.entity.Board;
+import com.wxxtfxrmx.pirates.screen.level.board.Board;
 import com.wxxtfxrmx.pirates.entity.ParallaxBackground;
 import com.wxxtfxrmx.pirates.entity.factory.TextureFactory;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.navigation.Navigation;
 import com.wxxtfxrmx.pirates.screen.BaseScreen;
-
-
 import java.util.Random;
 
 public final class LevelScreen extends BaseScreen {

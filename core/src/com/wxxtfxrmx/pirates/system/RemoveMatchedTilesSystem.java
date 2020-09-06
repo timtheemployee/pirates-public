@@ -1,7 +1,7 @@
 package com.wxxtfxrmx.pirates.system;
 
-import com.wxxtfxrmx.pirates.entity.GridContext;
-import com.wxxtfxrmx.pirates.entity.Tile;
+import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
+import com.wxxtfxrmx.pirates.screen.level.board.Tile;
 
 public class RemoveMatchedTilesSystem {
 

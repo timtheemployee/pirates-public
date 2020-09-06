@@ -3,6 +3,7 @@ package com.wxxtfxrmx.pirates.navigation;
 import com.badlogic.gdx.Game;
 import com.wxxtfxrmx.pirates.screen.level.LevelScreen;
 import com.wxxtfxrmx.pirates.screen.level.LevelScreenAssembly;
+import com.wxxtfxrmx.pirates.screen.sample.SampleScreen;
 import com.wxxtfxrmx.pirates.screen.splash.SplashScreen;
 import com.wxxtfxrmx.pirates.screen.splash.SplashScreenAssembly;
 
@@ -31,5 +32,9 @@ public final class Navigation {
                 splash.animations(),
                 this
         ));
+    }
+
+    public void openSampleScreen() {
+        game.setScreen(new SampleScreen());
     }
 }

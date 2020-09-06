@@ -1,11 +1,19 @@
 uikit.png
-size: 95, 32
+size: 48, 111
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-shadowed-clicked
+pane-background
   rotate: false
   xy: 0, 0
+  size: 47, 47
+  split: 5, 5, 5, 27
+  orig: 47, 47
+  offset: 0, 0
+  index: -1
+shadowed-clicked
+  rotate: false
+  xy: 0, 47
   size: 48, 32
   split: 6, 5, 8, 16
   pad: -1, -1, 8, 16
@@ -14,7 +22,7 @@ shadowed-clicked
   index: -1
 shadowed-idle
   rotate: false
-  xy: 48, 0
+  xy: 0, 79
   size: 47, 32
   split: 6, 5, 6, 20
   pad: -1, -1, -1, -1

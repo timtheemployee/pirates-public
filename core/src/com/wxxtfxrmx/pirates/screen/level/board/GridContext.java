@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.entity;
+package com.wxxtfxrmx.pirates.screen.level.board;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;

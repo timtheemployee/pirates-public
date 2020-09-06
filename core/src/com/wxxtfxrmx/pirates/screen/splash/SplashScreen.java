@@ -28,14 +28,14 @@ public class SplashScreen extends BaseScreen {
                 "clouds_back.png",
                 "clouds_front.png",
                 "water_sprite.png"
-                );
+        );
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
         if (animations.isLoaded()) {
-            navigation.openLevelScreen();
+            navigation.openSampleScreen();
         }
     }
 }

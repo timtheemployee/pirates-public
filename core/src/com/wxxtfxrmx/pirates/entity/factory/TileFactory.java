@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.wxxtfxrmx.pirates.component.Size;
 import com.wxxtfxrmx.pirates.component.TimeAccumulator;
-import com.wxxtfxrmx.pirates.entity.Tile;
-import com.wxxtfxrmx.pirates.entity.TileType;
+import com.wxxtfxrmx.pirates.screen.level.board.Tile;
+import com.wxxtfxrmx.pirates.screen.level.board.TileType;
 import com.wxxtfxrmx.pirates.system.AssetsSystem;
 
 import java.util.Locale;

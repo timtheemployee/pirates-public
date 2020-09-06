@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.entity;
+package com.wxxtfxrmx.pirates.screen.level.board;
 
 public class UiContext {
 
