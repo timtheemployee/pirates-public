@@ -1,7 +1,7 @@
 {
     com.badlogic.gdx.graphics.g2d.BitmapFont: {
         default: {
-            file: font/pirates.fnt
+            file: font/pirates-font.fnt
         }
     }
 

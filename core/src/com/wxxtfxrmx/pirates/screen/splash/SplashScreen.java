@@ -35,7 +35,7 @@ public class SplashScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
         if (animations.isLoaded()) {
-            navigation.openSampleScreen();
+            navigation.openLevelScreen();
         }
     }
 }
