@@ -1,9 +1,9 @@
-package com.wxxtfxrmx.pirates.system;
+package com.wxxtfxrmx.pirates.system.board;
 
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
 
-public class MatchTileSystem {
+public final class MatchTileSystem {
 
     public void match(GridContext gridContext) {
         Tile[][] grid = gridContext.getGrid();

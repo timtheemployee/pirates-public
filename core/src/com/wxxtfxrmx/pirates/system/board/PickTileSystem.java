@@ -1,10 +1,10 @@
-package com.wxxtfxrmx.pirates.system;
+package com.wxxtfxrmx.pirates.system.board;
 
 import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
 
-public class PickTileSystem {
+public final class PickTileSystem {
 
     public boolean onTouchDown(float x, float y, GridContext gridContext) {
         Tile[][] grid = gridContext.getGrid();

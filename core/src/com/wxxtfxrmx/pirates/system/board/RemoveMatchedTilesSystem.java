@@ -1,9 +1,9 @@
-package com.wxxtfxrmx.pirates.system;
+package com.wxxtfxrmx.pirates.system.board;
 
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
 
-public class RemoveMatchedTilesSystem {
+public final class RemoveMatchedTilesSystem {
 
     public void update(GridContext gridContext) {
         Tile[][] tiles = gridContext.getGrid();

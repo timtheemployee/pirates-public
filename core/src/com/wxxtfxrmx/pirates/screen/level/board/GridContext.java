@@ -15,8 +15,6 @@ public class GridContext {
 
     private Tile[][] grid;
 
-    private boolean isGridBorderDrawn = false;
-
     public GridContext(float tileSize) {
         this.tileSize = tileSize;
     }

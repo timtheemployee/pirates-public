@@ -9,6 +9,7 @@ import com.wxxtfxrmx.pirates.entity.factory.TextureFactory;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.navigation.Navigation;
 import com.wxxtfxrmx.pirates.screen.BaseScreen;
+import com.wxxtfxrmx.pirates.screen.level.battlefield.BattleContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Board;
 import com.wxxtfxrmx.pirates.screen.level.hud.Hud;
 
@@ -18,6 +19,7 @@ public final class LevelScreen extends BaseScreen {
 
     private final Navigation navigation;
     private final TileFactory tiles;
+    private final BattleContext battleContext;
     private Board board;
     private final ParallaxBackground parallaxBackground;
     private final Hud hud;
@@ -33,6 +35,8 @@ public final class LevelScreen extends BaseScreen {
         );
 
         hud = new Hud();
+
+        battleContext = new BattleContext();
     }
 
     @Override
@@ -42,7 +46,7 @@ public final class LevelScreen extends BaseScreen {
         final TileSize size = new TileSize(64, 64);
 
         Random random = new Random(888);
-        board = new Board(size, tiles, random);
+        board = new Board(size, tiles, random, battleContext);
         board.setSize(scene.getViewport().getWorldWidth(), scene.getViewport().getWorldHeight() * 0.5f);
         parallaxBackground.setBounds(0, 0, scene.getViewport().getWorldWidth(), scene.getViewport().getWorldHeight());
         hud.setSize(scene.getViewport().getWorldWidth(), scene.getViewport().getWorldHeight() - 64);

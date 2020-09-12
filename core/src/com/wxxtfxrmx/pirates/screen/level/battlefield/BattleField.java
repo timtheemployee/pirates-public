@@ -15,7 +15,5 @@ public final class BattleField extends Group {
         turn = Turn.values()[random.nextInt(Turn.values().length)];
     }
 
-    public void onEvent() {
 
-    }
 }

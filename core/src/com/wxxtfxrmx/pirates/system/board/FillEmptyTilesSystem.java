@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.system;
+package com.wxxtfxrmx.pirates.system.board;
 
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
@@ -7,7 +7,7 @@ import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 
 import java.util.Random;
 
-public class FillEmptyTilesSystem {
+public final class FillEmptyTilesSystem {
 
     private final Random random;
     private final TileFactory factory;

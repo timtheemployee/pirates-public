@@ -1,9 +1,9 @@
-package com.wxxtfxrmx.pirates.system;
+package com.wxxtfxrmx.pirates.system.board;
 
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
 
-public class SwapTileSystem {
+public final class SwapTileSystem {
 
     public void swap(GridContext gridContext) {
         if (gridContext.getPicked() == null || gridContext.getTarget() == null) return;
