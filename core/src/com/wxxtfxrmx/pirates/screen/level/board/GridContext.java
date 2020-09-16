@@ -12,6 +12,8 @@ public class GridContext {
     private final float tileSize;
     private int tilesInRow;
     private int tilesInColumn;
+    private boolean lockedUntilAnimation = false;
+    private float idleDelay = 0f;
 
     private Tile[][] grid;
 
@@ -66,10 +68,13 @@ public class GridContext {
                 if (tile != null) {
                     if (tile.isChanged()) {
                         tile.act(delta);
+                        idleDelay = 0f;
                     }
                 }
             }
         }
+
+        idleDelay += delta;
     }
 
     public Tile[][] getGrid() {
@@ -98,5 +103,21 @@ public class GridContext {
 
     public void setTarget(Tile target) {
         this.target = target;
+    }
+
+    public void setLockedUntilAnimation(boolean lockedUntilAnimation) {
+        this.lockedUntilAnimation = lockedUntilAnimation;
+    }
+
+    public boolean isLockedUntilAnimation() {
+        return lockedUntilAnimation;
+    }
+
+    public float getIdleDelay() {
+        return idleDelay;
+    }
+
+    public void dropIdleDelay() {
+        idleDelay = 0f;
     }
 }

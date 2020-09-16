@@ -3,13 +3,15 @@ package com.wxxtfxrmx.pirates.system.battlefield;
 import com.wxxtfxrmx.pirates.screen.level.battlefield.BattleContext;
 import com.wxxtfxrmx.pirates.screen.level.battlefield.Chain;
 import com.wxxtfxrmx.pirates.screen.level.battlefield.Ship;
+import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.TileType;
 
 import java.util.List;
 
 public final class ApplyDamageSystem {
 
-    public void apply(BattleContext context) {
+    public void apply(GridContext grid, BattleContext context) {
+        if (grid.isLockedUntilAnimation()) return;
         if (context.getLastChain().isEmpty()) return;
 
         applyDamage(context.getAttacked(), context.getAttacker(), context.getLastChain());

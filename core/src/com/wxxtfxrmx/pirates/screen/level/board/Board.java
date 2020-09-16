@@ -15,6 +15,7 @@ import com.wxxtfxrmx.pirates.system.battlefield.PrintStatusSystem;
 import com.wxxtfxrmx.pirates.system.battlefield.SwitchAttackerSystem;
 import com.wxxtfxrmx.pirates.system.board.FillEmptyTilesSystem;
 import com.wxxtfxrmx.pirates.system.board.GenerateTilesBoardSystem;
+import com.wxxtfxrmx.pirates.system.board.LockBoardUntilAnimationSystem;
 import com.wxxtfxrmx.pirates.system.board.MatchTileSystem;
 import com.wxxtfxrmx.pirates.system.board.PickTileSystem;
 import com.wxxtfxrmx.pirates.system.board.RemoveMatchedTilesSystem;
@@ -34,6 +35,7 @@ public final class Board extends Group {
     private final MatchTileSystem matchTileSystem;
     private final RemoveMatchedTilesSystem removeMatchedTilesSystem;
     private final FillEmptyTilesSystem fillEmptyTilesSystem;
+    private final LockBoardUntilAnimationSystem lockBoardUntilAnimationSystem;
     private final FetchChainsSystem fetchChainsSystem;
     private final ApplyDamageSystem applyDamageSystem;
     private final ApplyEvasionSystem applyEvasionSystem;
@@ -55,6 +57,7 @@ public final class Board extends Group {
         matchTileSystem = new MatchTileSystem();
         removeMatchedTilesSystem = new RemoveMatchedTilesSystem();
         fillEmptyTilesSystem = new FillEmptyTilesSystem(random, factory);
+        lockBoardUntilAnimationSystem = new LockBoardUntilAnimationSystem();
 
         fetchChainsSystem = new FetchChainsSystem();
         //TODO REMOVE IT TO BATTLEFIELD WIDGET
@@ -78,14 +81,15 @@ public final class Board extends Group {
         gridContext.act(delta);
         swapTileSystem.swap(gridContext);
         matchTileSystem.match(gridContext);
-        fetchChainsSystem.fetch(battleContext, gridContext);
-        applyDamageSystem.apply(battleContext);
-        applyEvasionSystem.apply(battleContext);
-        applyRepairSystem.apply(battleContext);
-        printStatusSystem.print(battleContext);
-        switchAttackerSystem.switchShips(battleContext);
-        cleanupTurnSystem.clean(battleContext);
+        lockBoardUntilAnimationSystem.lock(this, gridContext);
         swapTileSystem.skipOrRestore(gridContext);
+        fetchChainsSystem.fetch(battleContext, gridContext);
+        applyDamageSystem.apply(gridContext, battleContext);
+        applyEvasionSystem.apply(gridContext, battleContext);
+        applyRepairSystem.apply(gridContext, battleContext);
+        printStatusSystem.print(gridContext, battleContext);
+        switchAttackerSystem.switchShips(gridContext, battleContext);
+        cleanupTurnSystem.clean(gridContext, battleContext);
         removeMatchedTilesSystem.update(gridContext);
         fillEmptyTilesSystem.fill(gridContext);
     }

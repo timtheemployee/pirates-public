@@ -14,7 +14,7 @@ public final class RemoveMatchedTilesSystem {
                 final int rowIndex = row;
                 Tile target = tiles[column][row];
                 if (target != null && target.isMatched()) {
-                    target.onMatch(() -> {
+                    target.matchAction(() -> {
                         tiles[col][rowIndex] = null;
                     });
                 }

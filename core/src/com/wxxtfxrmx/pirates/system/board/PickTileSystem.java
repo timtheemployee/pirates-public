@@ -7,6 +7,8 @@ import com.wxxtfxrmx.pirates.screen.level.board.Tile;
 public final class PickTileSystem {
 
     public boolean onTouchDown(float x, float y, GridContext gridContext) {
+        if (gridContext.isLockedUntilAnimation()) return false;
+
         Tile[][] grid = gridContext.getGrid();
 
         for (Tile[] row : grid) {

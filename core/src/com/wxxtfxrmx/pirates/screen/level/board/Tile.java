@@ -3,7 +3,9 @@ package com.wxxtfxrmx.pirates.screen.level.board;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -11,6 +13,8 @@ import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.component.TimeAccumulator;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.action;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 public final class Tile extends Actor implements Comparable<Actor> {
 
@@ -21,6 +25,7 @@ public final class Tile extends Actor implements Comparable<Actor> {
     private TileState state = TileState.IDLE;
     private boolean matched = false;
     private boolean isChanged = false;
+    private boolean isAnimationPerforming = false;
 
     public Tile(final Animation<TextureRegion> animation,
                 final TextureRegion pickedBorder,
@@ -102,7 +107,7 @@ public final class Tile extends Actor implements Comparable<Actor> {
     }
 
     //afterMatch might be null
-    public void onMatch(Runnable afterMatch) {
+    public void matchAction(Runnable afterMatch) {
         SequenceAction actionsSequence = action(SequenceAction.class);
 
         ScaleToAction tileScale = action(ScaleToAction.class);
@@ -120,10 +125,10 @@ public final class Tile extends Actor implements Comparable<Actor> {
             actionsSequence.addAction(afterMatchAction);
         }
 
-        addAction(actionsSequence);
+        performAction(actionsSequence);
     }
 
-    public void onCreate() {
+    public void createAction() {
         SequenceAction actionSequence = action(SequenceAction.class);
 
         ScaleToAction tileScale = action(ScaleToAction.class);
@@ -132,11 +137,20 @@ public final class Tile extends Actor implements Comparable<Actor> {
         tileScale.setDuration(0.3f);
         actionSequence.addAction(tileScale);
 
-        RunnableAction afterCreatingAction = action(RunnableAction.class);
-        afterCreatingAction.setRunnable(this::clearActions);
-        actionSequence.addAction(afterCreatingAction);
+        performAction(actionSequence);
+    }
 
-        addAction(actionSequence);
+    public void moveAction(float x, float y) {
+        Action move = Actions.moveTo(x, y, 0.3f);
+        performAction(move);
+    }
+
+    private void performAction(Action action) {
+        isAnimationPerforming = true;
+        RunnableAction animationPerformingCancellation = run(() -> isAnimationPerforming = false);
+        SequenceAction sequence = Actions.sequence(action, animationPerformingCancellation);
+
+        addAction(sequence);
     }
 
     @Override
@@ -160,5 +174,9 @@ public final class Tile extends Actor implements Comparable<Actor> {
     @Override
     public int compareTo(Actor actor) {
         return Integer.compare(getZIndex(), actor.getZIndex());
+    }
+
+    public boolean isAnimationPerforming() {
+        return isAnimationPerforming;
     }
 }

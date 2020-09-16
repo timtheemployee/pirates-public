@@ -6,6 +6,8 @@ import com.wxxtfxrmx.pirates.screen.level.board.Tile;
 public final class SwapTileSystem {
 
     public void swap(GridContext gridContext) {
+        if (gridContext.isLockedUntilAnimation()) return;
+
         if (gridContext.getPicked() == null || gridContext.getTarget() == null) return;
 
         Tile picked = gridContext.getPicked();
@@ -22,19 +24,23 @@ public final class SwapTileSystem {
         float pickedX = picked.getX();
         float pickedY = picked.getY();
 
-        picked.setPosition(target.getX(), target.getY());
-        target.setPosition(pickedX, pickedY);
+        picked.moveAction(target.getX(), target.getY());
+
+        target.moveAction(pickedX, pickedY);
 
         picked.updateState();
     }
 
     public void skipOrRestore(GridContext gridContext) {
+
+        if (gridContext.isLockedUntilAnimation()) return;
+
         if (gridContext.getPicked() == null || gridContext.getTarget() == null) return;
 
         if (gridContext.getPicked().isMatched() || gridContext.getTarget().isMatched()) {
+            gridContext.getPicked().updateState();
             gridContext.setPicked(null);
             gridContext.setTarget(null);
-
             return;
         }
 

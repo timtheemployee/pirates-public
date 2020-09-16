@@ -26,7 +26,10 @@ public final class FetchChainsSystem {
         }
 
         updateBattleContext(battle, tileChains);
-        tileChains.clear();
+
+        if (!grid.isLockedUntilAnimation()) {
+            tileChains.clear();
+        }
     }
 
     private void putTile(Tile tile) {

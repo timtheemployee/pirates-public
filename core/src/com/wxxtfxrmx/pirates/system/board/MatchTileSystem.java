@@ -6,6 +6,8 @@ import com.wxxtfxrmx.pirates.screen.level.board.Tile;
 public final class MatchTileSystem {
 
     public void match(GridContext gridContext) {
+        if (gridContext.isLockedUntilAnimation()) return;
+
         Tile[][] grid = gridContext.getGrid();
         for (int column = 0; column < gridContext.getTilesInColumn(); column++) {
             for (int row = 0; row < gridContext.getTilesInRow(); row++) {
