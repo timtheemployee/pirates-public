@@ -6,13 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.component.TileSize;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.screen.level.battlefield.BattleContext;
-import com.wxxtfxrmx.pirates.system.battlefield.ApplyDamageSystem;
-import com.wxxtfxrmx.pirates.system.battlefield.ApplyEvasionSystem;
-import com.wxxtfxrmx.pirates.system.battlefield.ApplyRepairSystem;
-import com.wxxtfxrmx.pirates.system.battlefield.CleanupTurnSystem;
-import com.wxxtfxrmx.pirates.system.battlefield.FetchChainsSystem;
-import com.wxxtfxrmx.pirates.system.battlefield.PrintStatusSystem;
-import com.wxxtfxrmx.pirates.system.battlefield.SwitchAttackerSystem;
+import com.wxxtfxrmx.pirates.system.battlefield.CollectMatchedTilesSystem;
+import com.wxxtfxrmx.pirates.system.battlefield.SwitchShipsSystem;
 import com.wxxtfxrmx.pirates.system.board.FillEmptyTilesSystem;
 import com.wxxtfxrmx.pirates.system.board.GenerateTilesBoardSystem;
 import com.wxxtfxrmx.pirates.system.board.LockBoardUntilAnimationSystem;
@@ -36,13 +31,8 @@ public final class Board extends Group {
     private final RemoveMatchedTilesSystem removeMatchedTilesSystem;
     private final FillEmptyTilesSystem fillEmptyTilesSystem;
     private final LockBoardUntilAnimationSystem lockBoardUntilAnimationSystem;
-    private final FetchChainsSystem fetchChainsSystem;
-    private final ApplyDamageSystem applyDamageSystem;
-    private final ApplyEvasionSystem applyEvasionSystem;
-    private final ApplyRepairSystem applyRepairSystem;
-    private final PrintStatusSystem printStatusSystem;
-    private final SwitchAttackerSystem switchAttackerSystem;
-    private final CleanupTurnSystem cleanupTurnSystem;
+    private final SwitchShipsSystem switchShipsSystem;
+    private final CollectMatchedTilesSystem collectMatchedTilesSystem;
 
     public Board(final TileSize tileSize, TileFactory factory, Random random, BattleContext battleContext) {
 
@@ -58,15 +48,8 @@ public final class Board extends Group {
         removeMatchedTilesSystem = new RemoveMatchedTilesSystem();
         fillEmptyTilesSystem = new FillEmptyTilesSystem(random, factory);
         lockBoardUntilAnimationSystem = new LockBoardUntilAnimationSystem();
-
-        fetchChainsSystem = new FetchChainsSystem();
-        //TODO REMOVE IT TO BATTLEFIELD WIDGET
-        applyDamageSystem = new ApplyDamageSystem();
-        applyEvasionSystem = new ApplyEvasionSystem();
-        applyRepairSystem = new ApplyRepairSystem();
-        switchAttackerSystem = new SwitchAttackerSystem();
-        cleanupTurnSystem = new CleanupTurnSystem();
-        printStatusSystem = new PrintStatusSystem();
+        switchShipsSystem = new SwitchShipsSystem();
+        collectMatchedTilesSystem = new CollectMatchedTilesSystem();
     }
 
     @Override
@@ -81,22 +64,17 @@ public final class Board extends Group {
         gridContext.act(delta);
         swapTileSystem.swap(gridContext);
         matchTileSystem.match(gridContext);
+        collectMatchedTilesSystem.collect(gridContext, battleContext);
         lockBoardUntilAnimationSystem.lock(this, gridContext);
         swapTileSystem.skipOrRestore(gridContext);
-        fetchChainsSystem.fetch(battleContext, gridContext);
-        applyDamageSystem.apply(gridContext, battleContext);
-        applyEvasionSystem.apply(gridContext, battleContext);
-        applyRepairSystem.apply(gridContext, battleContext);
-        printStatusSystem.print(gridContext, battleContext);
-        switchAttackerSystem.switchShips(gridContext, battleContext);
-        cleanupTurnSystem.clean(gridContext, battleContext);
         removeMatchedTilesSystem.update(gridContext);
         fillEmptyTilesSystem.fill(gridContext);
+        switchShipsSystem.swap(gridContext, battleContext, delta);
     }
 
     @Override
-    public void setSize(float width, float height) {
-        super.setSize(width, height);
+    public void setBounds(float x, float y, float width, float height) {
+        super.setBounds(x, y, width, height);
         uiContext.update(width, height);
         gridContext.update(uiContext.end(), uiContext.top());
         generateTilesBoardSystem.update(gridContext);

@@ -3,6 +3,7 @@ package com.wxxtfxrmx.pirates.screen.level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.wxxtfxrmx.pirates.component.TileSize;
 import com.wxxtfxrmx.pirates.entity.ParallaxBackground;
 import com.wxxtfxrmx.pirates.entity.factory.TextureFactory;
@@ -10,22 +11,23 @@ import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.navigation.Navigation;
 import com.wxxtfxrmx.pirates.screen.BaseScreen;
 import com.wxxtfxrmx.pirates.screen.level.battlefield.BattleContext;
+import com.wxxtfxrmx.pirates.screen.level.battlefield.BattleField;
 import com.wxxtfxrmx.pirates.screen.level.board.Board;
-import com.wxxtfxrmx.pirates.screen.level.hud.Hud;
+import com.wxxtfxrmx.pirates.screen.level.hud.LevelHud;
 
 import java.util.Random;
 
 public final class LevelScreen extends BaseScreen {
 
     private final Navigation navigation;
-    private final TileFactory tiles;
+
     private final BattleContext battleContext;
-    private Board board;
+    private final BattleField field;
+    private final Board board;
+    private final LevelHud hud;
     private final ParallaxBackground parallaxBackground;
-    private final Hud hud;
 
     public LevelScreen(TileFactory tiles, TextureFactory images, Navigation navigation) {
-        this.tiles = tiles;
         this.navigation = navigation;
 
         parallaxBackground = new ParallaxBackground(
@@ -34,25 +36,22 @@ public final class LevelScreen extends BaseScreen {
                 images.getTexture("water_sprite.png")
         );
 
-        hud = new Hud();
 
+        Random random = new Random(888);
         battleContext = new BattleContext();
+        final TileSize size = new TileSize(64, 64);
+        board = new Board(size, tiles, random, battleContext);
+        field = new BattleField(battleContext);
+        hud = new LevelHud();
     }
 
     @Override
     public void show() {
         super.show();
-
-        final TileSize size = new TileSize(64, 64);
-
-        Random random = new Random(888);
-        board = new Board(size, tiles, random, battleContext);
-        board.setSize(scene.getViewport().getWorldWidth(), scene.getViewport().getWorldHeight() * 0.5f);
-        parallaxBackground.setBounds(0, 0, scene.getViewport().getWorldWidth(), scene.getViewport().getWorldHeight());
-        hud.setSize(scene.getViewport().getWorldWidth(), scene.getViewport().getWorldHeight() - 64);
+        applyViewport(scene.getViewport());
         scene.addActor(parallaxBackground);
-
         scene.addActor(board);
+        scene.addActor(field);
         scene.addActor(hud);
 
         scene.addListener(new ClickListener() {
@@ -67,6 +66,14 @@ public final class LevelScreen extends BaseScreen {
         });
 
     }
+
+    private void applyViewport(Viewport viewport) {
+        board.setBounds(0, 0, viewport.getWorldWidth(), viewport.getWorldHeight() * 0.5f);
+        field.setBounds(0, viewport.getWorldHeight() * 0.5f, viewport.getWorldWidth(), viewport.getWorldHeight() * 0.5f - 64);
+        parallaxBackground.setBounds(0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        hud.setBounds(0, viewport.getWorldHeight() - 64, viewport.getWorldWidth(), viewport.getWorldHeight() - 64);
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.18f, 0.74f, 1f, 1f);

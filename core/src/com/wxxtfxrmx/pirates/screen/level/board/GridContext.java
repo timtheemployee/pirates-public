@@ -13,7 +13,6 @@ public class GridContext {
     private int tilesInRow;
     private int tilesInColumn;
     private boolean lockedUntilAnimation = false;
-    private float idleDelay = 0f;
 
     private Tile[][] grid;
 
@@ -68,13 +67,10 @@ public class GridContext {
                 if (tile != null) {
                     if (tile.isChanged()) {
                         tile.act(delta);
-                        idleDelay = 0f;
                     }
                 }
             }
         }
-
-        idleDelay += delta;
     }
 
     public Tile[][] getGrid() {
@@ -111,13 +107,5 @@ public class GridContext {
 
     public boolean isLockedUntilAnimation() {
         return lockedUntilAnimation;
-    }
-
-    public float getIdleDelay() {
-        return idleDelay;
-    }
-
-    public void dropIdleDelay() {
-        idleDelay = 0f;
     }
 }

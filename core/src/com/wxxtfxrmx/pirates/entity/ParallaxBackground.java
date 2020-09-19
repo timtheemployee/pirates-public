@@ -1,6 +1,5 @@
 package com.wxxtfxrmx.pirates.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -26,9 +25,9 @@ public final class ParallaxBackground extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        renderAt(batch, Gdx.graphics.getHeight() - 1.6f * backClouds.getHeight(), backClouds, true, 2f);
-        renderAt(batch, Gdx.graphics.getHeight() - frontClouds.getHeight(), frontClouds, false, 2f);
-        renderAt(batch, Gdx.graphics.getHeight() / 2f - water.getHeight() / 2f, water, false, 1.5f);
+        renderAt(batch, getHeight() - 1.6f * backClouds.getHeight(), backClouds, true, 2f);
+        renderAt(batch, getHeight() - frontClouds.getHeight(), frontClouds, false, 2f);
+        renderAt(batch, getHeight() / 2f - water.getHeight() / 2f, water, false, 1.5f);
         speed += 1;
     }
 
