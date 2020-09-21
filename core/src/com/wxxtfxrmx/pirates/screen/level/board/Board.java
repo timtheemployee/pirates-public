@@ -39,14 +39,15 @@ public final class Board extends Group {
         setColor(Color.BLUE);
         uiContext = new UiContext(tileSize.getWidth());
         gridContext = new GridContext(tileSize.getWidth());
+        TileActionsDelegate delegate = new TileActionsDelegate(gridContext);
         this.battleContext = battleContext;
 
         generateTilesBoardSystem = new GenerateTilesBoardSystem(factory, random);
         pickTileSystem = new PickTileSystem();
-        swapTileSystem = new SwapTileSystem();
+        swapTileSystem = new SwapTileSystem(delegate);
         matchTileSystem = new MatchTileSystem();
-        removeMatchedTilesSystem = new RemoveMatchedTilesSystem();
-        fillEmptyTilesSystem = new FillEmptyTilesSystem(random, factory);
+        removeMatchedTilesSystem = new RemoveMatchedTilesSystem(delegate);
+        fillEmptyTilesSystem = new FillEmptyTilesSystem(random, factory, delegate);
         lockBoardUntilAnimationSystem = new LockBoardUntilAnimationSystem();
         switchShipsSystem = new SwitchShipsSystem();
         collectMatchedTilesSystem = new CollectMatchedTilesSystem();
@@ -61,7 +62,6 @@ public final class Board extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
-        gridContext.act(delta);
         swapTileSystem.swap(gridContext);
         matchTileSystem.match(gridContext);
         collectMatchedTilesSystem.collect(gridContext, battleContext);

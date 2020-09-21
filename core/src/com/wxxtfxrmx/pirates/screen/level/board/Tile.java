@@ -24,8 +24,6 @@ public final class Tile extends Actor implements Comparable<Actor> {
     private final TileType type;
     private TileState state = TileState.IDLE;
     private boolean matched = false;
-    private boolean isChanged = false;
-    private boolean isAnimationPerforming = false;
 
     public Tile(final Animation<TextureRegion> animation,
                 final TextureRegion pickedBorder,
@@ -41,7 +39,6 @@ public final class Tile extends Actor implements Comparable<Actor> {
     @Override
     public void act(float delta) {
         super.act(delta);
-
         if (state == TileState.IDLE) {
             accumulator.drop();
         } else {
@@ -91,12 +88,6 @@ public final class Tile extends Actor implements Comparable<Actor> {
         return matched;
     }
 
-    public boolean isChanged() {
-        boolean tmp = isChanged;
-        isChanged = false;
-        return tmp;
-    }
-
     public void setMatched(boolean matched) {
         this.matched = matched;
     }
@@ -106,77 +97,8 @@ public final class Tile extends Actor implements Comparable<Actor> {
         else state = TileState.IDLE;
     }
 
-    //afterMatch might be null
-    public void matchAction(Runnable afterMatch) {
-        SequenceAction actionsSequence = action(SequenceAction.class);
-
-        ScaleToAction tileScale = action(ScaleToAction.class);
-        tileScale.setScale(0.1f, 0.1f);
-        tileScale.setDuration(0.3f);
-        actionsSequence.addAction(tileScale);
-
-        RunnableAction tileRemoveAction = action(RunnableAction.class);
-        tileRemoveAction.setRunnable(this::remove);
-        actionsSequence.addAction(tileRemoveAction);
-
-        if (afterMatch != null) {
-            RunnableAction afterMatchAction = action(RunnableAction.class);
-            afterMatchAction.setRunnable(afterMatch);
-            actionsSequence.addAction(afterMatchAction);
-        }
-
-        performAction(actionsSequence);
-    }
-
-    public void createAction() {
-        SequenceAction actionSequence = action(SequenceAction.class);
-
-        ScaleToAction tileScale = action(ScaleToAction.class);
-        setScale(0.1f, 0.1f);
-        tileScale.setScale(1, 1);
-        tileScale.setDuration(0.3f);
-        actionSequence.addAction(tileScale);
-
-        performAction(actionSequence);
-    }
-
-    public void moveAction(float x, float y) {
-        Action move = Actions.moveTo(x, y, 0.3f);
-        performAction(move);
-    }
-
-    private void performAction(Action action) {
-        isAnimationPerforming = true;
-        RunnableAction animationPerformingCancellation = run(() -> isAnimationPerforming = false);
-        SequenceAction sequence = Actions.sequence(action, animationPerformingCancellation);
-
-        addAction(sequence);
-    }
-
-    @Override
-    protected void positionChanged() {
-        super.positionChanged();
-        isChanged = true;
-    }
-
-    @Override
-    protected void sizeChanged() {
-        super.sizeChanged();
-        isChanged = true;
-    }
-
-    @Override
-    protected void rotationChanged() {
-        super.rotationChanged();
-        isChanged = true;
-    }
-
     @Override
     public int compareTo(Actor actor) {
         return Integer.compare(getZIndex(), actor.getZIndex());
-    }
-
-    public boolean isAnimationPerforming() {
-        return isAnimationPerforming;
     }
 }

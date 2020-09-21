@@ -61,18 +61,6 @@ public class GridContext {
         }
     }
 
-    public void act(float delta) {
-        for (Tile[] row : grid) {
-            for (Tile tile : row) {
-                if (tile != null) {
-                    if (tile.isChanged()) {
-                        tile.act(delta);
-                    }
-                }
-            }
-        }
-    }
-
     public Tile[][] getGrid() {
         return grid;
     }

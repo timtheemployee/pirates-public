@@ -2,8 +2,15 @@ package com.wxxtfxrmx.pirates.system.board;
 
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
+import com.wxxtfxrmx.pirates.screen.level.board.TileActionsDelegate;
 
 public final class SwapTileSystem {
+
+    private final TileActionsDelegate delegate;
+
+    public SwapTileSystem(TileActionsDelegate delegate) {
+        this.delegate = delegate;
+    }
 
     public void swap(GridContext gridContext) {
         if (gridContext.isLockedUntilAnimation()) return;
@@ -23,10 +30,9 @@ public final class SwapTileSystem {
 
         float pickedX = picked.getX();
         float pickedY = picked.getY();
-
-        picked.moveAction(target.getX(), target.getY());
-
-        target.moveAction(pickedX, pickedY);
+        
+        delegate.move(picked, target.getX(), target.getY());
+        delegate.move(target, pickedX, pickedY);
 
         picked.updateState();
     }

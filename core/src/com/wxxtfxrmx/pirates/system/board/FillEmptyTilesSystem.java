@@ -2,6 +2,7 @@ package com.wxxtfxrmx.pirates.system.board;
 
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
+import com.wxxtfxrmx.pirates.screen.level.board.TileActionsDelegate;
 import com.wxxtfxrmx.pirates.screen.level.board.TileType;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 
@@ -11,10 +12,12 @@ public final class FillEmptyTilesSystem {
 
     private final Random random;
     private final TileFactory factory;
+    private final TileActionsDelegate delegate;
 
-    public FillEmptyTilesSystem(Random random, TileFactory factory) {
+    public FillEmptyTilesSystem(Random random, TileFactory factory, TileActionsDelegate delegate) {
         this.random = random;
         this.factory = factory;
+        this.delegate = delegate;
     }
 
     public void fill(GridContext gridContext) {
@@ -26,7 +29,7 @@ public final class FillEmptyTilesSystem {
                 if (target == null) {
                     Tile tile = createTile();
                     tiles[column][row] = tile;
-                    tile.createAction();
+                    delegate.create(tile);
                 }
             }
         }
