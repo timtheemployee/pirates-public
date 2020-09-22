@@ -1,11 +1,55 @@
-package com.wxxtfxrmx.pirates.system.board;
+package com.wxxtfxrmx.pirates.system.board.index;
 
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
+import com.wxxtfxrmx.pirates.system.board.System;
+import com.wxxtfxrmx.pirates.system.board.distribute.DistributedTiles;
+import com.wxxtfxrmx.pirates.system.board.generate.BoardGenerated;
+import com.wxxtfxrmx.pirates.system.board.swap.SwapAttempt;
+import com.wxxtfxrmx.pirates.system.board.swap.SwapConfirmed;
+import com.wxxtfxrmx.pirates.system.board.swap.SwapRejected;
 
-public final class MatchTileSystem {
+public final class TilesIndexSystem implements System {
 
-    public void match(GridContext gridContext) {
+    private final GridContext context;
+    private final Group parent;
+
+    public TilesIndexSystem(Group parent, GridContext context) {
+        this.parent = parent;
+        this.context = context;
+    }
+
+    //TODO ON SWAP ATTEMPT ALWAYS MAKE MATCH
+    // ALWAYS MATCH WHEN BOARD GENERATED
+    // THINK ABOUT HOW HANDLE IDLE
+    @Override
+    public boolean handle(Event event) {
+        if (event instanceof SwapAttempt) {
+            match(context);
+            handleSwapAttempt();
+            return true;
+        } else if (event instanceof BoardGenerated) {
+            match(context);
+            return true;
+        }
+        return false;
+    }
+
+    private void handleSwapAttempt() {
+        if (context.getPicked().isMatched() || context.getTarget().isMatched()) {
+            parent.fire(new SwapConfirmed());
+        } else {
+            parent.fire(new SwapRejected());
+        }
+    }
+
+    private void handleTilesIndexing() {
+
+    }
+
+    private void match(GridContext gridContext) {
         if (gridContext.isLockedUntilAnimation()) return;
 
         Tile[][] grid = gridContext.getGrid();
@@ -23,7 +67,7 @@ public final class MatchTileSystem {
         }
     }
 
-    private void  verticalMatch(Tile[][] grid, Tile tile, Position position, int tilesInColumn) {
+    private void verticalMatch(Tile[][] grid, Tile tile, Position position, int tilesInColumn) {
         if (position.row == 0 || position.row == tilesInColumn - 1) return;
 
         Tile top = grid[position.column][position.row + 1];
@@ -50,7 +94,7 @@ public final class MatchTileSystem {
     }
 
     private void match(Tile... tiles) {
-        for (Tile tile: tiles) {
+        for (Tile tile : tiles) {
             tile.toFront();
             tile.setMatched(true);
         }

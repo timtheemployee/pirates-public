@@ -2,6 +2,7 @@ package com.wxxtfxrmx.pirates.screen.level.board;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.component.TileSize;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
@@ -9,12 +10,13 @@ import com.wxxtfxrmx.pirates.screen.level.battlefield.BattleContext;
 import com.wxxtfxrmx.pirates.system.battlefield.CollectMatchedTilesSystem;
 import com.wxxtfxrmx.pirates.system.battlefield.SwitchShipsSystem;
 import com.wxxtfxrmx.pirates.system.board.FillEmptyTilesSystem;
-import com.wxxtfxrmx.pirates.system.board.GenerateTilesBoardSystem;
 import com.wxxtfxrmx.pirates.system.board.LockBoardUntilAnimationSystem;
-import com.wxxtfxrmx.pirates.system.board.MatchTileSystem;
-import com.wxxtfxrmx.pirates.system.board.PickTileSystem;
 import com.wxxtfxrmx.pirates.system.board.RemoveMatchedTilesSystem;
-import com.wxxtfxrmx.pirates.system.board.SwapTileSystem;
+import com.wxxtfxrmx.pirates.system.board.distribute.DistributePickedTilesSystem;
+import com.wxxtfxrmx.pirates.system.board.generate.GenerateTilesBoardSystem;
+import com.wxxtfxrmx.pirates.system.board.index.TilesIndexSystem;
+import com.wxxtfxrmx.pirates.system.board.pick.PickTileSystem;
+import com.wxxtfxrmx.pirates.system.board.swap.SwapTileSystem;
 
 import java.util.Random;
 
@@ -26,8 +28,9 @@ public final class Board extends Group {
 
     private final GenerateTilesBoardSystem generateTilesBoardSystem;
     private final PickTileSystem pickTileSystem;
+    private final DistributePickedTilesSystem distributePickedTilesSystem;
     private final SwapTileSystem swapTileSystem;
-    private final MatchTileSystem matchTileSystem;
+    private final TilesIndexSystem matchTileSystem;
     private final RemoveMatchedTilesSystem removeMatchedTilesSystem;
     private final FillEmptyTilesSystem fillEmptyTilesSystem;
     private final LockBoardUntilAnimationSystem lockBoardUntilAnimationSystem;
@@ -42,15 +45,34 @@ public final class Board extends Group {
         TileActionsDelegate delegate = new TileActionsDelegate(gridContext);
         this.battleContext = battleContext;
 
-        generateTilesBoardSystem = new GenerateTilesBoardSystem(factory, random);
-        pickTileSystem = new PickTileSystem();
-        swapTileSystem = new SwapTileSystem(delegate);
-        matchTileSystem = new MatchTileSystem();
-        removeMatchedTilesSystem = new RemoveMatchedTilesSystem(delegate);
+        generateTilesBoardSystem = new GenerateTilesBoardSystem(factory, random, this, gridContext);
+        pickTileSystem = new PickTileSystem(this);
+        distributePickedTilesSystem = new DistributePickedTilesSystem(this, gridContext);
+        swapTileSystem = new SwapTileSystem(delegate, this, gridContext);
+        matchTileSystem = new TilesIndexSystem(this, gridContext);
+        removeMatchedTilesSystem = new RemoveMatchedTilesSystem(delegate, gridContext, this);
         fillEmptyTilesSystem = new FillEmptyTilesSystem(random, factory, delegate);
         lockBoardUntilAnimationSystem = new LockBoardUntilAnimationSystem();
         switchShipsSystem = new SwitchShipsSystem();
         collectMatchedTilesSystem = new CollectMatchedTilesSystem();
+
+        addListener(this::handleEvents);
+    }
+
+    private boolean handleEvents(Event event) {
+        if (distributePickedTilesSystem.handle(event)) {
+            return true;
+        }
+
+        if (swapTileSystem.handle(event)) {
+            return true;
+        }
+
+        if (matchTileSystem.handle(event)) {
+            return true;
+        }
+
+        return removeMatchedTilesSystem.handle(event);
     }
 
     @Override
@@ -62,11 +84,8 @@ public final class Board extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
-        swapTileSystem.swap(gridContext);
-        matchTileSystem.match(gridContext);
         collectMatchedTilesSystem.collect(gridContext, battleContext);
         lockBoardUntilAnimationSystem.lock(this, gridContext);
-        swapTileSystem.skipOrRestore(gridContext);
         removeMatchedTilesSystem.update(gridContext);
         fillEmptyTilesSystem.fill(gridContext);
         switchShipsSystem.swap(gridContext, battleContext, delta);
@@ -77,12 +96,12 @@ public final class Board extends Group {
         super.setBounds(x, y, width, height);
         uiContext.update(width, height);
         gridContext.update(uiContext.end(), uiContext.top());
-        generateTilesBoardSystem.update(gridContext);
+        generateTilesBoardSystem.update();
     }
 
     public boolean onTouchDown(float x, float y) {
         if (x <= uiContext.end() && y <= uiContext.top()) {
-            return pickTileSystem.onTouchDown(x, y, gridContext);
+            return pickTileSystem.onTouchDown(x, y);
         } else {
             return false;
         }
