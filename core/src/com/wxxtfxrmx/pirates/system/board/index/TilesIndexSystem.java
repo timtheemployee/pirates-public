@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
 import com.wxxtfxrmx.pirates.system.board.System;
-import com.wxxtfxrmx.pirates.system.board.distribute.DistributedTiles;
 import com.wxxtfxrmx.pirates.system.board.generate.BoardGenerated;
 import com.wxxtfxrmx.pirates.system.board.swap.SwapAttempt;
 import com.wxxtfxrmx.pirates.system.board.swap.SwapConfirmed;
@@ -15,6 +14,7 @@ public final class TilesIndexSystem implements System {
 
     private final GridContext context;
     private final Group parent;
+    private boolean isHandlingEvent = false;
 
     public TilesIndexSystem(Group parent, GridContext context) {
         this.parent = parent;
@@ -24,16 +24,44 @@ public final class TilesIndexSystem implements System {
     //TODO ON SWAP ATTEMPT ALWAYS MAKE MATCH
     // ALWAYS MATCH WHEN BOARD GENERATED
     // THINK ABOUT HOW HANDLE IDLE
+
+    public void index() {
+        if (isHandlingEvent) return;
+
+        match(context);
+        if (anyMatched(context)) {
+            parent.fire(new TilesIndexed());
+        }
+    }
+
+    private boolean anyMatched(GridContext context) {
+        for (Tile[] tiles : context.getGrid()) {
+            for (Tile tile : tiles) {
+                if (tile != null && tile.isMatched()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public boolean handle(Event event) {
+        isHandlingEvent = true;
         if (event instanceof SwapAttempt) {
             match(context);
             handleSwapAttempt();
+            isHandlingEvent = false;
             return true;
         } else if (event instanceof BoardGenerated) {
             match(context);
+            parent.fire(new TilesIndexed());
+            isHandlingEvent = false;
             return true;
         }
+
+        isHandlingEvent = false;
         return false;
     }
 
@@ -43,10 +71,6 @@ public final class TilesIndexSystem implements System {
         } else {
             parent.fire(new SwapRejected());
         }
-    }
-
-    private void handleTilesIndexing() {
-
     }
 
     private void match(GridContext gridContext) {

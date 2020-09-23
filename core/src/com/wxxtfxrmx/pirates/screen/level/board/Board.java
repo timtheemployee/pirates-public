@@ -11,7 +11,7 @@ import com.wxxtfxrmx.pirates.system.battlefield.CollectMatchedTilesSystem;
 import com.wxxtfxrmx.pirates.system.battlefield.SwitchShipsSystem;
 import com.wxxtfxrmx.pirates.system.board.FillEmptyTilesSystem;
 import com.wxxtfxrmx.pirates.system.board.LockBoardUntilAnimationSystem;
-import com.wxxtfxrmx.pirates.system.board.RemoveMatchedTilesSystem;
+import com.wxxtfxrmx.pirates.system.board.remove.RemoveMatchedTilesSystem;
 import com.wxxtfxrmx.pirates.system.board.distribute.DistributePickedTilesSystem;
 import com.wxxtfxrmx.pirates.system.board.generate.GenerateTilesBoardSystem;
 import com.wxxtfxrmx.pirates.system.board.index.TilesIndexSystem;
@@ -30,7 +30,7 @@ public final class Board extends Group {
     private final PickTileSystem pickTileSystem;
     private final DistributePickedTilesSystem distributePickedTilesSystem;
     private final SwapTileSystem swapTileSystem;
-    private final TilesIndexSystem matchTileSystem;
+    private final TilesIndexSystem tilesIndexSystem;
     private final RemoveMatchedTilesSystem removeMatchedTilesSystem;
     private final FillEmptyTilesSystem fillEmptyTilesSystem;
     private final LockBoardUntilAnimationSystem lockBoardUntilAnimationSystem;
@@ -49,7 +49,7 @@ public final class Board extends Group {
         pickTileSystem = new PickTileSystem(this);
         distributePickedTilesSystem = new DistributePickedTilesSystem(this, gridContext);
         swapTileSystem = new SwapTileSystem(delegate, this, gridContext);
-        matchTileSystem = new TilesIndexSystem(this, gridContext);
+        tilesIndexSystem = new TilesIndexSystem(this, gridContext);
         removeMatchedTilesSystem = new RemoveMatchedTilesSystem(delegate, gridContext, this);
         fillEmptyTilesSystem = new FillEmptyTilesSystem(random, factory, delegate);
         lockBoardUntilAnimationSystem = new LockBoardUntilAnimationSystem();
@@ -68,7 +68,7 @@ public final class Board extends Group {
             return true;
         }
 
-        if (matchTileSystem.handle(event)) {
+        if (tilesIndexSystem.handle(event)) {
             return true;
         }
 
@@ -84,6 +84,7 @@ public final class Board extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
+        tilesIndexSystem.index();
         collectMatchedTilesSystem.collect(gridContext, battleContext);
         lockBoardUntilAnimationSystem.lock(this, gridContext);
         removeMatchedTilesSystem.update(gridContext);

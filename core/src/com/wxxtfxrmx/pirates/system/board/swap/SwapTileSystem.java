@@ -1,5 +1,6 @@
 package com.wxxtfxrmx.pirates.system.board.swap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
@@ -21,6 +22,7 @@ public final class SwapTileSystem implements System {
         this.context = context;
     }
 
+    // TODO HANDLE SWAP REJECTED STATE
     @Override
     public boolean handle(Event event) {
         if (event instanceof DistributedTiles) {
@@ -30,11 +32,12 @@ public final class SwapTileSystem implements System {
         } else if (event instanceof SwapConfirmed) {
             context.setPicked(null);
             context.setTarget(null);
-            parent.fire(new TilesIndexed());
             return true;
         } else if (event instanceof SwapRejected) {
+            Gdx.app.error("SWAP REJECTED", "SWAP REJECTED");
             swap(context.getPicked(), context.getTarget(), context);
-            parent.fire(new TilesIndexed());
+            context.setPicked(null);
+            context.setTarget(null);
             return true;
         }
         return false;
