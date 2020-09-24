@@ -1,5 +1,6 @@
 package com.wxxtfxrmx.pirates.system.board.index;
 
-import com.badlogic.gdx.scenes.scene2d.Event;
+import com.wxxtfxrmx.pirates.system.board.event.BoardEvent;
 
-public class TilesIndexed extends Event { }
+public class TilesIndexed extends BoardEvent {
+}

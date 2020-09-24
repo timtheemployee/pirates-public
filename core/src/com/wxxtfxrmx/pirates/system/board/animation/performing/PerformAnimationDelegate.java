@@ -1,30 +1,28 @@
-package com.wxxtfxrmx.pirates.screen.level.board;
+package com.wxxtfxrmx.pirates.system.board.animation.performing;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-
-import java.util.Locale;
+import com.wxxtfxrmx.pirates.screen.level.board.Tile;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
-public final class TileActionsDelegate {
+public final class PerformAnimationDelegate {
 
-    private final GridContext context;
-    private int actionsCount = 0;
+    private final Group parent;
 
-    public TileActionsDelegate(GridContext context) {
-        this.context = context;
+    public PerformAnimationDelegate(Group parent) {
+        this.parent = parent;
     }
 
-    public void match(Actor actor, Runnable completionListener) {
+    public void scaleDown(Actor actor, Runnable completionListener) {
         ScaleToAction scale = scaleTo(0.0f, 0.0f, 0.3f);
 
         if (completionListener != null) {
@@ -35,7 +33,7 @@ public final class TileActionsDelegate {
         }
     }
 
-    public void create(Actor actor) {
+    public void scaleUp(Actor actor) {
         actor.setScale(0f);
         ScaleToAction scale = scaleTo(1f, 1f, 0.3f);
 
@@ -49,26 +47,22 @@ public final class TileActionsDelegate {
     }
 
     private void perform(Actor actor, Action... actions) {
-        Gdx.app.error("TAG", String.format(Locale.ENGLISH, "PERFORMING ACTIONS CONTEXT %d", actionsCount));
-        RunnableAction increase = run(this::updateActionsCount);
-        RunnableAction decreaseAndUpdate = run(this::updateGridContext);
-        SequenceAction sequence = sequence();
-        sequence.addAction(increase);
-        for (Action action: actions) {
-            sequence.addAction(action);
-        }
-        sequence.addAction(decreaseAndUpdate);
+        fireAnimationStart(actor);
+        SequenceAction sequence = sequence(actions);
+        sequence.addAction(fireAnimationCompleteAction(actor));
         actor.addAction(sequence);
-        Gdx.app.error("", "");
     }
 
-    private void updateActionsCount() {
-        actionsCount += 1;
+    private RunnableAction fireAnimationCompleteAction(Actor actor) {
+        return run(() -> parent.fire(new CompleteAnimation(actor)));
     }
 
-    private void updateGridContext() {
-        actionsCount -= 1;
-        Gdx.app.error("TAG", String.format(Locale.ENGLISH, "UPDATING GRID CONTEXT %d", actionsCount));
-        context.setLockedUntilAnimation(actionsCount != 0);
+    private void fireAnimationStart(Actor actor) {
+        parent.fire(new StartAnimation(actor));
+    }
+
+    public void remove(Actor target) {
+        target.remove();
+        parent.fire(new CompleteAnimation(target));
     }
 }

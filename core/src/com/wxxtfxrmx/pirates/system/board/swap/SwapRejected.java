@@ -1,5 +1,6 @@
 package com.wxxtfxrmx.pirates.system.board.swap;
 
-import com.badlogic.gdx.scenes.scene2d.Event;
+import com.wxxtfxrmx.pirates.system.board.event.BoardEvent;
 
-public final class SwapRejected extends Event { }
+public final class SwapRejected extends BoardEvent {
+}

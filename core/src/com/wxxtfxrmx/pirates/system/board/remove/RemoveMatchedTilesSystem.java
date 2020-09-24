@@ -4,16 +4,17 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
-import com.wxxtfxrmx.pirates.screen.level.board.TileActionsDelegate;
+import com.wxxtfxrmx.pirates.system.board.animation.performing.PerformAnimationDelegate;
 import com.wxxtfxrmx.pirates.system.board.index.TilesIndexed;
 
 public final class RemoveMatchedTilesSystem implements System {
 
-    private final TileActionsDelegate delegate;
+
+    private final PerformAnimationDelegate delegate;
     private final GridContext context;
     private final Group parent;
 
-    public RemoveMatchedTilesSystem(TileActionsDelegate delegate, GridContext context, Group parent) {
+    public RemoveMatchedTilesSystem(PerformAnimationDelegate delegate, GridContext context, Group parent) {
         this.delegate = delegate;
         this.context = context;
         this.parent = parent;
@@ -28,8 +29,8 @@ public final class RemoveMatchedTilesSystem implements System {
                 final int rowIndex = row;
                 Tile target = tiles[column][row];
                 if (target != null && target.isMatched() && !target.hasActions()) {
-                    delegate.match(target, () -> {
-                        target.remove();
+                    delegate.scaleDown(target, () -> {
+                        delegate.remove(target);
                         tiles[col][rowIndex] = null;
                     });
                 }

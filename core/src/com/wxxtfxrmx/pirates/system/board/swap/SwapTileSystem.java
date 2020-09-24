@@ -1,22 +1,20 @@
 package com.wxxtfxrmx.pirates.system.board.swap;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
-import com.wxxtfxrmx.pirates.screen.level.board.TileActionsDelegate;
 import com.wxxtfxrmx.pirates.system.board.System;
+import com.wxxtfxrmx.pirates.system.board.animation.performing.PerformAnimationDelegate;
 import com.wxxtfxrmx.pirates.system.board.distribute.DistributedTiles;
-import com.wxxtfxrmx.pirates.system.board.index.TilesIndexed;
 
 public final class SwapTileSystem implements System {
 
-    private final TileActionsDelegate delegate;
+    private final PerformAnimationDelegate delegate;
     private final Group parent;
     private final GridContext context;
 
-    public SwapTileSystem(TileActionsDelegate delegate, Group parent, GridContext context) {
+    public SwapTileSystem(PerformAnimationDelegate delegate, Group parent, GridContext context) {
         this.delegate = delegate;
         this.parent = parent;
         this.context = context;
@@ -34,7 +32,6 @@ public final class SwapTileSystem implements System {
             context.setTarget(null);
             return true;
         } else if (event instanceof SwapRejected) {
-            Gdx.app.error("SWAP REJECTED", "SWAP REJECTED");
             swap(context.getPicked(), context.getTarget(), context);
             context.setPicked(null);
             context.setTarget(null);
@@ -54,7 +51,7 @@ public final class SwapTileSystem implements System {
 
         float pickedX = picked.getX();
         float pickedY = picked.getY();
-        
+
         delegate.move(picked, target.getX(), target.getY());
         delegate.move(target, pickedX, pickedY);
 

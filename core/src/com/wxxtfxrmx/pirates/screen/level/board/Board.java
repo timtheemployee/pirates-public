@@ -11,7 +11,9 @@ import com.wxxtfxrmx.pirates.system.battlefield.CollectMatchedTilesSystem;
 import com.wxxtfxrmx.pirates.system.battlefield.SwitchShipsSystem;
 import com.wxxtfxrmx.pirates.system.board.FillEmptyTilesSystem;
 import com.wxxtfxrmx.pirates.system.board.LockBoardUntilAnimationSystem;
-import com.wxxtfxrmx.pirates.system.board.remove.RemoveMatchedTilesSystem;
+import com.wxxtfxrmx.pirates.system.board.RemoveMatchedTilesSystem;
+import com.wxxtfxrmx.pirates.system.board.animation.EventsAccumulationSystem;
+import com.wxxtfxrmx.pirates.system.board.animation.performing.PerformAnimationDelegate;
 import com.wxxtfxrmx.pirates.system.board.distribute.DistributePickedTilesSystem;
 import com.wxxtfxrmx.pirates.system.board.generate.GenerateTilesBoardSystem;
 import com.wxxtfxrmx.pirates.system.board.index.TilesIndexSystem;
@@ -36,13 +38,14 @@ public final class Board extends Group {
     private final LockBoardUntilAnimationSystem lockBoardUntilAnimationSystem;
     private final SwitchShipsSystem switchShipsSystem;
     private final CollectMatchedTilesSystem collectMatchedTilesSystem;
+    private final EventsAccumulationSystem eventsAccumulationSystem;
 
     public Board(final TileSize tileSize, TileFactory factory, Random random, BattleContext battleContext) {
 
         setColor(Color.BLUE);
         uiContext = new UiContext(tileSize.getWidth());
         gridContext = new GridContext(tileSize.getWidth());
-        TileActionsDelegate delegate = new TileActionsDelegate(gridContext);
+        PerformAnimationDelegate delegate = new PerformAnimationDelegate(this);
         this.battleContext = battleContext;
 
         generateTilesBoardSystem = new GenerateTilesBoardSystem(factory, random, this, gridContext);
@@ -55,11 +58,16 @@ public final class Board extends Group {
         lockBoardUntilAnimationSystem = new LockBoardUntilAnimationSystem();
         switchShipsSystem = new SwitchShipsSystem();
         collectMatchedTilesSystem = new CollectMatchedTilesSystem();
+        eventsAccumulationSystem = new EventsAccumulationSystem(this);
 
         addListener(this::handleEvents);
     }
 
     private boolean handleEvents(Event event) {
+        if (eventsAccumulationSystem.handle(event)) {
+            return true;
+        }
+
         if (distributePickedTilesSystem.handle(event)) {
             return true;
         }
@@ -84,6 +92,7 @@ public final class Board extends Group {
     @Override
     public void act(float delta) {
         super.act(delta);
+        eventsAccumulationSystem.update();
         tilesIndexSystem.index();
         collectMatchedTilesSystem.collect(gridContext, battleContext);
         lockBoardUntilAnimationSystem.lock(this, gridContext);

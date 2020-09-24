@@ -1,5 +1,6 @@
 package com.wxxtfxrmx.pirates.system.board.generate;
 
-import com.badlogic.gdx.scenes.scene2d.Event;
+import com.wxxtfxrmx.pirates.system.board.event.BoardEvent;
 
-public class BoardGenerated extends Event { }
+public class BoardGenerated extends BoardEvent {
+}
