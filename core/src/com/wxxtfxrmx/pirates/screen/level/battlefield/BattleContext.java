@@ -1,11 +1,7 @@
 package com.wxxtfxrmx.pirates.screen.level.battlefield;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class BattleContext {
 
-    private final List<Chain> tileChains = new ArrayList<>();
     private Turn turn = Turn.PLAYER;
     private final Ship ai;
     private final Ship player;
@@ -13,10 +9,6 @@ public final class BattleContext {
     public BattleContext() {
         ai = new Ship();
         player = new Ship();
-    }
-
-    public List<Chain> getTileChains() {
-        return tileChains;
     }
 
     public Turn getTurn() {

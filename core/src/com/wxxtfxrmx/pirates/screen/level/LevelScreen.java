@@ -10,7 +10,6 @@ import com.wxxtfxrmx.pirates.entity.factory.TextureFactory;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.navigation.Navigation;
 import com.wxxtfxrmx.pirates.screen.BaseScreen;
-import com.wxxtfxrmx.pirates.screen.level.battlefield.BattleContext;
 import com.wxxtfxrmx.pirates.screen.level.battlefield.BattleField;
 import com.wxxtfxrmx.pirates.screen.level.board.Board;
 import com.wxxtfxrmx.pirates.screen.level.hud.LevelHud;
@@ -21,11 +20,11 @@ public final class LevelScreen extends BaseScreen {
 
     private final Navigation navigation;
 
-    private final BattleContext battleContext;
     private final BattleField field;
     private final Board board;
     private final LevelHud hud;
     private final ParallaxBackground parallaxBackground;
+
 
     public LevelScreen(TileFactory tiles, TextureFactory images, Navigation navigation) {
         this.navigation = navigation;
@@ -38,10 +37,13 @@ public final class LevelScreen extends BaseScreen {
 
 
         Random random = new Random(888);
-        battleContext = new BattleContext();
         final TileSize size = new TileSize(64, 64);
-        board = new Board(size, tiles, random, battleContext);
-        field = new BattleField(battleContext);
+        board = new Board(size, tiles, random);
+        field = new BattleField();
+
+        board.setBridge(field::fire);
+        field.setBridge(board::fire);
+
         hud = new LevelHud();
     }
 

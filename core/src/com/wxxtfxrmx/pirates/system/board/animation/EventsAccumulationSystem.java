@@ -26,7 +26,6 @@ public class EventsAccumulationSystem implements System {
     public void update() {
         performingTiles.removeAll(Collections.singleton(null));
         if (performingTiles.isEmpty()) {
-            Gdx.app.error("PERFORMING TILES", String.format(Locale.ENGLISH, "FIRE EVENTS WITH SIZE %d", accumulatedEventsPool.size()));
             List<Event> accumulatedEventsPoolCopy = new ArrayList<>(accumulatedEventsPool);
             for (Event event : accumulatedEventsPoolCopy) {
                 event.handle();
@@ -41,7 +40,6 @@ public class EventsAccumulationSystem implements System {
     public boolean handle(Event event) {
         if (event.isHandled()) return false;
 
-        Gdx.app.error("PERFORMING TILES", String.format(Locale.ENGLISH, "POOL SIZE IS, %d", performingTiles.size()));
         if (event instanceof StartAnimation) {
             StartAnimation startAnimation = (StartAnimation) event;
             performingTiles.add(startAnimation.getTarget());

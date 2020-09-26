@@ -6,7 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.component.TileSize;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
-import com.wxxtfxrmx.pirates.screen.level.battlefield.BattleContext;
+import com.wxxtfxrmx.pirates.event.ExternalEvent;
+import com.wxxtfxrmx.pirates.event.ExternalEventBridge;
 import com.wxxtfxrmx.pirates.system.board.animation.EventsAccumulationSystem;
 import com.wxxtfxrmx.pirates.system.board.animation.performing.PerformAnimationDelegate;
 import com.wxxtfxrmx.pirates.system.board.distribute.DistributePickedTilesSystem;
@@ -23,7 +24,6 @@ public final class Board extends Group {
 
     private final UiContext uiContext;
     private final GridContext gridContext;
-    private final BattleContext battleContext;
 
     private final GenerateTilesBoardSystem generateTilesBoardSystem;
     private final PickTileSystem pickTileSystem;
@@ -34,13 +34,14 @@ public final class Board extends Group {
     private final FillEmptyTilesSystem fillEmptyTilesSystem;
     private final EventsAccumulationSystem eventsAccumulationSystem;
 
-    public Board(final TileSize tileSize, TileFactory factory, Random random, BattleContext battleContext) {
+    private ExternalEventBridge bridge;
+
+    public Board(final TileSize tileSize, TileFactory factory, Random random) {
 
         setColor(Color.BLUE);
         uiContext = new UiContext(tileSize.getWidth());
         gridContext = new GridContext(tileSize.getWidth());
         PerformAnimationDelegate delegate = new PerformAnimationDelegate(this);
-        this.battleContext = battleContext;
 
         generateTilesBoardSystem = new GenerateTilesBoardSystem(factory, random, this, gridContext);
         pickTileSystem = new PickTileSystem(this);
@@ -52,6 +53,10 @@ public final class Board extends Group {
         eventsAccumulationSystem = new EventsAccumulationSystem(this);
 
         addListener(this::handleEvents);
+    }
+
+    public void setBridge(ExternalEventBridge bridge) {
+        this.bridge = bridge;
     }
 
     private boolean handleEvents(Event event) {
@@ -71,7 +76,17 @@ public final class Board extends Group {
             return true;
         }
 
-        return removeMatchedTilesSystem.handle(event);
+        if (removeMatchedTilesSystem.handle(event)) {
+            return true;
+        }
+
+        if (bridge != null && event instanceof ExternalEvent) {
+            ExternalEvent external = (ExternalEvent) event;
+            bridge.send(external);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -85,7 +100,6 @@ public final class Board extends Group {
         super.act(delta);
         eventsAccumulationSystem.update();
         tilesIndexSystem.index();
-        removeMatchedTilesSystem.update(gridContext);
         fillEmptyTilesSystem.fill(gridContext);
     }
 
