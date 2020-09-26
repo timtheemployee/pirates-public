@@ -27,18 +27,20 @@ public final class SwapTileSystem implements System {
             parent.fire(new SwapAttempt());
             return true;
         } else if (event instanceof SwapConfirmed) {
-            context.getPicked().updateState();
-            context.setPicked(null);
-            context.setTarget(null);
+            clearPickedTiles(context);
             return true;
         } else if (event instanceof SwapRejected) {
             swap(context.getPicked(), context.getTarget(), context);
-            context.getPicked().updateState();
-            context.setPicked(null);
-            context.setTarget(null);
+            clearPickedTiles(context);
             return true;
         }
         return false;
+    }
+
+    private void clearPickedTiles(GridContext context) {
+        context.getPicked().updateState();
+        context.setPicked(null);
+        context.setTarget(null);
     }
 
     private void swap(Tile picked, Tile target, GridContext context) {
