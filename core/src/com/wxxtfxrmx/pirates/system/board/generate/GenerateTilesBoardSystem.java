@@ -23,8 +23,6 @@ public final class GenerateTilesBoardSystem {
     }
 
     public void update() {
-        if (context.isLockedUntilAnimation()) return;
-
         boolean canGenerate = context.getTilesInColumn() != 0 && context.getTilesInRow() != 0;
         Tile[][] grid = context.getGrid();
 

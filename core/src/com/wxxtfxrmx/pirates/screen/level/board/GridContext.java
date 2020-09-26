@@ -89,10 +89,6 @@ public class GridContext {
         this.target = target;
     }
 
-    public void setLockedUntilAnimation(boolean lockedUntilAnimation) {
-        this.lockedUntilAnimation = lockedUntilAnimation;
-    }
-
     public boolean isLockedUntilAnimation() {
         return lockedUntilAnimation;
     }
