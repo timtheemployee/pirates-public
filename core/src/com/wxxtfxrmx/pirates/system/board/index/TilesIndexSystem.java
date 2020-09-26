@@ -14,7 +14,6 @@ public final class TilesIndexSystem implements System {
 
     private final GridContext context;
     private final Group parent;
-    private boolean isHandlingEvent = false;
 
     public TilesIndexSystem(Group parent, GridContext context) {
         this.parent = parent;
@@ -26,8 +25,6 @@ public final class TilesIndexSystem implements System {
     // THINK ABOUT HOW HANDLE IDLE
 
     public void index() {
-        if (isHandlingEvent) return;
-
         match(context);
         if (anyMatched(context)) {
             parent.fire(new TilesIndexed());
@@ -48,20 +45,16 @@ public final class TilesIndexSystem implements System {
 
     @Override
     public boolean handle(Event event) {
-        isHandlingEvent = true;
         if (event instanceof SwapAttempt) {
             match(context);
             handleSwapAttempt();
-            isHandlingEvent = false;
             return true;
         } else if (event instanceof BoardGenerated) {
             match(context);
             parent.fire(new TilesIndexed());
-            isHandlingEvent = false;
             return true;
         }
 
-        isHandlingEvent = false;
         return false;
     }
 

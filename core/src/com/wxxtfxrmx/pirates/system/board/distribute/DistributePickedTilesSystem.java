@@ -37,7 +37,6 @@ public class DistributePickedTilesSystem implements System {
                     setPicked(context, target);
                 }
             }
-
             return true;
         }
 

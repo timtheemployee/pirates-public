@@ -28,11 +28,13 @@ public final class SwapTileSystem implements System {
             parent.fire(new SwapAttempt());
             return true;
         } else if (event instanceof SwapConfirmed) {
+            context.getPicked().updateState();
             context.setPicked(null);
             context.setTarget(null);
             return true;
         } else if (event instanceof SwapRejected) {
             swap(context.getPicked(), context.getTarget(), context);
+            context.getPicked().updateState();
             context.setPicked(null);
             context.setTarget(null);
             return true;
@@ -54,8 +56,6 @@ public final class SwapTileSystem implements System {
 
         delegate.move(picked, target.getX(), target.getY());
         delegate.move(target, pickedX, pickedY);
-
-        picked.updateState();
     }
 
     private Position getPosition(Tile tile) {

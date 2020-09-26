@@ -1,9 +1,9 @@
 package com.wxxtfxrmx.pirates.system.board.animation.performing;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.wxxtfxrmx.pirates.system.board.event.BoardEvent;
+import com.badlogic.gdx.scenes.scene2d.Event;
 
-public class StartAnimation extends BoardEvent {
+public class StartAnimation extends Event {
 
     private final Actor target;
 
