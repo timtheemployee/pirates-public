@@ -1,9 +1,10 @@
-package com.wxxtfxrmx.pirates.system.board;
+package com.wxxtfxrmx.pirates.system.board.remove;
 
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
+import com.wxxtfxrmx.pirates.system.System;
 import com.wxxtfxrmx.pirates.system.board.animation.performing.PerformAnimationDelegate;
 import com.wxxtfxrmx.pirates.system.board.index.TilesIndexed;
 
@@ -28,7 +29,7 @@ public final class RemoveMatchedTilesSystem implements System {
                 final int col = column;
                 final int rowIndex = row;
                 Tile target = tiles[column][row];
-                if (target != null && target.isMatched() && !target.hasActions()) {
+                if (target != null && target.isMatched()) {
                     delegate.scaleDown(target, () -> {
                         delegate.remove(target);
                         tiles[col][rowIndex] = null;

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.wxxtfxrmx.pirates.system.board.System;
+import com.wxxtfxrmx.pirates.system.System;
 import com.wxxtfxrmx.pirates.system.board.animation.performing.CompleteAnimation;
 import com.wxxtfxrmx.pirates.system.board.animation.performing.StartAnimation;
 

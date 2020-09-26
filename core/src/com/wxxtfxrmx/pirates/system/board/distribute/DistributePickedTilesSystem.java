@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
 import com.wxxtfxrmx.pirates.screen.level.board.Tile;
-import com.wxxtfxrmx.pirates.system.board.System;
+import com.wxxtfxrmx.pirates.system.System;
 import com.wxxtfxrmx.pirates.system.board.pick.PickTile;
 
 public class DistributePickedTilesSystem implements System {

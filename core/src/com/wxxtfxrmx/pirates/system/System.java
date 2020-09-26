@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.system.board;
+package com.wxxtfxrmx.pirates.system;
 
 import com.badlogic.gdx.scenes.scene2d.Event;
 

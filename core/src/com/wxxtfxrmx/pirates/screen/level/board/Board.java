@@ -7,16 +7,14 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.wxxtfxrmx.pirates.component.TileSize;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.screen.level.battlefield.BattleContext;
-import com.wxxtfxrmx.pirates.system.battlefield.CollectMatchedTilesSystem;
-import com.wxxtfxrmx.pirates.system.battlefield.SwitchShipsSystem;
-import com.wxxtfxrmx.pirates.system.board.FillEmptyTilesSystem;
-import com.wxxtfxrmx.pirates.system.board.RemoveMatchedTilesSystem;
 import com.wxxtfxrmx.pirates.system.board.animation.EventsAccumulationSystem;
 import com.wxxtfxrmx.pirates.system.board.animation.performing.PerformAnimationDelegate;
 import com.wxxtfxrmx.pirates.system.board.distribute.DistributePickedTilesSystem;
+import com.wxxtfxrmx.pirates.system.board.fill.FillEmptyTilesSystem;
 import com.wxxtfxrmx.pirates.system.board.generate.GenerateTilesBoardSystem;
 import com.wxxtfxrmx.pirates.system.board.index.TilesIndexSystem;
 import com.wxxtfxrmx.pirates.system.board.pick.PickTileSystem;
+import com.wxxtfxrmx.pirates.system.board.remove.RemoveMatchedTilesSystem;
 import com.wxxtfxrmx.pirates.system.board.swap.SwapTileSystem;
 
 import java.util.Random;
@@ -34,8 +32,6 @@ public final class Board extends Group {
     private final TilesIndexSystem tilesIndexSystem;
     private final RemoveMatchedTilesSystem removeMatchedTilesSystem;
     private final FillEmptyTilesSystem fillEmptyTilesSystem;
-    private final SwitchShipsSystem switchShipsSystem;
-    private final CollectMatchedTilesSystem collectMatchedTilesSystem;
     private final EventsAccumulationSystem eventsAccumulationSystem;
 
     public Board(final TileSize tileSize, TileFactory factory, Random random, BattleContext battleContext) {
@@ -53,8 +49,6 @@ public final class Board extends Group {
         tilesIndexSystem = new TilesIndexSystem(this, gridContext);
         removeMatchedTilesSystem = new RemoveMatchedTilesSystem(delegate, gridContext, this);
         fillEmptyTilesSystem = new FillEmptyTilesSystem(random, factory, delegate);
-        switchShipsSystem = new SwitchShipsSystem();
-        collectMatchedTilesSystem = new CollectMatchedTilesSystem();
         eventsAccumulationSystem = new EventsAccumulationSystem(this);
 
         addListener(this::handleEvents);
@@ -91,10 +85,8 @@ public final class Board extends Group {
         super.act(delta);
         eventsAccumulationSystem.update();
         tilesIndexSystem.index();
-        collectMatchedTilesSystem.collect(gridContext, battleContext);
         removeMatchedTilesSystem.update(gridContext);
         fillEmptyTilesSystem.fill(gridContext);
-        switchShipsSystem.swap(gridContext, battleContext, delta);
     }
 
     @Override

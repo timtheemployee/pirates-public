@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.system.board;
+package com.wxxtfxrmx.pirates.system.board.fill;
 
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.screen.level.board.GridContext;
