@@ -20,7 +20,6 @@ public final class SwapTileSystem implements System {
         this.context = context;
     }
 
-    // TODO HANDLE SWAP REJECTED STATE
     @Override
     public boolean handle(Event event) {
         if (event instanceof DistributedTiles) {

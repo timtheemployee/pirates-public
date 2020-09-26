@@ -37,8 +37,6 @@ public class EventsAccumulationSystem implements System {
         }
     }
 
-    //TODO MAKE NON-BLOCKING EVENTS
-    // HANDLE EVENTS WHICH ALREADY BEEN IN POOL
     @Override
     public boolean handle(Event event) {
         if (event.isHandled()) return false;
