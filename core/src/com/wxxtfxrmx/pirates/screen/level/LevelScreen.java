@@ -42,7 +42,6 @@ public final class LevelScreen extends BaseScreen {
         field = new BattleField();
 
         board.setBridge(field::fire);
-        field.setBridge(board::fire);
 
         hud = new LevelHud();
     }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wxxtfxrmx.pirates.entity.factory.TextureFactory;
 import com.wxxtfxrmx.pirates.entity.factory.TileFactory;
 import com.wxxtfxrmx.pirates.navigation.Navigation;
@@ -20,7 +21,8 @@ public class Application extends Game {
     private final TextureFactory images;
     private final SplashScreenAssembly splash;
     private final LevelScreenAssembly level;
-    private final Navigation navigation;
+    private SpriteBatch batch;
+    private Navigation navigation;
 
     public Application() {
         final AssetManager assets = new AssetManager();
@@ -30,12 +32,13 @@ public class Application extends Game {
 
         splash = new SplashScreenAssembly(assetsSystem);
         level = new LevelScreenAssembly(factory, images);
-        navigation = new Navigation(this, level, splash);
     }
 
     @Override
     public void create() {
         Gdx.app.setLogLevel(LOG_DEBUG);
+        batch = new SpriteBatch();
+        navigation = new Navigation(this, level, splash, batch);
         navigation.openSplashScreen();
     }
 

@@ -19,8 +19,6 @@ public final class BattleField extends Group {
     private final MatchAccumulationSystem matchAccumulation;
     private final ApplyDamageSystem applyDamageSystem;
 
-    private ExternalEventBridge bridge;
-
     public BattleField() {
         this.context = new BattleContext();
         this.shipLabel = new UiLabel(context.getTurn().toString());
@@ -31,22 +29,12 @@ public final class BattleField extends Group {
         addListener(this::handleEvent);
     }
 
-    public void setBridge(ExternalEventBridge bridge) {
-        this.bridge = bridge;
-    }
-
     private boolean handleEvent(Event event) {
         if (matchAccumulation.handle(event)) {
             return true;
         }
 
         if (applyDamageSystem.handle(event)) {
-            return true;
-        }
-
-        if (bridge != null && event instanceof ExternalEvent) {
-            ExternalEvent external = (ExternalEvent) event;
-            bridge.send(external);
             return true;
         }
 

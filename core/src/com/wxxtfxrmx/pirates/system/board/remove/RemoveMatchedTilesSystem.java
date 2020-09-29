@@ -46,7 +46,9 @@ public final class RemoveMatchedTilesSystem implements System {
             }
         }
 
-        parent.fire(new MatchedTiles(reduce(matched)));
+        if (!matched.isEmpty()) {
+            parent.fire(new MatchedTiles(reduce(matched)));
+        }
     }
 
     private Map<TileType, Integer> reduce(List<Tile> matched) {

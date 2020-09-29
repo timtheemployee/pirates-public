@@ -1,6 +1,5 @@
 package com.wxxtfxrmx.pirates.system.board.animation;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -11,7 +10,6 @@ import com.wxxtfxrmx.pirates.system.board.animation.performing.StartAnimation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class EventsAccumulationSystem implements System {
 
@@ -30,9 +28,8 @@ public class EventsAccumulationSystem implements System {
             for (Event event : accumulatedEventsPoolCopy) {
                 event.handle();
                 parent.fire(event);
+                accumulatedEventsPool.remove(event);
             }
-
-            accumulatedEventsPool.removeAll(accumulatedEventsPoolCopy);
         }
     }
 
