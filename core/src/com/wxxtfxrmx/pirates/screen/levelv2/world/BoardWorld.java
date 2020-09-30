@@ -8,7 +8,9 @@ import com.wxxtfxrmx.pirates.screen.level.board.TileType;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.ScaleComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.component.SpawnComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.component.TileMatchComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TileStateComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TileTypeComponent;
 
@@ -48,6 +50,10 @@ public class BoardWorld {
         boundsComponent.bounds.height = Constants.UNIT;
         boundsComponent.z = 0f;
 
+        SpawnComponent spawnComponent = engine.createComponent(SpawnComponent.class);
+        spawnComponent.spawn.x = x * Constants.UNIT;
+        spawnComponent.spawn.y = y * Constants.UNIT;
+
         TileType type = getType();
 
         TileTypeComponent typeComponent = engine.createComponent(TileTypeComponent.class);
@@ -58,11 +64,16 @@ public class BoardWorld {
         TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
         textureComponent.region = getLeadingTexture(type);
 
+        TileMatchComponent matchComponent = engine.createComponent(TileMatchComponent.class);
+        matchComponent.matched = false;
+
         entity.add(scaleComponent);
         entity.add(boundsComponent);
+        entity.add(spawnComponent);
         entity.add(typeComponent);
         entity.add(stateComponent);
         entity.add(textureComponent);
+        entity.add(matchComponent);
 
         return entity;
     }
