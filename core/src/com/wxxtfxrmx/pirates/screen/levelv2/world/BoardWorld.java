@@ -2,8 +2,6 @@ package com.wxxtfxrmx.pirates.screen.levelv2.world;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.wxxtfxrmx.pirates.screen.level.board.TileType;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
@@ -13,18 +11,18 @@ import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TileMatchComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TileStateComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TileTypeComponent;
-
-import java.util.Random;
+import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTexturesFactory;
+import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTypeFactory;
 
 public class BoardWorld {
     private final PooledEngine engine;
-    private final Random random;
-    private final TileType[] typeValues = TileType.values();
-    private final TextureAtlas levelAtlas = new TextureAtlas("sprite/tiles-sheet.atlas");
+    private final TileTypeFactory typeFactory;
+    private final TileTexturesFactory texturesFactory;
 
-    public BoardWorld(PooledEngine engine, long ssid) {
+    public BoardWorld(PooledEngine engine, TileTypeFactory typeFactory, TileTexturesFactory texturesFactory) {
         this.engine = engine;
-        this.random = new Random(ssid);
+        this.typeFactory = typeFactory;
+        this.texturesFactory = texturesFactory;
     }
 
     public void create() {
@@ -54,7 +52,7 @@ public class BoardWorld {
         spawnComponent.spawn.x = x * Constants.UNIT;
         spawnComponent.spawn.y = y * Constants.UNIT;
 
-        TileType type = getType();
+        TileType type = typeFactory.getRandomType();
 
         TileTypeComponent typeComponent = engine.createComponent(TileTypeComponent.class);
         typeComponent.type = type;
@@ -62,7 +60,7 @@ public class BoardWorld {
         TileStateComponent stateComponent = engine.createComponent(TileStateComponent.class);
 
         TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
-        textureComponent.region = getLeadingTexture(type);
+        textureComponent.region = texturesFactory.getLeadingTexture(type);
 
         TileMatchComponent matchComponent = engine.createComponent(TileMatchComponent.class);
         matchComponent.matched = false;
@@ -76,16 +74,5 @@ public class BoardWorld {
         entity.add(matchComponent);
 
         return entity;
-    }
-
-    private TileType getType() {
-        return typeValues[random.nextInt(typeValues.length)];
-    }
-
-    private TextureRegion getLeadingTexture(TileType type) {
-        String path = type.getSheet();
-        TextureAtlas.AtlasRegion region = levelAtlas.findRegion(path);
-
-        return new TextureRegion(region, 0, 0, Constants.UNIT, Constants.UNIT);
     }
 }
