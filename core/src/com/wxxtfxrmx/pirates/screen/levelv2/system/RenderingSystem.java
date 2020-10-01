@@ -10,10 +10,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
+import com.wxxtfxrmx.pirates.screen.level.board.TileState;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.ScaleComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.component.TileStateComponent;
 
 public class RenderingSystem extends IteratingSystem {
 
@@ -21,21 +22,15 @@ public class RenderingSystem extends IteratingSystem {
     private final ComponentMapper<BoundsComponent> bounds = ComponentMapper.getFor(BoundsComponent.class);
     private final ComponentMapper<ScaleComponent> scale = ComponentMapper.getFor(ScaleComponent.class);
     private final ComponentMapper<TextureComponent> texture = ComponentMapper.getFor(TextureComponent.class);
-    private final OrthographicCamera camera = new OrthographicCamera(
-            Constants.WIDTH * Constants.UNIT,
-            Constants.HEIGHT * Constants.UNIT
-    );
+    private final ComponentMapper<TileStateComponent> state = ComponentMapper.getFor(TileStateComponent.class);
+    private final OrthographicCamera camera;
 
     private final SpriteBatch batch;
 
-    public RenderingSystem(SpriteBatch batch) {
+    public RenderingSystem(OrthographicCamera camera, SpriteBatch batch) {
         super(Family.all(BoundsComponent.class, ScaleComponent.class, TextureComponent.class).get());
+        this.camera = camera;
         this.batch = batch;
-        camera.position.set(
-                Constants.WIDTH * Constants.UNIT / 2f,
-                Constants.HEIGHT * Constants.UNIT / 2f,
-                0f
-        );
     }
 
     @Override
@@ -47,7 +42,7 @@ public class RenderingSystem extends IteratingSystem {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        for (Entity entity: renderQueue) {
+        for (Entity entity : renderQueue) {
             render(batch, entity);
         }
 
@@ -58,6 +53,7 @@ public class RenderingSystem extends IteratingSystem {
 
     private void render(SpriteBatch batch, Entity entity) {
         TextureRegion texture = this.texture.get(entity).region;
+        TextureRegion border = this.texture.get(entity).border;
         if (texture == null) return;
 
         Rectangle bounds = this.bounds.get(entity).bounds;
@@ -68,6 +64,19 @@ public class RenderingSystem extends IteratingSystem {
 
         float originX = width * 0.5f;
         float originY = height * 0.5f;
+
+        TileStateComponent stateComponent = this.state.get(entity);
+
+        if (stateComponent.state != TileState.IDLE) {
+            batch.draw(
+                    border,
+                    bounds.x, bounds.y,
+                    originX, originY,
+                    width, height,
+                    scale.x, scale.y,
+                    0f
+            );
+        }
 
         batch.draw(
                 texture,

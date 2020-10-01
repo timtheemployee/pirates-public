@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.wxxtfxrmx.pirates.screen.level.board.TileType;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.component.MoveComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.ScaleComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.SpawnComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
@@ -61,9 +62,12 @@ public class BoardWorld {
 
         TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
         textureComponent.region = texturesFactory.getLeadingTexture(type);
+        textureComponent.border = texturesFactory.getTileBoundsTexture();
 
         TileMatchComponent matchComponent = engine.createComponent(TileMatchComponent.class);
         matchComponent.matched = false;
+
+        MoveComponent moveComponent = engine.createComponent(MoveComponent.class);
 
         entity.add(scaleComponent);
         entity.add(boundsComponent);
@@ -72,6 +76,7 @@ public class BoardWorld {
         entity.add(stateComponent);
         entity.add(textureComponent);
         entity.add(matchComponent);
+        entity.add(moveComponent);
 
         return entity;
     }
