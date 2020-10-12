@@ -11,13 +11,13 @@ import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TilePickedComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TouchChainComponent;
 
-public class ValidateTouchedTilesSystem extends IteratingSystem {
+public class ValidatePreviouslyTouchedTilesSystem extends IteratingSystem {
 
     private final Family pickedTilesFamily = Family.all(TilePickedComponent.class).get();
     private final ComponentMapper<TouchChainComponent> chainMapper = ComponentMapper.getFor(TouchChainComponent.class);
     private final ComponentMapper<BoundsComponent> tileBoundsMapper = ComponentMapper.getFor(BoundsComponent.class);
 
-    public ValidateTouchedTilesSystem() {
+    public ValidatePreviouslyTouchedTilesSystem() {
         super(Family.all(TouchChainComponent.class).get());
     }
 

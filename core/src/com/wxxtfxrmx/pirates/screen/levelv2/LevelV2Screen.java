@@ -8,11 +8,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTexturesFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTypeFactory;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.CleanupEntitiesOnEmptyTouchesSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.SetEntitiesTouchedSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.RenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.ApplyBoardTouchSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.ValidateTouchedTilesSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.CleanupEntitiesOnEmptyTouchesSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.CleanupLessThan3PickedSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.CollectPickedEntitiesSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.MoveEntityToDestinationSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.RenderingSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.SetEntitiesTouchedSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.ValidatePreviouslyTouchedTilesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.world.BoardWorld;
 
 import java.util.Arrays;
@@ -48,13 +51,16 @@ public class LevelV2Screen extends ScreenAdapter {
         boardWorld = new BoardWorld(engine, typeFactory, tileTexturesFactory);
 
         inputSystems = Collections.singletonList(
-                new ApplyBoardTouchSystem(camera)
+                new ApplyBoardTouchSystem(camera, engine)
         );
 
         gameLogicSystems = Arrays.asList(
                 new CleanupEntitiesOnEmptyTouchesSystem(),
-                new ValidateTouchedTilesSystem(),
-                new SetEntitiesTouchedSystem(engine)
+                new ValidatePreviouslyTouchedTilesSystem(),
+                new SetEntitiesTouchedSystem(engine),
+                new CleanupLessThan3PickedSystem(),
+                new CollectPickedEntitiesSystem(engine),
+                new MoveEntityToDestinationSystem()
         );
 
         renderingSystems = Collections.singletonList(

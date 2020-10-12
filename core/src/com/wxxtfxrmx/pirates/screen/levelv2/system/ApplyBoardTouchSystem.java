@@ -4,6 +4,8 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -11,8 +13,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TouchChainComponent;
-
-import java.util.Locale;
 
 public class ApplyBoardTouchSystem extends EntitySystem {
 
@@ -22,28 +22,44 @@ public class ApplyBoardTouchSystem extends EntitySystem {
 
     private final Vector3 touch = new Vector3();
     private final OrthographicCamera camera;
+    private final PooledEngine pooledEngine;
 
-    public ApplyBoardTouchSystem(OrthographicCamera camera) {
+    public ApplyBoardTouchSystem(OrthographicCamera camera, PooledEngine pooledEngine) {
         this.camera = camera;
+        this.pooledEngine = pooledEngine;
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
 
-        Entity chainEntity = getEngine().getEntitiesFor(chainFamily).first();
-
-        if (!(Gdx.input.justTouched() || Gdx.input.isTouched())) {
-            chainMapper.get(chainEntity).chain.clear();
-            return;
+        if (Gdx.input.justTouched()) {
+            Entity entity = pooledEngine.createEntity();
+            TouchChainComponent chainComponent = pooledEngine.createComponent(TouchChainComponent.class);
+            entity.add(chainComponent);
+            pooledEngine.addEntity(entity);
+            Gdx.app.error("TOUCHES", "JUST TOUCHED");
         }
+
+        if (!Gdx.input.isTouched()) {
+            ImmutableArray<Entity> entities = getEngine().getEntitiesFor(chainFamily);
+            if (entities.size() != 0) {
+                Entity entity = getEngine().getEntitiesFor(chainFamily).first();
+                TouchChainComponent component = chainMapper.get(entity);
+                component.chain.clear();
+                pooledEngine.removeEntity(entity);
+            }
+        }
+
+        ImmutableArray<Entity> entities = getEngine().getEntitiesFor(chainFamily);
+        if (entities.size() == 0) return;
+        Entity chainEntity = entities.first();
 
         touch.set(Gdx.input.getX(), Gdx.input.getY(), 0f);
         camera.unproject(touch);
         Vector2 touch2D = normalizedTouch(touch);
 
         if (!inBoardBounds(touch2D)) return;
-
 
         TouchChainComponent component = chainMapper.get(chainEntity);
 
@@ -80,8 +96,6 @@ public class ApplyBoardTouchSystem extends EntitySystem {
         int touchX = (int) (touch.x / Constants.UNIT) * Constants.UNIT + Constants.UNIT / 2;
         int touchY = (int) (touch.y / Constants.UNIT) * Constants.UNIT + Constants.UNIT / 2;
 
-        Gdx.app.error("TOUCH X", String.format(Locale.ENGLISH, "TOUCH X = %d", touchX));
-        Gdx.app.error("TOUCH Y", String.format(Locale.ENGLISH, "TOUCH Y = %d", touchY));
         return new Vector2(touchX, touchY);
     }
 }
