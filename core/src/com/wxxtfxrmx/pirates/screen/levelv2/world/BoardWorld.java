@@ -2,16 +2,12 @@ package com.wxxtfxrmx.pirates.screen.levelv2.world;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.wxxtfxrmx.pirates.screen.level.board.TileType;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.MoveComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.ScaleComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.SpawnComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TileMatchComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TileStateComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TileTypeComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.component.TouchChainComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTexturesFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTypeFactory;
 
@@ -27,6 +23,12 @@ public class BoardWorld {
     }
 
     public void create() {
+
+        Entity touch = engine.createEntity();
+        TouchChainComponent touchChainComponent = engine.createComponent(TouchChainComponent.class);
+        touch.add(touchChainComponent);
+        engine.addEntity(touch);
+
         for (int width = 0; width < Constants.WIDTH; width++) {
             for (int height = 0; height < Constants.MIDDLE_ROUNDED_HEIGHT; height++) {
                 Entity entity = createEntity(engine, width, height);
@@ -49,34 +51,19 @@ public class BoardWorld {
         boundsComponent.bounds.height = Constants.UNIT;
         boundsComponent.z = 0f;
 
-        SpawnComponent spawnComponent = engine.createComponent(SpawnComponent.class);
-        spawnComponent.spawn.x = x * Constants.UNIT;
-        spawnComponent.spawn.y = y * Constants.UNIT;
-
         TileType type = typeFactory.getRandomType();
 
         TileTypeComponent typeComponent = engine.createComponent(TileTypeComponent.class);
         typeComponent.type = type;
 
-        TileStateComponent stateComponent = engine.createComponent(TileStateComponent.class);
-
         TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
         textureComponent.region = texturesFactory.getLeadingTexture(type);
         textureComponent.border = texturesFactory.getTileBoundsTexture();
 
-        TileMatchComponent matchComponent = engine.createComponent(TileMatchComponent.class);
-        matchComponent.matched = false;
-
-        MoveComponent moveComponent = engine.createComponent(MoveComponent.class);
-
         entity.add(scaleComponent);
         entity.add(boundsComponent);
-        entity.add(spawnComponent);
         entity.add(typeComponent);
-        entity.add(stateComponent);
         entity.add(textureComponent);
-        entity.add(matchComponent);
-        entity.add(moveComponent);
 
         return entity;
     }

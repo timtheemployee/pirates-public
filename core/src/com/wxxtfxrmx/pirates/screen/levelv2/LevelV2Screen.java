@@ -8,17 +8,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTexturesFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTypeFactory;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.DropDownSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.FillUpEmptyEntitySystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.MoveTilesToShipSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.CleanupEntitiesOnEmptyTouchesSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.SetEntitiesTouchedSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.RenderingSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.TouchTileSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.match.HorizontalMatchSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.match.VerticalMatchSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.swap.SwapHorizontalSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.swap.SwapVerticalSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.ApplyBoardTouchSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.ValidateTouchedTilesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.world.BoardWorld;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class LevelV2Screen extends ScreenAdapter {
@@ -30,6 +29,10 @@ public class LevelV2Screen extends ScreenAdapter {
             Constants.WIDTH * Constants.UNIT,
             Constants.HEIGHT * Constants.UNIT
     );
+
+    private final List<EntitySystem> inputSystems;
+    private final List<EntitySystem> gameLogicSystems;
+    private final List<EntitySystem> renderingSystems;
 
     public LevelV2Screen(SpriteBatch batch) {
         engine = new PooledEngine();
@@ -44,15 +47,23 @@ public class LevelV2Screen extends ScreenAdapter {
         TileTexturesFactory tileTexturesFactory = new TileTexturesFactory();
         boardWorld = new BoardWorld(engine, typeFactory, tileTexturesFactory);
 
-        engine.addSystem(new VerticalMatchSystem());
-        engine.addSystem(new HorizontalMatchSystem());
-        engine.addSystem(new SwapVerticalSystem());
-        engine.addSystem(new SwapHorizontalSystem());
-        engine.addSystem(new MoveTilesToShipSystem());
-        engine.addSystem(new DropDownSystem());
-        engine.addSystem(new FillUpEmptyEntitySystem(tileTexturesFactory, typeFactory));
-        engine.addSystem(new TouchTileSystem(camera));
-        engine.addSystem(new RenderingSystem(camera, batch));
+        inputSystems = Collections.singletonList(
+                new ApplyBoardTouchSystem(camera)
+        );
+
+        gameLogicSystems = Arrays.asList(
+                new CleanupEntitiesOnEmptyTouchesSystem(),
+                new ValidateTouchedTilesSystem(),
+                new SetEntitiesTouchedSystem(engine)
+        );
+
+        renderingSystems = Collections.singletonList(
+                new RenderingSystem(camera, batch)
+        );
+
+        inputSystems.forEach(engine::addSystem);
+        gameLogicSystems.forEach(engine::addSystem);
+        renderingSystems.forEach(engine::addSystem);
     }
 
     @Override

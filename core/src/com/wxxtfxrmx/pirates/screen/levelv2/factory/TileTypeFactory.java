@@ -1,6 +1,6 @@
 package com.wxxtfxrmx.pirates.screen.levelv2.factory;
 
-import com.wxxtfxrmx.pirates.screen.level.board.TileType;
+import com.wxxtfxrmx.pirates.screen.levelv2.world.TileType;
 
 import java.util.Random;
 

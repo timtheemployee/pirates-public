@@ -10,11 +10,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.wxxtfxrmx.pirates.screen.level.board.TileState;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.ScaleComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TileStateComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.component.TilePickedComponent;
 
 public class RenderingSystem extends IteratingSystem {
 
@@ -22,7 +21,7 @@ public class RenderingSystem extends IteratingSystem {
     private final ComponentMapper<BoundsComponent> bounds = ComponentMapper.getFor(BoundsComponent.class);
     private final ComponentMapper<ScaleComponent> scale = ComponentMapper.getFor(ScaleComponent.class);
     private final ComponentMapper<TextureComponent> texture = ComponentMapper.getFor(TextureComponent.class);
-    private final ComponentMapper<TileStateComponent> state = ComponentMapper.getFor(TileStateComponent.class);
+    private final ComponentMapper<TilePickedComponent> state = ComponentMapper.getFor(TilePickedComponent.class);
     private final OrthographicCamera camera;
 
     private final SpriteBatch batch;
@@ -65,9 +64,9 @@ public class RenderingSystem extends IteratingSystem {
         float originX = width * 0.5f;
         float originY = height * 0.5f;
 
-        TileStateComponent stateComponent = this.state.get(entity);
+        TilePickedComponent stateComponent = this.state.get(entity);
 
-        if (stateComponent.state != TileState.IDLE) {
+        if (stateComponent != null) {
             batch.draw(
                     border,
                     bounds.x, bounds.y,
