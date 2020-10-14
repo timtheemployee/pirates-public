@@ -12,9 +12,12 @@ import com.wxxtfxrmx.pirates.screen.levelv2.system.ApplyBoardTouchSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.CleanupEntitiesOnEmptyTouchesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.CleanupLessThan3PickedSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.CollectPickedEntitiesSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.DropDownTilesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.MoveEntityToDestinationSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.RenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.SetEntitiesTouchedSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.SetTileTypeSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.SpawnUsedTileSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.ValidatePreviouslyTouchedTilesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.world.BoardWorld;
 
@@ -60,7 +63,10 @@ public class LevelV2Screen extends ScreenAdapter {
                 new SetEntitiesTouchedSystem(engine),
                 new CleanupLessThan3PickedSystem(),
                 new CollectPickedEntitiesSystem(engine),
-                new MoveEntityToDestinationSystem()
+                new MoveEntityToDestinationSystem(engine),
+                new DropDownTilesSystem(),
+                new SetTileTypeSystem(tileTexturesFactory, typeFactory),
+                new SpawnUsedTileSystem()
         );
 
         renderingSystems = Collections.singletonList(
