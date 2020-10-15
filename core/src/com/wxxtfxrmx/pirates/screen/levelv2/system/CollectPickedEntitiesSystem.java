@@ -38,6 +38,7 @@ public class CollectPickedEntitiesSystem extends IteratingSystem {
         destinationComponent.destination.y = Constants.MIDDLE_ROUNDED_HEIGHT * Constants.UNIT;
 
         BoundsComponent boundsComponent = boundsMapper.get(entity);
+        boundsComponent.z = 1f;
 
         EmptyPlaceComponent emptyPlaceComponent = pooledEngine.createComponent(EmptyPlaceComponent.class);
         emptyPlaceComponent.position.x = boundsComponent.bounds.x;

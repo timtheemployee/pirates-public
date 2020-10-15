@@ -88,7 +88,7 @@ public class RenderingSystem extends IteratingSystem {
     }
 
     private int byZ(Entity first, Entity second) {
-        return (int) Math.signum(bounds.get(second).z - bounds.get(first).z);
+        return (int) Math.signum(bounds.get(first).z - bounds.get(second).z);
     }
 
     @Override

@@ -28,6 +28,7 @@ public class SpawnUsedTileSystem extends IteratingSystem {
 
         boundsComponent.bounds.x = emptyPlaceComponent.position.x;
         boundsComponent.bounds.y = emptyPlaceComponent.position.y;
+        boundsComponent.z = 0f;
 
         entity.remove(EmptyPlaceComponent.class);
         entity.remove(ReadyToReuseComponent.class);
