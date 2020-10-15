@@ -38,17 +38,18 @@ public class ApplyBoardTouchSystem extends EntitySystem {
             TouchChainComponent chainComponent = pooledEngine.createComponent(TouchChainComponent.class);
             entity.add(chainComponent);
             pooledEngine.addEntity(entity);
-            Gdx.app.error("TOUCHES", "JUST TOUCHED");
         }
 
         if (!Gdx.input.isTouched()) {
             ImmutableArray<Entity> entities = getEngine().getEntitiesFor(chainFamily);
             if (entities.size() != 0) {
-                Entity entity = getEngine().getEntitiesFor(chainFamily).first();
+                Entity entity = entities.first();
                 TouchChainComponent component = chainMapper.get(entity);
                 component.chain.clear();
                 pooledEngine.removeEntity(entity);
             }
+
+            return;
         }
 
         ImmutableArray<Entity> entities = getEngine().getEntitiesFor(chainFamily);
