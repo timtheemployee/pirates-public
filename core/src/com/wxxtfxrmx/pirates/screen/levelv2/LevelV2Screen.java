@@ -19,6 +19,10 @@ import com.wxxtfxrmx.pirates.screen.levelv2.system.SetEntitiesTouchedSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.SetTileTypeSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.SpawnUsedTileSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.ValidatePreviouslyTouchedTilesSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.animation.PlayAnimationSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.animation.RemoveAnimationSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.animation.SetTileAnimationSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.animation.UpdateAnimationStateSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.world.BoardWorld;
 
 import java.util.Arrays;
@@ -63,6 +67,10 @@ public class LevelV2Screen extends ScreenAdapter {
                 new SetEntitiesTouchedSystem(engine),
                 new CleanupLessThan3PickedSystem(),
                 new CollectPickedEntitiesSystem(engine),
+                new SetTileAnimationSystem(engine, tileTexturesFactory),
+                new UpdateAnimationStateSystem(),
+                new PlayAnimationSystem(),
+                new RemoveAnimationSystem(),
                 new MoveEntityToDestinationSystem(engine),
                 new DropDownTilesSystem(),
                 new SetTileTypeSystem(tileTexturesFactory, typeFactory),
