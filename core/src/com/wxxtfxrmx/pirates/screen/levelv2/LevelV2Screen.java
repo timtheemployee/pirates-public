@@ -6,6 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTexturesFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTypeFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.ApplyBoardTouchSystem;
@@ -14,7 +15,6 @@ import com.wxxtfxrmx.pirates.screen.levelv2.system.CleanupLessThan3PickedSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.CollectPickedEntitiesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.DropDownTilesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.MoveEntityToDestinationSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.system.RenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.SetEntitiesTouchedSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.SetTileTypeSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.SpawnUsedTileSystem;
@@ -23,10 +23,11 @@ import com.wxxtfxrmx.pirates.screen.levelv2.system.animation.PlayAnimationSystem
 import com.wxxtfxrmx.pirates.screen.levelv2.system.animation.RemoveAnimationSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.animation.SetTileAnimationSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.animation.UpdateAnimationStateSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.rendering.EnvRenderingSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.system.rendering.RenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.world.BoardWorld;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -43,8 +44,10 @@ public class LevelV2Screen extends ScreenAdapter {
     private final List<EntitySystem> inputSystems;
     private final List<EntitySystem> gameLogicSystems;
     private final List<EntitySystem> renderingSystems;
+    private final ShapeRenderer shapeRenderer;
 
     public LevelV2Screen(SpriteBatch batch) {
+        shapeRenderer = new ShapeRenderer();
         engine = new PooledEngine();
         assets = new AssetManager();
         camera.position.set(
@@ -57,7 +60,7 @@ public class LevelV2Screen extends ScreenAdapter {
         TileTexturesFactory tileTexturesFactory = new TileTexturesFactory();
         boardWorld = new BoardWorld(engine, typeFactory, tileTexturesFactory);
 
-        inputSystems = Collections.singletonList(
+        inputSystems = Arrays.asList(
                 new ApplyBoardTouchSystem(camera, engine)
         );
 
@@ -77,7 +80,8 @@ public class LevelV2Screen extends ScreenAdapter {
                 new SpawnUsedTileSystem()
         );
 
-        renderingSystems = Collections.singletonList(
+        renderingSystems = Arrays.asList(
+                new EnvRenderingSystem(shapeRenderer, camera),
                 new RenderingSystem(camera, batch)
         );
 

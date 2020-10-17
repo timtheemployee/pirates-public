@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.screen.levelv2.system;
+package com.wxxtfxrmx.pirates.screen.levelv2.system.rendering;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
