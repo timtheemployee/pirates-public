@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.screen.levelv2.system;
+package com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;

@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.screen.levelv2.system.rendering;
+package com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.rendering;
 
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.graphics.Color;

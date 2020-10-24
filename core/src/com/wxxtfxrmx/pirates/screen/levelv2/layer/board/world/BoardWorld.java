@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.screen.levelv2.world;
+package com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;

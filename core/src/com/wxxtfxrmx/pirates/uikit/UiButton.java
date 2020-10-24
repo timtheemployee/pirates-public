@@ -9,9 +9,9 @@ public class UiButton extends ImageButton {
 
     private final static String DEFAULT_STYLE = "default";
 
-    public UiButton() {
+    public UiButton(float x, float y, float width, float height) {
         super(new Skin(Gdx.files.internal("ui/uikit.json")), DEFAULT_STYLE);
-        setSize(getStyle().up.getMinHeight(), getStyle().up.getMinHeight());
+        setBounds(x, y, width, height);
         setTouchable(Touchable.enabled);
     }
 }

@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.screen.levelv2.world;
+package com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world;
 
 public enum TileType {
     COIN("coin_sheet"),

@@ -1,4 +1,4 @@
-package com.wxxtfxrmx.pirates.screen.levelv2.system;
+package com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -13,7 +13,7 @@ import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TilePickedComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TileTypeComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TouchChainComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.world.TileType;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.TileType;
 
 public class SetEntitiesTouchedSystem extends EntitySystem {
 

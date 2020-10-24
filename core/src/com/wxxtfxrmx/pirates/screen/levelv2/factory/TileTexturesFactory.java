@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
-import com.wxxtfxrmx.pirates.screen.levelv2.world.TileType;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.TileType;
 
 public class TileTexturesFactory {
     private final TextureAtlas tilesAtlas = new TextureAtlas("sprite/tiles-sheet.atlas");
