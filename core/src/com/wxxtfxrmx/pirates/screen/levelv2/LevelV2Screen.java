@@ -7,6 +7,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTexturesFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTypeFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.system.ApplyBoardTouchSystem;
@@ -40,6 +44,8 @@ public class LevelV2Screen extends ScreenAdapter {
             Constants.WIDTH * Constants.UNIT,
             Constants.HEIGHT * Constants.UNIT
     );
+
+    private final Viewport levelViewPort = new ExtendViewport(Constants.WIDTH * Constants.UNIT, Constants.HEIGHT * Constants.UNIT, camera);
 
     private final List<EntitySystem> inputSystems;
     private final List<EntitySystem> gameLogicSystems;
@@ -99,6 +105,11 @@ public class LevelV2Screen extends ScreenAdapter {
     public void render(float delta) {
         float newDelta = normalize(delta);
         engine.update(newDelta);
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        levelViewPort.update(width, height);
     }
 
     private float normalize(float delta) {
