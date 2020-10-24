@@ -1,0 +1,49 @@
+uikit.png
+size: 48, 175
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+crumpled-clicked
+  rotate: false
+  xy: 0, 0
+  size: 48, 32
+  split: 6, 6, 4, 18
+  pad: -1, -1, -1, -1
+  orig: 48, 32
+  offset: 0, 0
+  index: -1
+crumpled-idle
+  rotate: false
+  xy: 0, 32
+  size: 48, 32
+  split: 6, 6, 4, 18
+  pad: -1, -1, -1, -1
+  orig: 48, 32
+  offset: 0, 0
+  index: -1
+pane-background
+  rotate: false
+  xy: 0, 64
+  size: 47, 47
+  split: 5, 5, 5, 27
+  orig: 47, 47
+  offset: 0, 0
+  index: -1
+shadowed-clicked
+  rotate: false
+  xy: 0, 111
+  size: 48, 32
+  split: 6, 5, 8, 16
+  pad: -1, -1, 8, 16
+  orig: 48, 32
+  offset: 0, 0
+  index: -1
+shadowed-idle
+  rotate: false
+  xy: 0, 143
+  size: 47, 32
+  split: 6, 5, 6, 20
+  pad: -1, -1, -1, -1
+  orig: 47, 32
+  offset: 0, 0
+  index: -1
