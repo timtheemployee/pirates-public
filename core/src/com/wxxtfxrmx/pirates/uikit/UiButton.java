@@ -15,6 +15,10 @@ public class UiButton extends ImageButton {
     private final static String DEFAULT_STYLE = "default";
     private final TextureAtlas iconsAtlas = new TextureAtlas("ui/icon/icon-pack.atlas");
 
+    public UiButton() {
+        super(new Skin(Gdx.files.internal("ui/uikit.json")), DEFAULT_STYLE);
+    }
+
     public UiButton(float x, float y, float width, float height) {
         super(new Skin(Gdx.files.internal("ui/uikit.json")), DEFAULT_STYLE);
         applyParameters(x, y, width, height);
