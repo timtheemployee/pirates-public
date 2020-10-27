@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.ScaleComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TilePickedComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
 
 public class RenderingSystem extends IteratingSystem {
 

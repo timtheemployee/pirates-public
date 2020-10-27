@@ -7,7 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.EmptyPlaceComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.EmptyPlaceComponent;
 
 public class DropDownTilesSystem extends IteratingSystem {
 

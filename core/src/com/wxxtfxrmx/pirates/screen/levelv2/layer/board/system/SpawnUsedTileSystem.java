@@ -5,8 +5,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.EmptyPlaceComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.ReadyToReuseComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.EmptyPlaceComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.ReadyToReuseComponent;
 
 public class SpawnUsedTileSystem extends IteratingSystem {
 

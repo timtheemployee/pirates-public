@@ -6,8 +6,8 @@ import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.ScaleComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TileTypeComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TouchChainComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TileTypeComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TouchChainComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTexturesFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTypeFactory;
 

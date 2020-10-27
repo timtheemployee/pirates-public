@@ -8,9 +8,9 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.DestinationComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.EmptyPlaceComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TilePickedComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TouchChainComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.EmptyPlaceComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TouchChainComponent;
 
 public class CollectPickedEntitiesSystem extends IteratingSystem {
 

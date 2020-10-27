@@ -6,7 +6,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.AnimationComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TilePickedComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
 
 public class RemoveAnimationSystem extends IteratingSystem {
 

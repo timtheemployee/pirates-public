@@ -8,8 +8,8 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TilePickedComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TouchChainComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TouchChainComponent;
 
 public class ValidatePreviouslyTouchedTilesSystem extends IteratingSystem {
 

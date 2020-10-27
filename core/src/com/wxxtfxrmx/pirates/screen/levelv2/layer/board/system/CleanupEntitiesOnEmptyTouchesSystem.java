@@ -4,8 +4,8 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TilePickedComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TouchChainComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TouchChainComponent;
 
 public class CleanupEntitiesOnEmptyTouchesSystem extends IteratingSystem {
 

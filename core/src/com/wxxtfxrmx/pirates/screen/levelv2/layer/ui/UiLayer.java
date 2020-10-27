@@ -1,11 +1,13 @@
 package com.wxxtfxrmx.pirates.screen.levelv2.layer.ui;
 
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.RenderRemainingTimeSystem;
 import com.wxxtfxrmx.pirates.uikit.HorizontalMargin;
 import com.wxxtfxrmx.pirates.uikit.Icon;
 import com.wxxtfxrmx.pirates.uikit.UiButton;
@@ -22,9 +24,12 @@ public class UiLayer implements Layer {
     private final Stage stage;
     private final List<Actor> actors;
     private final UiDialogSkin dialogSkin = new UiDialogSkin();
+    private final PooledEngine engine;
+    private RenderRemainingTimeSystem renderRemainingTimeSystem;
 
-    public UiLayer(Stage stage) {
+    public UiLayer(Stage stage, PooledEngine engine) {
         this.stage = stage;
+        this.engine = engine;
         actors = new ArrayList<>();
         dialogSkin.addRegions(new TextureAtlas(Gdx.files.internal("ui/icon/icon-pack.atlas")));
     }
@@ -38,6 +43,10 @@ public class UiLayer implements Layer {
         stage.addActor(label);
         actors.add(pause);
         actors.add(label);
+
+
+        renderRemainingTimeSystem = new RenderRemainingTimeSystem(label);
+        engine.addSystem(renderRemainingTimeSystem);
     }
 
     private UiLabel getTimeLabel() {
@@ -67,6 +76,8 @@ public class UiLayer implements Layer {
 
     @Override
     public void setEnabled(boolean enabled) {
+        renderRemainingTimeSystem.setProcessing(enabled);
+
         if (enabled) {
             actors.forEach(stage::addActor);
         } else {

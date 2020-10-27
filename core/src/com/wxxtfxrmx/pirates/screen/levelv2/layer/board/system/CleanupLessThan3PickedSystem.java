@@ -4,8 +4,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TilePickedComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TouchChainComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TouchChainComponent;
 
 public class CleanupLessThan3PickedSystem extends EntitySystem {
 

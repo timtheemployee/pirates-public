@@ -7,8 +7,8 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.AnimationComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TilePickedComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.TileTypeComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TileTypeComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTexturesFactory;
 
 public class SetTileAnimationSystem extends IteratingSystem {
