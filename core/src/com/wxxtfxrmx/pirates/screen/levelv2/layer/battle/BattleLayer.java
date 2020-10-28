@@ -22,7 +22,7 @@ public class BattleLayer implements Layer {
         inputSystems = Arrays.asList();
         logicSystems = Arrays.asList(
                 new CountDownTimeSystem(),
-                new SwitchTurnSystem()
+                new SwitchTurnSystem(engine)
         );
         renderingSystems = Arrays.asList();
 

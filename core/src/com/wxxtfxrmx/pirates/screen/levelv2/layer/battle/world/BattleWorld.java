@@ -45,12 +45,10 @@ public class BattleWorld {
         Entity entity = engine.createEntity();
 
         AiComponent playerComponent = engine.createComponent(AiComponent.class);
-        CurrentTurnComponent currentTurnComponent = engine.createComponent(CurrentTurnComponent.class);
         HpComponent hpComponent = engine.createComponent(HpComponent.class);
         hpComponent.value = 100;
 
         entity.add(playerComponent);
-        entity.add(currentTurnComponent);
         entity.add(hpComponent);
 
         return entity;

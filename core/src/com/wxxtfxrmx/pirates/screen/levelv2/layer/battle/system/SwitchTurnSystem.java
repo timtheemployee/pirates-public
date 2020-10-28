@@ -3,15 +3,15 @@ package com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CollectedTilesComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CurrentTurnComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.HpComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.RemainedTimeComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TouchChainComponent;
-
-import java.util.Locale;
 
 public class SwitchTurnSystem extends IteratingSystem {
 
@@ -22,8 +22,11 @@ public class SwitchTurnSystem extends IteratingSystem {
     private final Family touchedTilesFamily = Family.all(TilePickedComponent.class).get();
     private final Family remainingTimeFamily = Family.all(RemainedTimeComponent.class).get();
 
-    public SwitchTurnSystem() {
+    private final PooledEngine engine;
+
+    public SwitchTurnSystem(PooledEngine engine) {
         super(Family.one(RemainedTimeComponent.class, CollectedTilesComponent.class).get());
+        this.engine = engine;
     }
 
     @Override
@@ -33,13 +36,13 @@ public class SwitchTurnSystem extends IteratingSystem {
             if (remainedTimeComponent.remainedTime == 0) {
                 cleanupTouchChain();
                 cleanupTouchedTiles();
+                switchTurn();
             }
 
         } else if (collectedTilesMapper.has(entity)) {
             CollectedTilesComponent collectedTilesComponent = collectedTilesMapper.get(entity);
 
-            Gdx.app.error("TAG", "Switching turn after collectedComponent");
-            Gdx.app.error("TAG", String.format(Locale.ENGLISH,"Switching after combination %d, %s", collectedTilesComponent.size, collectedTilesComponent.type.toString()));
+            switchTurn();
 
             collectedTilesComponent.size = 0;
             collectedTilesComponent.type = null;
@@ -49,6 +52,20 @@ public class SwitchTurnSystem extends IteratingSystem {
 
             dropCountDownTimer();
         }
+    }
+
+    private void switchTurn() {
+        Entity attacker = getEngine()
+                .getEntitiesFor(Family.all(HpComponent.class, CurrentTurnComponent.class).get())
+                .first();
+
+        Entity defender = getEngine()
+                .getEntitiesFor(Family.all(HpComponent.class).exclude(CurrentTurnComponent.class).get())
+                .first();
+
+        attacker.remove(CurrentTurnComponent.class);
+        CurrentTurnComponent currentTurnComponent = engine.createComponent(CurrentTurnComponent.class);
+        defender.add(currentTurnComponent);
     }
 
     private void dropCountDownTimer() {
