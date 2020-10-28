@@ -8,16 +8,17 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.DestinationComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.MarkToSendTileComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.EmptyPlaceComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TouchChainComponent;
 
-public class CollectPickedEntitiesSystem extends IteratingSystem {
+public class MarkMatchedEntitiesSystem extends IteratingSystem {
 
     private final ComponentMapper<BoundsComponent> boundsMapper = ComponentMapper.getFor(BoundsComponent.class);
     private final PooledEngine pooledEngine;
 
-    public CollectPickedEntitiesSystem(PooledEngine pooledEngine) {
+    public MarkMatchedEntitiesSystem(PooledEngine pooledEngine) {
         super(Family.all(TilePickedComponent.class, BoundsComponent.class).get());
         this.pooledEngine = pooledEngine;
     }
@@ -27,7 +28,6 @@ public class CollectPickedEntitiesSystem extends IteratingSystem {
         super.update(deltaTime);
     }
 
-    //TODO MOVE PICKED TILES TO FIGHT SYSTEM
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
 
@@ -44,9 +44,12 @@ public class CollectPickedEntitiesSystem extends IteratingSystem {
         emptyPlaceComponent.position.x = boundsComponent.bounds.x;
         emptyPlaceComponent.position.y = boundsComponent.bounds.y;
 
+        MarkToSendTileComponent collectedTileComponent = pooledEngine.createComponent(MarkToSendTileComponent.class);
+
         entity.add(emptyPlaceComponent);
         entity.add(destinationComponent);
         entity.remove(TilePickedComponent.class);
+        entity.add(collectedTileComponent);
     }
 
     private boolean canCollect() {

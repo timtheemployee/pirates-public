@@ -11,9 +11,10 @@ import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTypeFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.ApplyBoardTouchSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.CleanupEntitiesOnEmptyTouchesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.CleanupLessThan3PickedSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.CollectPickedEntitiesSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.MarkMatchedEntitiesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.DropDownTilesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.MoveEntityToDestinationSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.SendCollectedTilesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.SetEntitiesTouchedSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.SetTileTypeSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.SpawnUsedTileSystem;
@@ -55,7 +56,8 @@ public class BoardLayer implements Layer {
                 new ValidatePreviouslyTouchedTilesSystem(),
                 new SetEntitiesTouchedSystem(engine),
                 new CleanupLessThan3PickedSystem(),
-                new CollectPickedEntitiesSystem(engine),
+                new MarkMatchedEntitiesSystem(engine),
+                new SendCollectedTilesSystem(engine),
                 new SetTileAnimationSystem(engine, tileTexturesFactory),
                 new UpdateAnimationStateSystem(),
                 new PlayAnimationSystem(),

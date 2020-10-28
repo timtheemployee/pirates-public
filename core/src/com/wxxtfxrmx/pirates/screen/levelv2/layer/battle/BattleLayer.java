@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.world.BattleWorld;
 
 import java.util.Arrays;
@@ -20,7 +21,8 @@ public class BattleLayer implements Layer {
         world = new BattleWorld(engine);
         inputSystems = Arrays.asList();
         logicSystems = Arrays.asList(
-                new CountDownTimeSystem()
+                new CountDownTimeSystem(),
+                new SwitchTurnSystem()
         );
         renderingSystems = Arrays.asList();
 
