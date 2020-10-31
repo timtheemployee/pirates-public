@@ -45,7 +45,5 @@ public class ApplyDamageSystem extends IteratingSystem {
         int cannonBallsCount = collectedTiles.size - (int) (collectedTiles.size * evasion.percent);
 
         defenderHp.value -= attackerDamage.value * cannonBallsCount;
-
-        HpComponent attackerHp = hpMapper.get(attacker);
     }
 }

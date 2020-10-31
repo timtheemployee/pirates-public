@@ -15,6 +15,7 @@ import com.wxxtfxrmx.pirates.uikit.UiClickListener;
 import com.wxxtfxrmx.pirates.uikit.UiLabel;
 import com.wxxtfxrmx.pirates.uikit.dialog.PauseDialog;
 import com.wxxtfxrmx.pirates.uikit.dialog.UiDialogSkin;
+import com.wxxtfxrmx.pirates.uikit.slot.UiSlotMachine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +39,26 @@ public class UiLayer implements Layer {
     public void create() {
         UiButton pause = getPauseButton();
         UiLabel label = getTimeLabel();
+        UiSlotMachine slotMachine = getSlotMachine();
 
         stage.addActor(pause);
         stage.addActor(label);
+        stage.addActor(slotMachine);
         actors.add(pause);
         actors.add(label);
-
+        actors.add(slotMachine);
 
         renderRemainingTimeSystem = new RenderRemainingTimeSystem(label);
         engine.addSystem(renderRemainingTimeSystem);
+    }
+
+    private UiSlotMachine getSlotMachine() {
+        float x = (Constants.WIDTH / 2f) * Constants.UNIT;
+        float y = (Constants.HEIGHT - 3) * Constants.UNIT;
+        UiSlotMachine slotMachine = new UiSlotMachine();
+        slotMachine.setPosition(x, y);
+
+        return slotMachine;
     }
 
     private UiLabel getTimeLabel() {
