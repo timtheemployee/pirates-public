@@ -3,7 +3,10 @@ package com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.world;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.AiComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CoinComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CurrentTurnComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.DamageComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.EvasionComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.HpComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.PlayerComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.RemainedTimeComponent;
@@ -34,9 +37,21 @@ public class BattleWorld {
         HpComponent hpComponent = engine.createComponent(HpComponent.class);
         hpComponent.value = 100;
 
+        DamageComponent damageComponent = engine.createComponent(DamageComponent.class);
+        damageComponent.value = 1;
+
+        EvasionComponent evasionComponent = engine.createComponent(EvasionComponent.class);
+        evasionComponent.percent = 0.1f;
+
+        CoinComponent coinComponent = engine.createComponent(CoinComponent.class);
+        coinComponent.value = 0;
+
         entity.add(playerComponent);
         entity.add(currentTurnComponent);
         entity.add(hpComponent);
+        entity.add(damageComponent);
+        entity.add(evasionComponent);
+        entity.add(coinComponent);
 
         return entity;
     }
@@ -48,8 +63,20 @@ public class BattleWorld {
         HpComponent hpComponent = engine.createComponent(HpComponent.class);
         hpComponent.value = 100;
 
+        DamageComponent damageComponent = engine.createComponent(DamageComponent.class);
+        damageComponent.value = 1;
+
+        EvasionComponent evasionComponent = engine.createComponent(EvasionComponent.class);
+        evasionComponent.percent = 0.1f;
+
+        CoinComponent coinComponent = engine.createComponent(CoinComponent.class);
+        coinComponent.value = 0;
+
         entity.add(playerComponent);
         entity.add(hpComponent);
+        entity.add(damageComponent);
+        entity.add(evasionComponent);
+        entity.add(coinComponent);
 
         return entity;
     }
