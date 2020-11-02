@@ -1,6 +1,5 @@
 package com.wxxtfxrmx.pirates.uikit.slot;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -8,7 +7,6 @@ import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.TileType;
 import com.wxxtfxrmx.pirates.uikit.UiLabel;
 
-import java.util.Locale;
 import java.util.Random;
 
 public class UiSlotMachine extends Table {
@@ -21,6 +19,8 @@ public class UiSlotMachine extends Table {
     private TileType firstType;
     private TileType secondType;
     private TileType thirdType;
+
+    private OnSpinCompleteListener listener;
 
     private float currentShuffleTime = 0f;
     private float delayTime = 0f;
@@ -84,7 +84,18 @@ public class UiSlotMachine extends Table {
         } else if (delayTime <= 1f) {
             delayTime += delta;
         } else {
+            processSpin();
             remove();
+        }
+    }
+
+    private void processSpin() {
+        if (listener == null) return;
+
+        if (firstType == secondType && secondType == thirdType) {
+            listener.onMatchSuccess(firstType);
+        } else {
+            listener.onMatchFailure();
         }
     }
 
@@ -94,5 +105,10 @@ public class UiSlotMachine extends Table {
         label.getStyle().font.getData().setScale(0.5f);
         add(label).colspan(3).expandY();
         row();
+    }
+
+    public interface OnSpinCompleteListener {
+        void onMatchSuccess(TileType matchedType);
+        void onMatchFailure();
     }
 }

@@ -26,6 +26,8 @@ public class UiLayer implements Layer {
     private final List<Actor> actors;
     private final UiDialogSkin dialogSkin = new UiDialogSkin();
     private final PooledEngine engine;
+    private final UiSlotMachine slotMachine = new UiSlotMachine();
+
     private RenderRemainingTimeSystem renderRemainingTimeSystem;
 
     public UiLayer(Stage stage, PooledEngine engine) {
@@ -39,26 +41,22 @@ public class UiLayer implements Layer {
     public void create() {
         UiButton pause = getPauseButton();
         UiLabel label = getTimeLabel();
-        UiSlotMachine slotMachine = getSlotMachine();
-
+        prepareSlotMachine();
+        
         stage.addActor(pause);
         stage.addActor(label);
-        stage.addActor(slotMachine);
+
         actors.add(pause);
         actors.add(label);
-        actors.add(slotMachine);
 
         renderRemainingTimeSystem = new RenderRemainingTimeSystem(label);
         engine.addSystem(renderRemainingTimeSystem);
     }
 
-    private UiSlotMachine getSlotMachine() {
+    private void prepareSlotMachine() {
         float x = (Constants.WIDTH / 2f) * Constants.UNIT;
         float y = (Constants.HEIGHT - 3) * Constants.UNIT;
-        UiSlotMachine slotMachine = new UiSlotMachine();
         slotMachine.setPosition(x, y);
-
-        return slotMachine;
     }
 
     private UiLabel getTimeLabel() {
