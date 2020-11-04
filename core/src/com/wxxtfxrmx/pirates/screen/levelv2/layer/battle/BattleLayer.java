@@ -8,6 +8,8 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyEvasionSyst
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ValidateAiHpSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ValidatePlayerHpSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.world.BattleWorld;
 
 import java.util.Arrays;
@@ -27,6 +29,8 @@ public class BattleLayer implements Layer {
                 new ApplyRepairSystem(),
                 new ApplyEvasionSystem(),
                 new ApplyDamageSystem(),
+                new ValidateAiHpSystem(),
+                new ValidatePlayerHpSystem(engine),
                 new CountDownTimeSystem(),
                 new SwitchTurnSystem(engine)
         );

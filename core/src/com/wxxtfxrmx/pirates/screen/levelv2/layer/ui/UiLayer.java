@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.HandlePlayerLoseSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.RenderRemainingTimeSystem;
 import com.wxxtfxrmx.pirates.uikit.HorizontalMargin;
 import com.wxxtfxrmx.pirates.uikit.Icon;
@@ -25,24 +26,30 @@ public class UiLayer implements Layer {
     private final Stage stage;
     private final List<Actor> actors;
     private final UiDialogSkin dialogSkin = new UiDialogSkin();
+    private final PauseDialog pauseDialog;
     private final PooledEngine engine;
     private final UiSlotMachine slotMachine = new UiSlotMachine();
 
     private RenderRemainingTimeSystem renderRemainingTimeSystem;
+    private HandlePlayerLoseSystem handlePlayerLoseSystem;
 
     public UiLayer(Stage stage, PooledEngine engine) {
         this.stage = stage;
         this.engine = engine;
         actors = new ArrayList<>();
         dialogSkin.addRegions(new TextureAtlas(Gdx.files.internal("ui/icon/icon-pack.atlas")));
+        pauseDialog = new PauseDialog(dialogSkin);
     }
 
     @Override
     public void create() {
+        pauseDialog.setOnHideListener(this::resumeGameSystems);
+        pauseDialog.setOnShowListener(this::pauseGameSystems);
+
         UiButton pause = getPauseButton();
         UiLabel label = getTimeLabel();
         prepareSlotMachine();
-        
+
         stage.addActor(pause);
         stage.addActor(label);
 
@@ -50,7 +57,9 @@ public class UiLayer implements Layer {
         actors.add(label);
 
         renderRemainingTimeSystem = new RenderRemainingTimeSystem(label);
+        handlePlayerLoseSystem = new HandlePlayerLoseSystem(pauseDialog, stage);
         engine.addSystem(renderRemainingTimeSystem);
+        engine.addSystem(handlePlayerLoseSystem);
     }
 
     private void prepareSlotMachine() {
@@ -62,7 +71,7 @@ public class UiLayer implements Layer {
     private UiLabel getTimeLabel() {
         float x = (Constants.WIDTH / 2f) * Constants.UNIT;
         float y = (Constants.HEIGHT - 1) * Constants.UNIT;
-        UiLabel time = new UiLabel("09", x, y, Constants.UNIT, Constants.UNIT);
+        UiLabel time = new UiLabel("10", x, y, Constants.UNIT, Constants.UNIT);
         time.endMargin(HorizontalMargin.MEDIUM);
 
         return time;
@@ -80,13 +89,21 @@ public class UiLayer implements Layer {
     }
 
     private void openPauseDialog() {
-        PauseDialog pauseDialog = new PauseDialog(dialogSkin);
         pauseDialog.show(stage);
+    }
+
+    private void pauseGameSystems() {
+        engine.getSystems().forEach(system -> system.setProcessing(false));
+    }
+
+    private void resumeGameSystems() {
+        engine.getSystems().forEach(systems -> systems.setProcessing(true));
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         renderRemainingTimeSystem.setProcessing(enabled);
+        handlePlayerLoseSystem.setProcessing(enabled);
 
         if (enabled) {
             actors.forEach(stage::addActor);
