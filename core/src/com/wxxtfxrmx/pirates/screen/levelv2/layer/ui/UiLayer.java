@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.wxxtfxrmx.pirates.navigation.Destination;
+import com.wxxtfxrmx.pirates.navigation.Navigator;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.HandlePlayerLoseSystem;
@@ -14,6 +16,7 @@ import com.wxxtfxrmx.pirates.uikit.Icon;
 import com.wxxtfxrmx.pirates.uikit.UiButton;
 import com.wxxtfxrmx.pirates.uikit.UiClickListener;
 import com.wxxtfxrmx.pirates.uikit.UiLabel;
+import com.wxxtfxrmx.pirates.uikit.dialog.GameOverDialog;
 import com.wxxtfxrmx.pirates.uikit.dialog.PauseDialog;
 import com.wxxtfxrmx.pirates.uikit.dialog.UiDialogSkin;
 import com.wxxtfxrmx.pirates.uikit.slot.UiSlotMachine;
@@ -26,25 +29,32 @@ public class UiLayer implements Layer {
     private final Stage stage;
     private final List<Actor> actors;
     private final PauseDialog pauseDialog;
+    private final GameOverDialog gameOverDialog;
+    private final Navigator navigator;
     private final PooledEngine engine;
     private final UiSlotMachine slotMachine = new UiSlotMachine();
 
     private RenderRemainingTimeSystem renderRemainingTimeSystem;
     private HandlePlayerLoseSystem handlePlayerLoseSystem;
 
-    public UiLayer(Stage stage, PooledEngine engine) {
+    public UiLayer(Stage stage, Navigator navigator, PooledEngine engine) {
         this.stage = stage;
+        this.navigator = navigator;
         this.engine = engine;
         actors = new ArrayList<>();
         UiDialogSkin dialogSkin = new UiDialogSkin();
         dialogSkin.addRegions(new TextureAtlas(Gdx.files.internal("ui/icon/icon-pack.atlas")));
         pauseDialog = new PauseDialog(dialogSkin);
+        gameOverDialog = new GameOverDialog(dialogSkin);
     }
 
     @Override
     public void create() {
-        pauseDialog.setOnHideListener(this::resumeGameSystems);
-        pauseDialog.setOnShowListener(this::pauseGameSystems);
+        pauseDialog.setHideListener(this::resumeGameSystems);
+        pauseDialog.setShowListener(this::pauseGameSystems);
+
+        gameOverDialog.setHideListener(this::openStartScreen);
+        gameOverDialog.setShowListener(this::pauseGameSystems);
 
         UiButton pause = getPauseButton();
         UiLabel label = getTimeLabel();
@@ -57,7 +67,7 @@ public class UiLayer implements Layer {
         actors.add(label);
 
         renderRemainingTimeSystem = new RenderRemainingTimeSystem(label);
-        handlePlayerLoseSystem = new HandlePlayerLoseSystem(pauseDialog, stage);
+        handlePlayerLoseSystem = new HandlePlayerLoseSystem(gameOverDialog, stage);
         engine.addSystem(renderRemainingTimeSystem);
         engine.addSystem(handlePlayerLoseSystem);
     }
@@ -90,6 +100,10 @@ public class UiLayer implements Layer {
 
     private void openPauseDialog() {
         pauseDialog.show(stage);
+    }
+
+    private void openStartScreen() {
+        navigator.open(Destination.START);
     }
 
     private void pauseGameSystems() {

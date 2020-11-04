@@ -10,14 +10,14 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.UiLayer;
 
 import java.util.Random;
 
-public class LevelV2Screen extends BaseScreen {
+public class LevelScreen extends BaseScreen {
 
     private final PooledEngine engine;
     private final Layer board;
     private final Layer ui;
     private final Layer battle;
 
-    public LevelV2Screen(SpriteBatch batch, Navigator navigator) {
+    public LevelScreen(SpriteBatch batch, Navigator navigator) {
         super(navigator);
         engine = new PooledEngine();
         camera.position.set(
@@ -27,7 +27,7 @@ public class LevelV2Screen extends BaseScreen {
         );
         Random random = new Random(888L);
         board = new BoardLayer(engine, random, camera, batch);
-        ui = new UiLayer(stage, engine);
+        ui = new UiLayer(stage, navigator, engine);
         battle = new BattleLayer(engine);
     }
 
