@@ -25,7 +25,6 @@ public class UiLayer implements Layer {
 
     private final Stage stage;
     private final List<Actor> actors;
-    private final UiDialogSkin dialogSkin = new UiDialogSkin();
     private final PauseDialog pauseDialog;
     private final PooledEngine engine;
     private final UiSlotMachine slotMachine = new UiSlotMachine();
@@ -37,6 +36,7 @@ public class UiLayer implements Layer {
         this.stage = stage;
         this.engine = engine;
         actors = new ArrayList<>();
+        UiDialogSkin dialogSkin = new UiDialogSkin();
         dialogSkin.addRegions(new TextureAtlas(Gdx.files.internal("ui/icon/icon-pack.atlas")));
         pauseDialog = new PauseDialog(dialogSkin);
     }

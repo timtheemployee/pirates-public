@@ -1,39 +1,24 @@
 package com.wxxtfxrmx.pirates.screen.levelv2;
 
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.wxxtfxrmx.pirates.navigation.Navigator;
+import com.wxxtfxrmx.pirates.screen.BaseScreen;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.BattleLayer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.BoardLayer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.UiLayer;
 
 import java.util.Random;
 
-public class LevelV2Screen extends ScreenAdapter {
+public class LevelV2Screen extends BaseScreen {
 
     private final PooledEngine engine;
-    private final OrthographicCamera camera = new OrthographicCamera(
-            Constants.WIDTH * Constants.UNIT,
-            Constants.HEIGHT * Constants.UNIT
-    );
-
-    private final Viewport levelViewPort = new ExtendViewport(
-            Constants.WIDTH * Constants.UNIT,
-            Constants.HEIGHT * Constants.UNIT,
-            camera);
-
-    private final Stage stage = new Stage(levelViewPort);
-
     private final Layer board;
     private final Layer ui;
     private final Layer battle;
 
-    public LevelV2Screen(SpriteBatch batch) {
+    public LevelV2Screen(SpriteBatch batch, Navigator navigator) {
+        super(navigator);
         engine = new PooledEngine();
         camera.position.set(
                 Constants.WIDTH * Constants.UNIT / 2f,
@@ -48,23 +33,17 @@ public class LevelV2Screen extends ScreenAdapter {
 
     @Override
     public void show() {
+        super.show();
         board.create();
         ui.create();
         battle.create();
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta) {
         float newDelta = normalize(delta);
         engine.update(newDelta);
-        stage.act(newDelta);
-        stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        levelViewPort.update(width, height);
+        super.render(delta);
     }
 
     private float normalize(float delta) {
