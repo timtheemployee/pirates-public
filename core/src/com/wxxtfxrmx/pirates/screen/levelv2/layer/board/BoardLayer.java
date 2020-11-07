@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTexturesFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTypeFactory;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ContinueRandomChainSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.TouchRandomTileSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.ApplyBoardTouchSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.CleanupEntitiesOnEmptyTouchesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.CleanupLessThan3PickedSystem;
@@ -47,8 +49,10 @@ public class BoardLayer implements Layer {
         TileTexturesFactory tileTexturesFactory = new TileTexturesFactory();
         TileTypeFactory tileTypeFactory = new TileTypeFactory(random);
 
-        inputSystems = Collections.singletonList(
-                new ApplyBoardTouchSystem(camera, engine)
+        inputSystems = Arrays.asList(
+                new ApplyBoardTouchSystem(camera, engine),
+                new TouchRandomTileSystem(engine),
+                new ContinueRandomChainSystem(engine)
         );
 
         logicSystems = Arrays.asList(
