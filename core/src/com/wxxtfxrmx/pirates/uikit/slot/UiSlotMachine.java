@@ -1,17 +1,20 @@
 package com.wxxtfxrmx.pirates.uikit.slot;
 
+import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.TileType;
+import com.wxxtfxrmx.pirates.uikit.DefaultSkin;
 import com.wxxtfxrmx.pirates.uikit.UiLabel;
 
 import java.util.Random;
 
 public class UiSlotMachine extends Table {
 
-    private final SlotSkin slotSkin;
     private final Image first = new Image();
     private final Image second = new Image();
     private final Image third = new Image();
@@ -26,7 +29,7 @@ public class UiSlotMachine extends Table {
     private float delayTime = 0f;
 
     public UiSlotMachine() {
-        slotSkin = new SlotSkin();
+        setSkin(new DefaultSkin());
         setSize(Constants.UNIT * 5, Constants.UNIT * 3);
         configureTitle();
         configureUi();
@@ -46,8 +49,9 @@ public class UiSlotMachine extends Table {
     }
 
     private void updateImage(Image image, TileType tileType) {
-        Drawable drawable = slotSkin.getIcon(tileType);
-        image.setDrawable(drawable);
+        TextureRegion region = getSkin().getRegion(tileType.getAtlasPath());
+        TextureRegion iconRegion = new TextureRegion(region, 0, 0, Constants.UNIT, Constants.UNIT);
+        image.setDrawable(new TextureRegionDrawable(iconRegion));
     }
 
     private TileType getRandomType() {
@@ -55,13 +59,14 @@ public class UiSlotMachine extends Table {
     }
 
     private void configureImage(Image image, TileType tileType) {
-        Drawable drawable = slotSkin.getIcon(tileType);
-        image.setDrawable(drawable);
+        updateImage(image, tileType);
         image.setSize(Constants.UNIT, Constants.UNIT);
     }
 
     private void configureUi() {
-        setBackground(slotSkin.getBackground());
+        NinePatch patch = getSkin().getPatch("pane-background");
+        NinePatchDrawable patchDrawable = new NinePatchDrawable(patch);
+        setBackground(patchDrawable);
     }
 
     @Override
@@ -109,6 +114,7 @@ public class UiSlotMachine extends Table {
 
     public interface OnSpinCompleteListener {
         void onMatchSuccess(TileType matchedType);
+
         void onMatchFailure();
     }
 }

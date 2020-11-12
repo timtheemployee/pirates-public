@@ -1,8 +1,6 @@
 package com.wxxtfxrmx.pirates.screen.levelv2.layer.ui;
 
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.wxxtfxrmx.pirates.navigation.Destination;
@@ -15,10 +13,10 @@ import com.wxxtfxrmx.pirates.uikit.HorizontalMargin;
 import com.wxxtfxrmx.pirates.uikit.Icon;
 import com.wxxtfxrmx.pirates.uikit.UiButton;
 import com.wxxtfxrmx.pirates.uikit.UiClickListener;
+import com.wxxtfxrmx.pirates.uikit.UiImageLabel;
 import com.wxxtfxrmx.pirates.uikit.UiLabel;
 import com.wxxtfxrmx.pirates.uikit.dialog.GameOverDialog;
 import com.wxxtfxrmx.pirates.uikit.dialog.PauseDialog;
-import com.wxxtfxrmx.pirates.uikit.dialog.UiDialogSkin;
 import com.wxxtfxrmx.pirates.uikit.slot.UiSlotMachine;
 
 import java.util.ArrayList;
@@ -42,10 +40,8 @@ public class UiLayer implements Layer {
         this.navigator = navigator;
         this.engine = engine;
         actors = new ArrayList<>();
-        UiDialogSkin dialogSkin = new UiDialogSkin();
-        dialogSkin.addRegions(new TextureAtlas(Gdx.files.internal("ui/icon/icon-pack.atlas")));
-        pauseDialog = new PauseDialog(dialogSkin);
-        gameOverDialog = new GameOverDialog(dialogSkin);
+        pauseDialog = new PauseDialog();
+        gameOverDialog = new GameOverDialog();
     }
 
     @Override
@@ -58,13 +54,16 @@ public class UiLayer implements Layer {
 
         UiButton pause = getPauseButton();
         UiLabel label = getTimeLabel();
+        UiImageLabel aiCoinsLabel = getCoinsLabel();
         prepareSlotMachine();
 
         stage.addActor(pause);
         stage.addActor(label);
+        stage.addActor(aiCoinsLabel);
 
         actors.add(pause);
         actors.add(label);
+        actors.add(aiCoinsLabel);
 
         renderRemainingTimeSystem = new RenderRemainingTimeSystem(label);
         handlePlayerLoseSystem = new HandlePlayerLoseSystem(gameOverDialog, stage);
@@ -85,6 +84,17 @@ public class UiLayer implements Layer {
         time.endMargin(HorizontalMargin.MEDIUM);
 
         return time;
+    }
+
+    private UiImageLabel getCoinsLabel() {
+        float y = (Constants.HEIGHT - 2) * Constants.UNIT;
+        float x = 0;
+
+        UiImageLabel label = new UiImageLabel();
+        label.setText("0 / 10");
+        label.setPosition(x, y);
+
+        return label;
     }
 
     private UiButton getPauseButton() {

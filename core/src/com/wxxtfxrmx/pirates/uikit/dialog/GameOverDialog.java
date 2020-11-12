@@ -2,6 +2,7 @@ package com.wxxtfxrmx.pirates.uikit.dialog;
 
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
+import com.wxxtfxrmx.pirates.uikit.DefaultSkin;
 import com.wxxtfxrmx.pirates.uikit.HorizontalMargin;
 import com.wxxtfxrmx.pirates.uikit.Icon;
 import com.wxxtfxrmx.pirates.uikit.UiButton;
@@ -9,8 +10,8 @@ import com.wxxtfxrmx.pirates.uikit.UiClickListener;
 
 public class GameOverDialog extends UiDialog {
 
-    public GameOverDialog(UiDialogSkin skin) {
-        super(skin);
+    public GameOverDialog() {
+        super(new DefaultSkin());
         pad(HorizontalMargin.LARGE.getValue());
         getButtonTable().defaults().height(Constants.UNIT);
         getButtonTable().defaults().width(getPrefWidth() - HorizontalMargin.LARGE.getValue() * 2);

@@ -2,13 +2,14 @@ package com.wxxtfxrmx.pirates.uikit.dialog;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public abstract class UiDialog extends Dialog {
 
     private OnDialogHideListener hideListener;
     private OnDialogShowListener showListener;
 
-    public UiDialog(UiDialogSkin skin) {
+    public UiDialog(Skin skin) {
         super("", skin);
     }
 
