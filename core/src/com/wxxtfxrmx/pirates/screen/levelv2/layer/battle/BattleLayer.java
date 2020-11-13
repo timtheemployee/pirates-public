@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyDamageSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyEvasionSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyCoinsSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
@@ -29,6 +30,7 @@ public class BattleLayer implements Layer {
                 new ApplyRepairSystem(),
                 new ApplyEvasionSystem(),
                 new ApplyDamageSystem(),
+                new ApplyCoinsSystem(),
                 new ValidateAiHpSystem(),
                 new ValidatePlayerHpSystem(engine),
                 new CountDownTimeSystem(),

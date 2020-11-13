@@ -48,6 +48,10 @@ public class UiSlotMachine extends Table {
         row();
     }
 
+    public void setListener(OnSpinCompleteListener listener) {
+        this.listener = listener;
+    }
+
     private void updateImage(Image image, TileType tileType) {
         TextureRegion region = getSkin().getRegion(tileType.getAtlasPath());
         TextureRegion iconRegion = new TextureRegion(region, 0, 0, Constants.UNIT, Constants.UNIT);
@@ -89,6 +93,8 @@ public class UiSlotMachine extends Table {
         } else if (delayTime <= 1f) {
             delayTime += delta;
         } else {
+            currentShuffleTime = 0f;
+            delayTime = 0f;
             processSpin();
             remove();
         }

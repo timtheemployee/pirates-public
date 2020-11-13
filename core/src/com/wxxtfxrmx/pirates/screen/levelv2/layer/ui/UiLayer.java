@@ -1,5 +1,6 @@
 package com.wxxtfxrmx.pirates.screen.levelv2.layer.ui;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -7,7 +8,10 @@ import com.wxxtfxrmx.pirates.navigation.Destination;
 import com.wxxtfxrmx.pirates.navigation.Navigator;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CollectedTilesComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.TileType;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.component.SlotMachineMatchedComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.HandleCoinsCountSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.HandlePlayerLoseSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.RenderRemainingTimeSystem;
 import com.wxxtfxrmx.pirates.uikit.HorizontalMargin;
@@ -35,6 +39,7 @@ public class UiLayer implements Layer {
 
     private RenderRemainingTimeSystem renderRemainingTimeSystem;
     private HandlePlayerLoseSystem handlePlayerLoseSystem;
+    private HandleCoinsCountSystem handleCoinsCountSystem;
 
     public UiLayer(Stage stage, Navigator navigator, PooledEngine engine) {
         this.stage = stage;
@@ -71,14 +76,36 @@ public class UiLayer implements Layer {
 
         renderRemainingTimeSystem = new RenderRemainingTimeSystem(label);
         handlePlayerLoseSystem = new HandlePlayerLoseSystem(gameOverDialog, stage);
+        handleCoinsCountSystem = new HandleCoinsCountSystem(playerCoinsLabel, aiCoinsLabel, slotMachine, stage);
         engine.addSystem(renderRemainingTimeSystem);
         engine.addSystem(handlePlayerLoseSystem);
+        engine.addSystem(handleCoinsCountSystem);
     }
 
     private void prepareSlotMachine() {
         float x = (Constants.WIDTH / 2f) * Constants.UNIT;
         float y = (Constants.HEIGHT - 3) * Constants.UNIT;
         slotMachine.setPosition(x, y);
+        slotMachine.setListener(new UiSlotMachine.OnSpinCompleteListener() {
+            @Override
+            public void onMatchSuccess(TileType matchedType) {
+                SlotMachineMatchedComponent slotMachineMatchedComponent = engine.createComponent(SlotMachineMatchedComponent.class);
+                slotMachineMatchedComponent.tileType = matchedType;
+                slotMachineMatchedComponent.count = 3;
+
+                Entity entity = engine.createEntity();
+                entity.add(slotMachineMatchedComponent);
+
+                engine.addEntity(entity);
+
+                slotMachine.remove();
+            }
+
+            @Override
+            public void onMatchFailure() {
+                slotMachine.remove();
+            }
+        });
     }
 
     private UiLabel getTimeLabel() {
@@ -134,7 +161,7 @@ public class UiLayer implements Layer {
     public void setEnabled(boolean enabled) {
         renderRemainingTimeSystem.setProcessing(enabled);
         handlePlayerLoseSystem.setProcessing(enabled);
-
+        handleCoinsCountSystem.setProcessing(enabled);
         if (enabled) {
             actors.forEach(stage::addActor);
         } else {

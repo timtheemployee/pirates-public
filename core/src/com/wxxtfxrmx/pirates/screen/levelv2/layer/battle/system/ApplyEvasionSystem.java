@@ -8,11 +8,13 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CollectedTile
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CurrentTurnComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.EvasionComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.TileType;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.component.SlotMachineMatchedComponent;
 
 public class ApplyEvasionSystem extends IteratingSystem {
 
     private final ComponentMapper<CollectedTilesComponent> collectedTilesMapper = ComponentMapper.getFor(CollectedTilesComponent.class);
     private final ComponentMapper<EvasionComponent> evasionMapper = ComponentMapper.getFor(EvasionComponent.class);
+    private final ComponentMapper<SlotMachineMatchedComponent> slotMachineMapper = ComponentMapper.getFor(SlotMachineMatchedComponent.class);
 
 
     private final Family attackerFamily = Family.all(
@@ -21,18 +23,30 @@ public class ApplyEvasionSystem extends IteratingSystem {
     ).get();
 
     public ApplyEvasionSystem() {
-        super(Family.all(CollectedTilesComponent.class).get());
+        super(Family.one(CollectedTilesComponent.class, SlotMachineMatchedComponent.class).get());
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        CollectedTilesComponent collectedTiles = collectedTilesMapper.get(entity);
+        if (collectedTilesMapper.has(entity)) {
+            CollectedTilesComponent collectedTiles = collectedTilesMapper.get(entity);
+            if (collectedTiles.type != TileType.HELM) return;
+            applyEvasion(collectedTiles.size);
 
-        if (collectedTiles.type != TileType.HELM) return;
+        } else if (slotMachineMapper.has(entity)) {
+            SlotMachineMatchedComponent slotMachineMatchedComponent = slotMachineMapper.get(entity);
+            if (slotMachineMatchedComponent.tileType != TileType.HELM) return;
+            applyEvasion(slotMachineMatchedComponent.count);
+            slotMachineMatchedComponent.tileType = null;
+            slotMachineMatchedComponent.count = 0;
+            getEngine().removeEntity(entity);
+        }
+    }
 
+    private void applyEvasion(int evasionSize) {
         Entity attacker = getEngine().getEntitiesFor(attackerFamily).first();
 
         EvasionComponent evasion = evasionMapper.get(attacker);
-        evasion.percent = 0.1f * collectedTiles.size;
+        evasion.percent = 0.1f * evasionSize;
     }
 }
