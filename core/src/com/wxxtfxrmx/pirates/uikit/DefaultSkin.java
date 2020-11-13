@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -36,6 +37,7 @@ public class DefaultSkin extends Skin {
         add(DEFAULT, createLabelStyle(), Label.LabelStyle.class);
         add(DEFAULT, createWindowStyle(), Window.WindowStyle.class);
         add(DEFAULT, createTextButtonStyle(), TextButton.TextButtonStyle.class);
+        add(DEFAULT, createImageTextButtonStyle(), ImageTextButton.ImageTextButtonStyle.class);
     }
 
     private ImageButton.ImageButtonStyle createImageButtonStyle() {
@@ -48,6 +50,13 @@ public class DefaultSkin extends Skin {
 
     private TextButton.TextButtonStyle createTextButtonStyle() {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = getFont(DEFAULT);
+
+        return style;
+    }
+
+    private ImageTextButton.ImageTextButtonStyle createImageTextButtonStyle() {
+        ImageTextButton.ImageTextButtonStyle style = new ImageTextButton.ImageTextButtonStyle();
         style.font = getFont(DEFAULT);
 
         return style;
@@ -91,5 +100,9 @@ public class DefaultSkin extends Skin {
     private NinePatchDrawable getNinePatchDrawable(String name) {
         NinePatch patch = getPatch(name);
         return new NinePatchDrawable(patch);
+    }
+
+    public BitmapFont getDefaultFont() {
+        return getFont(DEFAULT);
     }
 }

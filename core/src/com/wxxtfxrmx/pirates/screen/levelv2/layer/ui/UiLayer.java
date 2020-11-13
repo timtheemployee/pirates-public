@@ -7,6 +7,7 @@ import com.wxxtfxrmx.pirates.navigation.Destination;
 import com.wxxtfxrmx.pirates.navigation.Navigator;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.TileType;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.HandlePlayerLoseSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.RenderRemainingTimeSystem;
 import com.wxxtfxrmx.pirates.uikit.HorizontalMargin;
@@ -54,16 +55,19 @@ public class UiLayer implements Layer {
 
         UiButton pause = getPauseButton();
         UiLabel label = getTimeLabel();
-        UiImageLabel aiCoinsLabel = getCoinsLabel();
+        UiImageLabel aiCoinsLabel = getCoinsLabel(false);
+        UiImageLabel playerCoinsLabel = getCoinsLabel(true);
         prepareSlotMachine();
 
         stage.addActor(pause);
         stage.addActor(label);
         stage.addActor(aiCoinsLabel);
+        stage.addActor(playerCoinsLabel);
 
         actors.add(pause);
         actors.add(label);
         actors.add(aiCoinsLabel);
+        actors.add(playerCoinsLabel);
 
         renderRemainingTimeSystem = new RenderRemainingTimeSystem(label);
         handlePlayerLoseSystem = new HandlePlayerLoseSystem(gameOverDialog, stage);
@@ -86,13 +90,15 @@ public class UiLayer implements Layer {
         return time;
     }
 
-    private UiImageLabel getCoinsLabel() {
+    private UiImageLabel getCoinsLabel(Boolean forPlayer) {
         float y = (Constants.HEIGHT - 2) * Constants.UNIT;
-        float x = 0;
+        float x = forPlayer ? Constants.WIDTH * Constants.UNIT : 0;
 
         UiImageLabel label = new UiImageLabel();
-        label.setText("0 / 10");
         label.setPosition(x, y);
+        label.setText("0");
+        label.setFlip(forPlayer);
+        label.setDrawable(TileType.COIN);
 
         return label;
     }
