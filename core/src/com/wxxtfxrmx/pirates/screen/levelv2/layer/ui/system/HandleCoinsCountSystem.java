@@ -2,9 +2,11 @@ package com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.wxxtfxrmx.pirates.screen.levelv2.UnstoppableSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.AiComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CoinComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.PlayerComponent;
@@ -53,18 +55,22 @@ public class HandleCoinsCountSystem extends IteratingSystem {
     }
 
     private void pause() {
-        getEngine().getSystems().forEach(system -> {
+        for (EntitySystem system : getEngine().getSystems()) {
+            if (system instanceof UnstoppableSystem) continue;
+
             if (system.getClass() != this.getClass()) {
                 system.setProcessing(false);
             }
-        });
+        }
     }
 
     private void resume() {
-        getEngine().getSystems().forEach(system -> {
+        for (EntitySystem system : getEngine().getSystems()) {
+            if (system instanceof UnstoppableSystem) continue;
+
             if (system.getClass() != this.getClass()) {
                 system.setProcessing(true);
             }
-        });
+        }
     }
 }

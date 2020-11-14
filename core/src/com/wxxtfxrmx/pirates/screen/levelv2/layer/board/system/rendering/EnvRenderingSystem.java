@@ -5,8 +5,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
+import com.wxxtfxrmx.pirates.screen.levelv2.UnstoppableSystem;
 
-public class EnvRenderingSystem extends EntitySystem {
+public class EnvRenderingSystem extends EntitySystem implements UnstoppableSystem {
 
     private final ShapeRenderer shapeRenderer;
     private final OrthographicCamera camera;

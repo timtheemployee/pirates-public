@@ -4,12 +4,13 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.UnstoppableSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.RemainedTimeComponent;
 import com.wxxtfxrmx.pirates.uikit.UiLabel;
 
 import java.util.Locale;
 
-public class RenderRemainingTimeSystem extends IteratingSystem {
+public class RenderRemainingTimeSystem extends IteratingSystem implements UnstoppableSystem {
 
     private final UiLabel timer;
     private final ComponentMapper<RemainedTimeComponent> remainedTimeMapper = ComponentMapper.getFor(RemainedTimeComponent.class);

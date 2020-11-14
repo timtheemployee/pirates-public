@@ -10,12 +10,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.wxxtfxrmx.pirates.screen.levelv2.UnstoppableSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.ScaleComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
 
-public class RenderingSystem extends IteratingSystem {
+public class RenderingSystem extends IteratingSystem implements UnstoppableSystem {
 
     private final Array<Entity> renderQueue = new Array<>();
     private final ComponentMapper<BoundsComponent> bounds = ComponentMapper.getFor(BoundsComponent.class);

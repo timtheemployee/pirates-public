@@ -1,6 +1,7 @@
 package com.wxxtfxrmx.pirates.screen.levelv2.layer.ui;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -8,6 +9,7 @@ import com.wxxtfxrmx.pirates.navigation.Destination;
 import com.wxxtfxrmx.pirates.navigation.Navigator;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
+import com.wxxtfxrmx.pirates.screen.levelv2.UnstoppableSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CollectedTilesComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.TileType;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.component.SlotMachineMatchedComponent;
@@ -150,7 +152,10 @@ public class UiLayer implements Layer {
     }
 
     private void pauseGameSystems() {
-        engine.getSystems().forEach(system -> system.setProcessing(false));
+        for (EntitySystem system: engine.getSystems()) {
+            if (system instanceof UnstoppableSystem) continue;
+            system.setProcessing(false);
+        }
     }
 
     private void resumeGameSystems() {
