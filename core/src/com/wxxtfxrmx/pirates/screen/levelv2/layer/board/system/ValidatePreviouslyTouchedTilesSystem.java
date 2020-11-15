@@ -27,11 +27,11 @@ public class ValidatePreviouslyTouchedTilesSystem extends IteratingSystem {
 
         ImmutableArray<Entity> pickedEntities = getEngine().getEntitiesFor(pickedTilesFamily);
 
-        pickedEntities.forEach((picked) -> {
+        for (Entity picked: pickedEntities) {
             if (!isValid(picked, chainComponent.chain)) {
                 picked.remove(TilePickedComponent.class);
             }
-        });
+        }
     }
 
     private boolean isValid(Entity entity, Array<Vector2> touches) {

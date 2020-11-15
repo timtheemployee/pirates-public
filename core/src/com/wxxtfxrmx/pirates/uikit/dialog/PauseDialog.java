@@ -24,7 +24,14 @@ public class PauseDialog extends UiDialog {
     private void createResumeButton() {
         UiButton resumeButton = new UiButton();
         resumeButton.getStyle().imageUp = new TextureRegionDrawable(getSkin().getRegion(Icon.PLAY.getValue()));
-        resumeButton.addListener(new UiClickListener(this::hide));
+
+        resumeButton.addListener(new UiClickListener(new UiClickListener.OnClickListener() {
+            @Override
+            public void onClick() {
+                hide();
+            }
+        }));
+
         getButtonTable().add(resumeButton);
     }
 

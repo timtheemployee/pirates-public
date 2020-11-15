@@ -22,11 +22,11 @@ public class TileTexturesFactory {
         TextureAtlas.AtlasRegion region = tilesAtlas.findRegion(path);
 
 
-        return new Animation<>(frameTime, getAnimationFrames(region));
+        return new Animation<TextureRegion>(frameTime, getAnimationFrames(region));
     }
 
     private Array<TextureRegion> getAnimationFrames(TextureAtlas.AtlasRegion region) {
-        Array<TextureRegion> frames = new Array<>();
+        Array<TextureRegion> frames = new Array<TextureRegion>();
 
         for (int x = 0; x < region.originalWidth; x += Constants.UNIT) {
             frames.add(new TextureRegion(region, x, 0, Constants.UNIT, Constants.UNIT));

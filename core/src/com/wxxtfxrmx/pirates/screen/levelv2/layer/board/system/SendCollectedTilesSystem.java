@@ -34,6 +34,8 @@ public class SendCollectedTilesSystem extends EntitySystem {
 
         engine.addEntity(collectedEntitiesEntity);
 
-        collectedEntities.forEach((entity) -> entity.remove(MarkToSendTileComponent.class));
+        for (Entity entity: collectedEntities) {
+            entity.remove(MarkToSendTileComponent.class);
+        }
     }
 }

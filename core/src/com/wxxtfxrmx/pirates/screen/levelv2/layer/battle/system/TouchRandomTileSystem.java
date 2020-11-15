@@ -6,7 +6,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.DestinationComponent;
@@ -64,7 +63,6 @@ public class TouchRandomTileSystem extends IteratingSystem {
 
             LastTouchedTileComponent lastTouchedTileComponent = engine.createComponent(LastTouchedTileComponent.class);
             randomTile.add(lastTouchedTileComponent);
-            Gdx.app.log("RANDOM TILE", "TOUCHED BY AI");
         }
     }
 }

@@ -24,7 +24,12 @@ public class GameOverDialog extends UiDialog {
     private void createExitButton() {
         UiButton exitButton = new UiButton();
         exitButton.getStyle().imageUp = new TextureRegionDrawable(getSkin().getRegion(Icon.PLAY.getValue()));
-        exitButton.addListener(new UiClickListener(this::hide));
+        exitButton.addListener(new UiClickListener(new UiClickListener.OnClickListener() {
+            @Override
+            public void onClick() {
+                hide();
+            }
+        }));
         getButtonTable().add(exitButton);
     }
 

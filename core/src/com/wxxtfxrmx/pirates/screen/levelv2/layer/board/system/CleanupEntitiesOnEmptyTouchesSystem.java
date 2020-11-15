@@ -23,9 +23,9 @@ public class CleanupEntitiesOnEmptyTouchesSystem extends IteratingSystem {
         TouchChainComponent touchChainComponent = chainMapper.get(entity);
 
         if (touchChainComponent.chain.size == 0) {
-            getEngine()
-                    .getEntitiesFor(pickedTilesFamily)
-                    .forEach(e -> e.remove(TilePickedComponent.class));
+            for (Entity e : getEngine().getEntitiesFor(pickedTilesFamily)) {
+                e.remove(TilePickedComponent.class);
+            }
         }
     }
 }

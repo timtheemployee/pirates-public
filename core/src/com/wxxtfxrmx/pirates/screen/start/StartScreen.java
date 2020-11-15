@@ -27,7 +27,14 @@ public class StartScreen extends BaseScreen {
                 Constants.UNIT
         );
 
-        button.addListener(new UiClickListener(this::openLevelScreen));
+        UiClickListener.OnClickListener clickListener = new UiClickListener.OnClickListener() {
+            @Override
+            public void onClick() {
+                openLevelScreen();
+            }
+        };
+
+        button.addListener(new UiClickListener(clickListener));
         stage.addActor(button);
     }
 

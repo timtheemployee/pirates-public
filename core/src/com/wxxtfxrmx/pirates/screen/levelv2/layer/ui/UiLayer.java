@@ -10,7 +10,6 @@ import com.wxxtfxrmx.pirates.navigation.Navigator;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
 import com.wxxtfxrmx.pirates.screen.levelv2.UnstoppableSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CollectedTilesComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.TileType;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.component.SlotMachineMatchedComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.HandleCoinsCountSystem;
@@ -24,6 +23,7 @@ import com.wxxtfxrmx.pirates.uikit.UiImageLabel;
 import com.wxxtfxrmx.pirates.uikit.UiLabel;
 import com.wxxtfxrmx.pirates.uikit.dialog.GameOverDialog;
 import com.wxxtfxrmx.pirates.uikit.dialog.PauseDialog;
+import com.wxxtfxrmx.pirates.uikit.dialog.UiDialog;
 import com.wxxtfxrmx.pirates.uikit.slot.UiSlotMachine;
 
 import java.util.ArrayList;
@@ -47,18 +47,14 @@ public class UiLayer implements Layer {
         this.stage = stage;
         this.navigator = navigator;
         this.engine = engine;
-        actors = new ArrayList<>();
+        actors = new ArrayList<Actor>();
         pauseDialog = new PauseDialog();
         gameOverDialog = new GameOverDialog();
     }
 
     @Override
     public void create() {
-        pauseDialog.setHideListener(this::resumeGameSystems);
-        pauseDialog.setShowListener(this::pauseGameSystems);
-
-        gameOverDialog.setHideListener(this::openStartScreen);
-        gameOverDialog.setShowListener(this::pauseGameSystems);
+        configListeners();
 
         UiButton pause = getPauseButton();
         UiLabel label = getTimeLabel();
@@ -82,6 +78,36 @@ public class UiLayer implements Layer {
         engine.addSystem(renderRemainingTimeSystem);
         engine.addSystem(handlePlayerLoseSystem);
         engine.addSystem(handleCoinsCountSystem);
+    }
+
+    private void configListeners() {
+        UiDialog.OnDialogHideListener hidePauseDialogListener = new UiDialog.OnDialogHideListener() {
+            @Override
+            public void onHide() {
+                resumeGameSystems();
+            }
+        };
+
+        UiDialog.OnDialogShowListener showListener = new UiDialog.OnDialogShowListener() {
+            @Override
+            public void onShow() {
+                pauseGameSystems();
+            }
+        };
+
+        UiDialog.OnDialogHideListener hideGameOverListener = new UiDialog.OnDialogHideListener() {
+            @Override
+            public void onHide() {
+                openStartScreen();
+            }
+        };
+
+        pauseDialog.setHideListener(hidePauseDialogListener);
+        pauseDialog.setShowListener(showListener);
+
+
+        gameOverDialog.setHideListener(hideGameOverListener);
+        gameOverDialog.setShowListener(showListener);
     }
 
     private void prepareSlotMachine() {
@@ -138,7 +164,15 @@ public class UiLayer implements Layer {
         UiButton pause = new UiButton(x, y, Constants.UNIT, Constants.UNIT);
         pause.endMargin(HorizontalMargin.TINY);
         pause.setIcon(Icon.PAUSE);
-        pause.addListener(new UiClickListener(this::openPauseDialog));
+
+        UiClickListener.OnClickListener listener = new UiClickListener.OnClickListener() {
+            @Override
+            public void onClick() {
+                openPauseDialog();
+            }
+        };
+
+        pause.addListener(new UiClickListener(listener));
 
         return pause;
     }
@@ -152,14 +186,16 @@ public class UiLayer implements Layer {
     }
 
     private void pauseGameSystems() {
-        for (EntitySystem system: engine.getSystems()) {
+        for (EntitySystem system : engine.getSystems()) {
             if (system instanceof UnstoppableSystem) continue;
             system.setProcessing(false);
         }
     }
 
     private void resumeGameSystems() {
-        engine.getSystems().forEach(systems -> systems.setProcessing(true));
+        for (EntitySystem system : engine.getSystems()) {
+            system.setProcessing(true);
+        }
     }
 
     @Override
@@ -168,9 +204,21 @@ public class UiLayer implements Layer {
         handlePlayerLoseSystem.setProcessing(enabled);
         handleCoinsCountSystem.setProcessing(enabled);
         if (enabled) {
-            actors.forEach(stage::addActor);
+            addActors();
         } else {
-            actors.forEach(Actor::remove);
+            removeActors();
+        }
+    }
+
+    private void addActors() {
+        for (Actor actor : actors) {
+            stage.addActor(actor);
+        }
+    }
+
+    private void removeActors() {
+        for (Actor actor : actors) {
+            actor.remove();
         }
     }
 }

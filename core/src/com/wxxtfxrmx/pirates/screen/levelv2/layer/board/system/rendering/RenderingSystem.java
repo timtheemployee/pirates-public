@@ -16,9 +16,11 @@ import com.wxxtfxrmx.pirates.screen.levelv2.component.ScaleComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
 
+import java.util.Comparator;
+
 public class RenderingSystem extends IteratingSystem implements UnstoppableSystem {
 
-    private final Array<Entity> renderQueue = new Array<>();
+    private final Array<Entity> renderQueue = new Array<Entity>();
     private final ComponentMapper<BoundsComponent> bounds = ComponentMapper.getFor(BoundsComponent.class);
     private final ComponentMapper<ScaleComponent> scale = ComponentMapper.getFor(ScaleComponent.class);
     private final ComponentMapper<TextureComponent> texture = ComponentMapper.getFor(TextureComponent.class);
@@ -36,7 +38,12 @@ public class RenderingSystem extends IteratingSystem implements UnstoppableSyste
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        renderQueue.sort(this::byZ);
+        renderQueue.sort(new Comparator<Entity>() {
+            @Override
+            public int compare(Entity first, Entity second) {
+                return byZ(first, second);
+            }
+        });
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);

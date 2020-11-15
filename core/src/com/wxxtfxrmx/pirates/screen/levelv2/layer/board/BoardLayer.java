@@ -13,8 +13,8 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.TouchRandomTileS
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.ApplyBoardTouchSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.CleanupEntitiesOnEmptyTouchesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.CleanupLessThan3PickedSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.MarkMatchedEntitiesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.DropDownTilesSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.MarkMatchedEntitiesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.MoveEntityToDestinationSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.SendCollectedTilesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.SetEntitiesTouchedSystem;
@@ -30,7 +30,6 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.rendering.Renderi
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.BoardWorld;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -38,7 +37,7 @@ public class BoardLayer implements Layer {
 
     private final List<EntitySystem> inputSystems;
     private final List<EntitySystem> logicSystems;
-    private final List<EntitySystem> renderingSystems;
+    private final List<? extends EntitySystem> renderingSystems;
     private final BoardWorld world;
 
     public BoardLayer(final PooledEngine engine,
@@ -81,9 +80,15 @@ public class BoardLayer implements Layer {
 
         world = new BoardWorld(engine, tileTypeFactory, tileTexturesFactory);
 
-        inputSystems.forEach(engine::addSystem);
-        logicSystems.forEach(engine::addSystem);
-        renderingSystems.forEach(engine::addSystem);
+        for (EntitySystem inputSystem : inputSystems) {
+            engine.addSystem(inputSystem);
+        }
+        for (EntitySystem logicSystem : logicSystems) {
+            engine.addSystem(logicSystem);
+        }
+        for (EntitySystem renderingSystem : renderingSystems) {
+            engine.addSystem(renderingSystem);
+        }
     }
 
     @Override
@@ -98,7 +103,9 @@ public class BoardLayer implements Layer {
         update(renderingSystems, enabled);
     }
 
-    private void update(List<EntitySystem> systems, boolean enabled) {
-        systems.forEach((system) -> system.setProcessing(enabled));
+    private void update(List<? extends EntitySystem> systems, boolean enabled) {
+        for (EntitySystem system : systems) {
+            system.setProcessing(enabled);
+        }
     }
 }

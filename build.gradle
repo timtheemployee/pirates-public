@@ -11,9 +11,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.4.1'
-        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.8'
-        
-
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.9'
     }
 }
 
@@ -77,7 +75,7 @@ project(":ios") {
         api "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
-        
+        api "com.badlogicgames.ashley:ashley:$ashleyVersion"
     }
 }
 

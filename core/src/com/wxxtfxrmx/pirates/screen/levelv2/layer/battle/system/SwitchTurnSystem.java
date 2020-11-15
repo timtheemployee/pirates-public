@@ -71,10 +71,10 @@ public class SwitchTurnSystem extends IteratingSystem {
     private void dropCountDownTimer() {
         ImmutableArray<Entity> countDownEntities = getEngine().getEntitiesFor(remainingTimeFamily);
 
-        countDownEntities.forEach(entity -> {
+        for (Entity entity : countDownEntities) {
             RemainedTimeComponent remainedTimeComponent = remainedTimeMapper.get(entity);
             remainedTimeComponent.remainedTime = 0;
-        });
+        }
     }
 
     private void cleanupTouchChain() {
@@ -82,10 +82,10 @@ public class SwitchTurnSystem extends IteratingSystem {
 
         if (touchChainEntities.size() == 0) return;
 
-        touchChainEntities.forEach(entity -> {
+        for (Entity entity : touchChainEntities) {
             entity.getComponent(TouchChainComponent.class).chain.clear();
             getEngine().removeEntity(entity);
-        });
+        }
     }
 
     private void cleanupTouchedTiles() {
@@ -93,6 +93,8 @@ public class SwitchTurnSystem extends IteratingSystem {
 
         if (touchedTilesEntities.size() == 0) return;
 
-        touchedTilesEntities.forEach(entity -> entity.remove(TilePickedComponent.class));
+        for (Entity entity : touchedTilesEntities) {
+            entity.remove(TilePickedComponent.class);
+        }
     }
 }

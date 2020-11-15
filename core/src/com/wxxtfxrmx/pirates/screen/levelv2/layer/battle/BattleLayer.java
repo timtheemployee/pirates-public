@@ -2,10 +2,11 @@ package com.wxxtfxrmx.pirates.screen.levelv2.layer.battle;
 
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyCoinsSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyDamageSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyEvasionSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyCoinsSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
@@ -19,8 +20,8 @@ import java.util.List;
 public class BattleLayer implements Layer {
 
     private final BattleWorld world;
-    private final List<EntitySystem> inputSystems;
-    private final List<EntitySystem> logicSystems;
+    private final List<? extends EntitySystem> inputSystems;
+    private final List<? extends EntitySystem> logicSystems;
     private final List<EntitySystem> renderingSystems;
 
     public BattleLayer(PooledEngine engine) {
@@ -38,9 +39,15 @@ public class BattleLayer implements Layer {
         );
         renderingSystems = Arrays.asList();
 
-        inputSystems.forEach(engine::addSystem);
-        logicSystems.forEach(engine::addSystem);
-        renderingSystems.forEach(engine::addSystem);
+        for (EntitySystem inputSystem : inputSystems) {
+            engine.addSystem(inputSystem);
+        }
+        for (EntitySystem logicSystem : logicSystems) {
+            engine.addSystem(logicSystem);
+        }
+        for (EntitySystem renderingSystem : renderingSystems) {
+            engine.addSystem(renderingSystem);
+        }
     }
 
     @Override
@@ -55,7 +62,9 @@ public class BattleLayer implements Layer {
         update(renderingSystems, enabled);
     }
 
-    private void update(List<EntitySystem> systems, boolean enabled) {
-        systems.forEach((system) -> system.setProcessing(enabled));
+    private void update(List<? extends EntitySystem> systems, boolean enabled) {
+        for (EntitySystem system : systems) {
+            system.setProcessing(enabled);
+        }
     }
 }

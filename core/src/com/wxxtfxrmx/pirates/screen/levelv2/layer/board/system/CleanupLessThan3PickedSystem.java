@@ -21,7 +21,9 @@ public class CleanupLessThan3PickedSystem extends EntitySystem {
         ImmutableArray<Entity> picked = getEngine().getEntitiesFor(pickedFamily);
 
         if (picked.size() < 3) {
-            picked.forEach(entity -> entity.remove(TilePickedComponent.class));
+            for (Entity entity: picked) {
+                entity.remove(TilePickedComponent.class);
+            }
         }
     }
 

@@ -83,14 +83,14 @@ public class ContinueRandomChainSystem extends IteratingSystem {
     private Array<Entity> filterByArea(ImmutableArray<Entity> untouchedEntities,
                                        Rectangle searchArea) {
 
-        Array<Entity> filtered = new Array<>();
+        Array<Entity> filtered = new Array<Entity>();
 
-        untouchedEntities.forEach(entity -> {
+        for (Entity entity: untouchedEntities) {
             BoundsComponent boundsComponent = boundsMapper.get(entity);
             if (searchArea.contains(boundsComponent.bounds)) {
                 filtered.add(entity);
             }
-        });
+        }
 
         return filtered;
     }
