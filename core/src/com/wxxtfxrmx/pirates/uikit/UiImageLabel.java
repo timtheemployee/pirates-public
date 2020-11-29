@@ -67,7 +67,6 @@ public class UiImageLabel extends Actor {
             y += drawable.getRegionHeight() * 0.68f;
         }
 
-        font.getData().setScale(0.5f, 0.5f);
         font.draw(batch, text, x, y);
     }
 }

@@ -16,6 +16,7 @@ public class UiLabel extends Label {
     public UiLabel(CharSequence text, float x, float y, float width, float height) {
         super(text, new DefaultSkin());
         getStyle().background = null;
+        getStyle().font.getData().setScale(1.5f);
         glyphLayout.setText(getStyle().font, text);
         float optimalWidth = Math.max(glyphLayout.width, width);
         float optimalHeight = Math.max(glyphLayout.height, height);

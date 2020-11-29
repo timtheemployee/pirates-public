@@ -15,6 +15,7 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.component.SlotMachineMatche
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.HandleCoinsCountSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.HandlePlayerLoseSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.system.RenderRemainingTimeSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.world.UiWorld;
 import com.wxxtfxrmx.pirates.uikit.HorizontalMargin;
 import com.wxxtfxrmx.pirates.uikit.Icon;
 import com.wxxtfxrmx.pirates.uikit.UiButton;
@@ -38,6 +39,7 @@ public class UiLayer implements Layer {
     private final Navigator navigator;
     private final PooledEngine engine;
     private final UiSlotMachine slotMachine = new UiSlotMachine();
+    private final UiWorld uiWorld;
 
     private RenderRemainingTimeSystem renderRemainingTimeSystem;
     private HandlePlayerLoseSystem handlePlayerLoseSystem;
@@ -50,10 +52,13 @@ public class UiLayer implements Layer {
         actors = new ArrayList<Actor>();
         pauseDialog = new PauseDialog();
         gameOverDialog = new GameOverDialog();
+        uiWorld = new UiWorld(engine);
     }
 
     @Override
     public void create() {
+        uiWorld.create();
+
         configListeners();
 
         UiButton pause = getPauseButton();

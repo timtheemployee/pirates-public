@@ -1,5 +1,7 @@
 package com.wxxtfxrmx.pirates.uikit.dialog;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
@@ -11,6 +13,11 @@ import com.wxxtfxrmx.pirates.uikit.UiClickListener;
 import com.wxxtfxrmx.pirates.uikit.UiLabel;
 
 public class GameOverDialog extends UiDialog {
+
+    private int shipDestroyed = 0;
+    private int coinExists = 0;
+    private UiLabel destroyedShipsCount;
+    private UiLabel coinsEarnedCount;
 
     public GameOverDialog() {
         super(new DefaultSkin());
@@ -28,24 +35,24 @@ public class GameOverDialog extends UiDialog {
     }
 
     private void createContent() {
-        UiLabel killedShips = new UiLabel("Убитых кораблей");
-        killedShips.setAlignment(Align.center);
-        UiLabel killedShipsCount = new UiLabel("0");
-        killedShipsCount.setAlignment(Align.center);
+        UiLabel destroyedShips = new UiLabel("Убитых кораблей");
+        destroyedShips.setAlignment(Align.center);
+        destroyedShipsCount = new UiLabel(String.valueOf(shipDestroyed));
+        destroyedShipsCount.setAlignment(Align.center);
 
         UiLabel coinsEarned = new UiLabel("Монет заработано");
         coinsEarned.setAlignment(Align.center);
-        UiLabel coinsEarnedCount = new UiLabel("0");
+        coinsEarnedCount = new UiLabel(String.valueOf(coinExists));
         coinsEarnedCount.setAlignment(Align.center);
 
         getContentTable()
-                .add(killedShips)
+                .add(destroyedShips)
                 .padLeft(HorizontalMargin.SMALL.getValue())
                 .padRight(HorizontalMargin.SMALL.getValue())
                 .fillX();
 
         getContentTable()
-                .add(killedShipsCount)
+                .add(destroyedShipsCount)
                 .padLeft(HorizontalMargin.SMALL.getValue())
                 .padRight(HorizontalMargin.SMALL.getValue());
 
@@ -63,7 +70,7 @@ public class GameOverDialog extends UiDialog {
     }
 
     private void createGameOverTitle() {
-        UiLabel label = new UiLabel("Игра окончена");
+        UiLabel label = new UiLabel("Вас потопили");
         label.setFontScale(1.5f);
         label.setAlignment(Align.center);
         getTitleTable().add(label).center();
@@ -79,6 +86,15 @@ public class GameOverDialog extends UiDialog {
             }
         }));
         getButtonTable().add(exitButton);
+    }
+
+    public Dialog show(Stage stage, int coinsExists, int shipDestroyed) {
+        this.coinExists = coinsExists;
+        this.shipDestroyed = shipDestroyed;
+
+        coinsEarnedCount.setText(String.valueOf(coinsExists));
+        destroyedShipsCount.setText(String.valueOf(shipDestroyed));
+        return super.show(stage);
     }
 
     @Override

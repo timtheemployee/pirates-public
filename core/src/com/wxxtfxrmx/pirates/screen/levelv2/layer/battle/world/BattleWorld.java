@@ -61,7 +61,7 @@ public class BattleWorld {
 
         AiComponent playerComponent = engine.createComponent(AiComponent.class);
         HpComponent hpComponent = engine.createComponent(HpComponent.class);
-        hpComponent.value = 100;
+        hpComponent.value = 5;
 
         DamageComponent damageComponent = engine.createComponent(DamageComponent.class);
         damageComponent.value = 1;

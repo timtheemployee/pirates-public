@@ -113,7 +113,6 @@ public class UiSlotMachine extends Table {
     private void configureTitle() {
         UiLabel label = new UiLabel("LUCKY SLOTS");
         label.getStyle().background = null;
-        label.getStyle().font.getData().setScale(0.5f);
         add(label).colspan(3).expandY();
         row();
     }
