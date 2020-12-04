@@ -3,12 +3,14 @@ package com.wxxtfxrmx.pirates.screen.levelv2.layer.battle;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyCoinsSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyDamageSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyEvasionSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ShipRenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ValidateAiHpSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ValidatePlayerHpSystem;
@@ -22,9 +24,9 @@ public class BattleLayer implements Layer {
     private final BattleWorld world;
     private final List<? extends EntitySystem> inputSystems;
     private final List<? extends EntitySystem> logicSystems;
-    private final List<EntitySystem> renderingSystems;
+    private final List<? extends EntitySystem> renderingSystems;
 
-    public BattleLayer(PooledEngine engine) {
+    public BattleLayer(PooledEngine engine, SpriteBatch batch) {
         world = new BattleWorld(engine);
         inputSystems = Arrays.asList();
         logicSystems = Arrays.asList(
@@ -37,7 +39,9 @@ public class BattleLayer implements Layer {
                 new CountDownTimeSystem(),
                 new SwitchTurnSystem(engine)
         );
-        renderingSystems = Arrays.asList();
+        renderingSystems = Arrays.asList(
+                new ShipRenderingSystem(batch)
+        );
 
         for (EntitySystem inputSystem : inputSystems) {
             engine.addSystem(inputSystem);
