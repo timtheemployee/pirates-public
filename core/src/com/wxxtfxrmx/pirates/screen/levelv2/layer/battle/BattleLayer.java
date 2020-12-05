@@ -3,6 +3,7 @@ package com.wxxtfxrmx.pirates.screen.levelv2.layer.battle;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyCoinsSystem;
@@ -26,7 +27,7 @@ public class BattleLayer implements Layer {
     private final List<? extends EntitySystem> logicSystems;
     private final List<? extends EntitySystem> renderingSystems;
 
-    public BattleLayer(PooledEngine engine, SpriteBatch batch) {
+    public BattleLayer(PooledEngine engine, SpriteBatch batch, OrthographicCamera camera) {
         world = new BattleWorld(engine);
         inputSystems = Arrays.asList();
         logicSystems = Arrays.asList(
@@ -40,7 +41,7 @@ public class BattleLayer implements Layer {
                 new SwitchTurnSystem(engine)
         );
         renderingSystems = Arrays.asList(
-                new ShipRenderingSystem(batch)
+                new ShipRenderingSystem(batch, camera)
         );
 
         for (EntitySystem inputSystem : inputSystems) {

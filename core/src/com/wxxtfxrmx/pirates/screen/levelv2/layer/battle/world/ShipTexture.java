@@ -1,10 +1,10 @@
 package com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.world;
 
 public enum ShipTexture {
-    BASE_SHIP("base_ship"),
+    MAIN_SHIP("main_ship"),
     FRONT_SAIL("front_sail"),
-    BACK_SAIL("back_sail"),
-    BACK_SMALL_SAIL("back_sail_small");
+    BACK_BOTTOM_SAIL("back_bottom_sail"),
+    BACK_TOP_SAIL("back_top_sail");
 
     private final String textureName;
 

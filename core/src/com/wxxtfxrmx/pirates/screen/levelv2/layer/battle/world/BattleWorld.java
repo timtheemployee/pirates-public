@@ -24,7 +24,7 @@ import java.util.List;
 public class BattleWorld {
 
     private final PooledEngine engine;
-    private final TextureAtlas shipParts = new TextureAtlas(Gdx.files.internal("sprite/ship_part.atlas"));
+    private final TextureAtlas shipParts = new TextureAtlas(Gdx.files.internal("sprite/ship_sprite.atlas"));
 
     public BattleWorld(PooledEngine engine) {
         this.engine = engine;
@@ -57,30 +57,34 @@ public class BattleWorld {
         CoinComponent coinComponent = engine.createComponent(CoinComponent.class);
         coinComponent.value = 0;
 
-        TextureRegion baseShip = loadPart(ShipTexture.BASE_SHIP, false);
+        TextureRegion backBottomSail = loadPart(ShipTexture.BACK_BOTTOM_SAIL, false);
+        ShipPart backBottomSailPart = new ShipPart();
+        backBottomSailPart.texture = backBottomSail;
+        backBottomSailPart.offset = new Offset(0, 0);
+        backBottomSailPart.flipped = false;
 
-        ShipPart basePart = new ShipPart();
-        basePart.texture = baseShip;
-        basePart.offset = new Offset(0, 0);
-        basePart.flipped = false;
+        TextureRegion backTopSail = loadPart(ShipTexture.BACK_TOP_SAIL, false);
+        ShipPart backTopSailPart = new ShipPart();
+        backTopSailPart.texture = backTopSail;
+        backTopSailPart.offset = new Offset(0, backBottomSail.getRegionHeight() * 0.85f);
+        backTopSailPart.flipped = false;
 
-        TextureRegion backSail = loadPart(ShipTexture.BACK_SAIL, false);
-
-        ShipPart backPart = new ShipPart();
-        backPart.texture = backSail;
-        backPart.offset = new Offset(0, basePart.texture.getRegionHeight() - 8);
-        backPart.flipped = false;
+        TextureRegion mainShip = loadPart(ShipTexture.MAIN_SHIP, false);
+        ShipPart mainShipPart = new ShipPart();
+        mainShipPart.texture = mainShip;
+        mainShipPart.offset = new Offset(-16, -backBottomSail.getRegionHeight() * 0.3f);
+        mainShipPart.flipped = false;
 
         TextureRegion frontSail = loadPart(ShipTexture.FRONT_SAIL, false);
-
         ShipPart frontPart = new ShipPart();
         frontPart.texture = frontSail;
-        frontPart.offset = new Offset(-(frontSail.getRegionWidth() * 0.2f), basePart.texture.getRegionHeight() * 0.5f);
+        frontPart.offset = new Offset(-(backBottomSail.getRegionWidth() * 0.3f), Constants.UNIT * 0.7f);
         frontPart.flipped = false;
 
         List<ShipPart> parts = new ArrayList<ShipPart>();
-        parts.add(basePart);
-        parts.add(backPart);
+        parts.add(backBottomSailPart);
+        parts.add(backTopSailPart);
+        parts.add(mainShipPart);
         parts.add(frontPart);
 
         ShipPartComponent partComponent = engine.createComponent(ShipPartComponent.class);
@@ -88,9 +92,10 @@ public class BattleWorld {
 
         BoundsComponent boundsComponent = engine.createComponent(BoundsComponent.class);
         boundsComponent.bounds = new Rectangle();
-        boundsComponent.bounds.setWidth(baseShip.getRegionWidth() + frontSail.getRegionWidth() * 0.5f);
-        boundsComponent.bounds.setX(Constants.WIDTH * Constants.UNIT - boundsComponent.bounds.width - Constants.UNIT * 0.5f);
-        boundsComponent.bounds.setY(Constants.MIDDLE_ROUNDED_HEIGHT * Constants.UNIT + Constants.UNIT * 0.5f);
+        boundsComponent.bounds.setWidth(Constants.UNIT * 3);
+        boundsComponent.bounds.setHeight(Constants.UNIT * 4);
+        boundsComponent.bounds.setX(Constants.WIDTH * Constants.UNIT - boundsComponent.bounds.width);
+        boundsComponent.bounds.setY(Constants.MIDDLE_ROUNDED_HEIGHT * Constants.UNIT + Constants.UNIT);
 
         entity.add(playerComponent);
         entity.add(currentTurnComponent);
@@ -132,7 +137,6 @@ public class BattleWorld {
     private TextureRegion loadPart(ShipTexture texture, boolean flipped) {
         TextureAtlas.AtlasRegion region = shipParts.findRegion(texture.getTextureName());
         region.flip(flipped, false);
-
         return new TextureRegion(region);
     }
 

@@ -1,0 +1,33 @@
+ship_sprite.png
+size: 256, 211
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+back_bottom_sail
+  rotate: false
+  xy: 108, 97
+  size: 148, 114
+  orig: 148, 114
+  offset: 0, 0
+  index: -1
+back_top_sail
+  rotate: false
+  xy: 0, 0
+  size: 111, 91
+  orig: 111, 91
+  offset: 0, 0
+  index: -1
+front_sail
+  rotate: false
+  xy: 0, 97
+  size: 108, 106
+  orig: 108, 106
+  offset: 0, 0
+  index: -1
+main_ship
+  rotate: false
+  xy: 111, 0
+  size: 128, 97
+  orig: 128, 97
+  offset: 0, 0
+  index: -1
