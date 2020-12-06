@@ -115,11 +115,41 @@ public class BattleWorld {
         CoinComponent coinComponent = engine.createComponent(CoinComponent.class);
         coinComponent.value = 0;
 
+        TextureRegion backBottomSail = loadPart(ShipTexture.BACK_BOTTOM_SAIL, true);
+        TextureRegion backTopSail = loadPart(ShipTexture.BACK_TOP_SAIL, true);
+        TextureRegion mainShip = loadPart(ShipTexture.MAIN_SHIP, true);
+        TextureRegion frontSail = loadPart(ShipTexture.FRONT_SAIL, true);
+
+        float referenceX = backBottomSail.getRegionWidth() - 2.3f * Constants.UNIT;
+        float referenceY = (Constants.MIDDLE_ROUNDED_HEIGHT + 1) * Constants.UNIT;
+        Reference backBottomSailReference = new Reference(backBottomSail, referenceX, referenceY);
+
+        Constraint backTopSailConstraint = new Constraint(backBottomSailReference, backTopSail);
+        backTopSailConstraint.setVerticalBias(0.85f);
+        backTopSailConstraint.setHorizontalBias(0.25f);
+
+        Constraint shipConstraint = new Constraint(backBottomSailReference, mainShip);
+        shipConstraint.setVerticalBias(-0.3f);
+        shipConstraint.setHorizontalBias(0.27f);
+
+        Constraint frontSailConstraint = new Constraint(backBottomSailReference, frontSail);
+        frontSailConstraint.setHorizontalBias(0.6f);
+        frontSailConstraint.setVerticalBias(0.4f);
+
+        ConstraintsComponent partComponent = engine.createComponent(ConstraintsComponent.class);
+        partComponent.reference = backBottomSailReference;
+        List<Constraint> constraints = new ArrayList<Constraint>();
+        constraints.add(backTopSailConstraint);
+        constraints.add(shipConstraint);
+        constraints.add(frontSailConstraint);
+        partComponent.constraints = constraints;
+
         entity.add(playerComponent);
         entity.add(hpComponent);
         entity.add(damageComponent);
         entity.add(evasionComponent);
         entity.add(coinComponent);
+        entity.add(partComponent);
 
         return entity;
     }
