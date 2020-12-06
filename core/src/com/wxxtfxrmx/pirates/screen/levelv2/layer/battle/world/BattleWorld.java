@@ -16,7 +16,9 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.EvasionCompon
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.HpComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.PlayerComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.RemainedTimeComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.ShipPartComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.ConstraintsComponent;
+import com.wxxtfxrmx.pirates.uikit.utils.Constraint;
+import com.wxxtfxrmx.pirates.uikit.utils.Reference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,44 +60,33 @@ public class BattleWorld {
         coinComponent.value = 0;
 
         TextureRegion backBottomSail = loadPart(ShipTexture.BACK_BOTTOM_SAIL, false);
-        ShipPart backBottomSailPart = new ShipPart();
-        backBottomSailPart.texture = backBottomSail;
-        backBottomSailPart.offset = new Offset(0, 0);
-        backBottomSailPart.flipped = false;
-
         TextureRegion backTopSail = loadPart(ShipTexture.BACK_TOP_SAIL, false);
-        ShipPart backTopSailPart = new ShipPart();
-        backTopSailPart.texture = backTopSail;
-        backTopSailPart.offset = new Offset(0, backBottomSail.getRegionHeight() * 0.85f);
-        backTopSailPart.flipped = false;
-
         TextureRegion mainShip = loadPart(ShipTexture.MAIN_SHIP, false);
-        ShipPart mainShipPart = new ShipPart();
-        mainShipPart.texture = mainShip;
-        mainShipPart.offset = new Offset(-16, -backBottomSail.getRegionHeight() * 0.3f);
-        mainShipPart.flipped = false;
-
         TextureRegion frontSail = loadPart(ShipTexture.FRONT_SAIL, false);
-        ShipPart frontPart = new ShipPart();
-        frontPart.texture = frontSail;
-        frontPart.offset = new Offset(-(backBottomSail.getRegionWidth() * 0.3f), Constants.UNIT * 0.7f);
-        frontPart.flipped = false;
 
-        List<ShipPart> parts = new ArrayList<ShipPart>();
-        parts.add(backBottomSailPart);
-        parts.add(backTopSailPart);
-        parts.add(mainShipPart);
-        parts.add(frontPart);
+        float referenceX = (Constants.WIDTH) * Constants.UNIT - backBottomSail.getRegionWidth();
+        float referenceY = (Constants.MIDDLE_ROUNDED_HEIGHT + 1) * Constants.UNIT;
+        Reference backBottomSailReference = new Reference(backBottomSail, referenceX, referenceY);
 
-        ShipPartComponent partComponent = engine.createComponent(ShipPartComponent.class);
-        partComponent.parts = parts;
+        Constraint backTopSailConstraint = new Constraint(backBottomSailReference, backTopSail);
+        backTopSailConstraint.setVerticalBias(0.85f);
+        backTopSailConstraint.setHorizontalBias(0f);
 
-        BoundsComponent boundsComponent = engine.createComponent(BoundsComponent.class);
-        boundsComponent.bounds = new Rectangle();
-        boundsComponent.bounds.setWidth(Constants.UNIT * 3);
-        boundsComponent.bounds.setHeight(Constants.UNIT * 4);
-        boundsComponent.bounds.setX(Constants.WIDTH * Constants.UNIT - boundsComponent.bounds.width);
-        boundsComponent.bounds.setY(Constants.MIDDLE_ROUNDED_HEIGHT * Constants.UNIT + Constants.UNIT);
+        Constraint shipConstraint = new Constraint(backBottomSailReference, mainShip);
+        shipConstraint.setVerticalBias(-0.3f);
+        shipConstraint.setHorizontalBias(-0.13f);
+
+        Constraint frontSailConstraint = new Constraint(backBottomSailReference, frontSail);
+        frontSailConstraint.setHorizontalBias(-0.3f);
+        frontSailConstraint.setVerticalBias(0.4f);
+
+        ConstraintsComponent partComponent = engine.createComponent(ConstraintsComponent.class);
+        partComponent.reference = backBottomSailReference;
+        List<Constraint> constraints = new ArrayList<Constraint>();
+        constraints.add(backTopSailConstraint);
+        constraints.add(shipConstraint);
+        constraints.add(frontSailConstraint);
+        partComponent.constraints = constraints;
 
         entity.add(playerComponent);
         entity.add(currentTurnComponent);
@@ -104,7 +95,6 @@ public class BattleWorld {
         entity.add(evasionComponent);
         entity.add(coinComponent);
         entity.add(partComponent);
-        entity.add(boundsComponent);
 
         return entity;
     }
