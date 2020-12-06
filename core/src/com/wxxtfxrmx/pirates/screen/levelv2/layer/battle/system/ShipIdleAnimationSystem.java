@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class ShipIdleAnimationSystem extends IteratingSystem {
 
-    private final static float IDLE_DELAY = 0.5f;
+    private final static float IDLE_DELAY = 0.7f;
     private float currentDelay = 0f;
 
     private final ComponentMapper<ShipComponent> shipMapper = ComponentMapper.getFor(ShipComponent.class);

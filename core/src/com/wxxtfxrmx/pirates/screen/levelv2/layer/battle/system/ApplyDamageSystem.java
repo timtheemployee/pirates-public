@@ -3,7 +3,9 @@ package com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CannonballsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CollectedTilesComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CurrentTurnComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.DamageComponent;
@@ -23,8 +25,11 @@ public class ApplyDamageSystem extends IteratingSystem {
     private final Family attackerFamily = Family.all(DamageComponent.class, CurrentTurnComponent.class).get();
     private final Family defenderFamily = Family.all(HpComponent.class, EvasionComponent.class).exclude(CurrentTurnComponent.class).get();
 
-    public ApplyDamageSystem() {
+    private final PooledEngine engine;
+
+    public ApplyDamageSystem(PooledEngine engine) {
         super(Family.one(CollectedTilesComponent.class, SlotMachineMatchedComponent.class).get());
+        this.engine = engine;
     }
 
     @Override
@@ -55,8 +60,13 @@ public class ApplyDamageSystem extends IteratingSystem {
 
         DamageComponent attackerDamage = damageMapper.get(attacker);
 
-        int cannonBallsCount = cannonBallSize - (int) (cannonBallSize * evasion.percent);
+        int cannonBallsHit = cannonBallSize - (int) (cannonBallSize * evasion.percent);
 
-        defenderHp.value -= attackerDamage.value * cannonBallsCount;
+        defenderHp.value -= attackerDamage.value * cannonBallsHit;
+
+        CannonballsComponent cannonballsComponent = engine.createComponent(CannonballsComponent.class);
+        cannonballsComponent.hit = cannonBallsHit;
+        cannonballsComponent.miss = cannonBallSize - cannonBallsHit;
+        attacker.add(cannonballsComponent);
     }
 }

@@ -12,9 +12,16 @@ back_bottom_sail
   index: -1
 back_top_sail
   rotate: false
-  xy: 0, 0
+  xy: 8, 0
   size: 111, 91
   orig: 111, 91
+  offset: 0, 0
+  index: -1
+bomb
+  rotate: false
+  xy: 0, 0
+  size: 8, 8
+  orig: 8, 8
   offset: 0, 0
   index: -1
 front_sail
@@ -26,7 +33,7 @@ front_sail
   index: -1
 main_ship
   rotate: false
-  xy: 111, 0
+  xy: 119, 0
   size: 128, 97
   orig: 128, 97
   offset: 0, 0

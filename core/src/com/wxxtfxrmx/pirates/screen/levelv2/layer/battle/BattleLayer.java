@@ -2,7 +2,6 @@ package com.wxxtfxrmx.pirates.screen.levelv2.layer.battle;
 
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
@@ -34,7 +33,7 @@ public class BattleLayer implements Layer {
         logicSystems = Arrays.asList(
                 new ApplyRepairSystem(),
                 new ApplyEvasionSystem(),
-                new ApplyDamageSystem(),
+                new ApplyDamageSystem(engine),
                 new ApplyCoinsSystem(),
                 new ValidateAiHpSystem(),
                 new ValidatePlayerHpSystem(engine),
