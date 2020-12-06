@@ -11,6 +11,7 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyDamageSyste
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyEvasionSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ShipIdleAnimationSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ShipRenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ValidateAiHpSystem;
@@ -38,7 +39,8 @@ public class BattleLayer implements Layer {
                 new ValidateAiHpSystem(),
                 new ValidatePlayerHpSystem(engine),
                 new CountDownTimeSystem(),
-                new SwitchTurnSystem(engine)
+                new SwitchTurnSystem(engine),
+                new ShipIdleAnimationSystem()
         );
         renderingSystems = Arrays.asList(
                 new ShipRenderingSystem(batch, camera)

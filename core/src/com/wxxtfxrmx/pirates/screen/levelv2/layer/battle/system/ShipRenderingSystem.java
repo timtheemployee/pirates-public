@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.ConstraintsComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.ShipComponent;
 import com.wxxtfxrmx.pirates.uikit.utils.Constraint;
 import com.wxxtfxrmx.pirates.uikit.utils.Reference;
 
@@ -16,27 +16,26 @@ import java.util.List;
 
 public class ShipRenderingSystem extends IteratingSystem {
 
-    private final ComponentMapper<ConstraintsComponent> shipPartMapper = ComponentMapper.getFor(ConstraintsComponent.class);
+    private final ComponentMapper<ShipComponent> shipPartMapper = ComponentMapper.getFor(ShipComponent.class);
 
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
 
     public ShipRenderingSystem(SpriteBatch batch, OrthographicCamera camera) {
-        super(Family.all(ConstraintsComponent.class).get());
+        super(Family.all(ShipComponent.class).get());
         this.batch = batch;
         this.camera = camera;
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        ConstraintsComponent constraintsComponent = shipPartMapper.get(entity);
-        Reference reference = constraintsComponent.reference;
-        List<Constraint> constraints = constraintsComponent.constraints;
+        ShipComponent shipComponent = shipPartMapper.get(entity);
+        Reference reference = shipComponent.reference;
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         render(batch, reference.getTexture(), reference.getBounds());
-        for (Constraint constraint: constraints) {
+        for (Constraint constraint: reference.getConstraints()) {
             render(batch, constraint.getTexture(), constraint.getBounds());
         }
         batch.end();

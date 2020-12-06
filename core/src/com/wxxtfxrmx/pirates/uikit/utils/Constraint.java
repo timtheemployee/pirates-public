@@ -20,6 +20,10 @@ public class Constraint {
         bounds.setHeight(texture.getRegionHeight());
     }
 
+    public void update() {
+        updateBounds(verticalBias, horizontalBias);
+    }
+
     public void setVerticalBias(float verticalBias) {
         this.verticalBias = verticalBias;
         updateBounds(verticalBias, horizontalBias);

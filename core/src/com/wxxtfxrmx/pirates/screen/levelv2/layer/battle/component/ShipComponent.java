@@ -6,7 +6,6 @@ import com.wxxtfxrmx.pirates.uikit.utils.Reference;
 
 import java.util.List;
 
-public class ConstraintsComponent implements Component {
+public class ShipComponent implements Component {
     public Reference reference = null;
-    public List<Constraint> constraints = null;
 }

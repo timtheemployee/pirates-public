@@ -5,9 +5,7 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
-import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.AiComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CoinComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CurrentTurnComponent;
@@ -16,7 +14,8 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.EvasionCompon
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.HpComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.PlayerComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.RemainedTimeComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.ConstraintsComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.ShipComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.ShipStateComponent;
 import com.wxxtfxrmx.pirates.uikit.utils.Constraint;
 import com.wxxtfxrmx.pirates.uikit.utils.Reference;
 
@@ -71,22 +70,22 @@ public class BattleWorld {
         Constraint backTopSailConstraint = new Constraint(backBottomSailReference, backTopSail);
         backTopSailConstraint.setVerticalBias(0.85f);
         backTopSailConstraint.setHorizontalBias(0f);
+        backBottomSailReference.addConstraint(backTopSailConstraint);
 
         Constraint shipConstraint = new Constraint(backBottomSailReference, mainShip);
         shipConstraint.setVerticalBias(-0.3f);
         shipConstraint.setHorizontalBias(-0.13f);
+        backBottomSailReference.addConstraint(shipConstraint);
 
         Constraint frontSailConstraint = new Constraint(backBottomSailReference, frontSail);
         frontSailConstraint.setHorizontalBias(-0.3f);
         frontSailConstraint.setVerticalBias(0.4f);
+        backBottomSailReference.addConstraint(frontSailConstraint);
 
-        ConstraintsComponent partComponent = engine.createComponent(ConstraintsComponent.class);
+        ShipComponent partComponent = engine.createComponent(ShipComponent.class);
         partComponent.reference = backBottomSailReference;
-        List<Constraint> constraints = new ArrayList<Constraint>();
-        constraints.add(backTopSailConstraint);
-        constraints.add(shipConstraint);
-        constraints.add(frontSailConstraint);
-        partComponent.constraints = constraints;
+
+        ShipStateComponent stateComponent = engine.createComponent(ShipStateComponent.class);
 
         entity.add(playerComponent);
         entity.add(currentTurnComponent);
@@ -95,6 +94,7 @@ public class BattleWorld {
         entity.add(evasionComponent);
         entity.add(coinComponent);
         entity.add(partComponent);
+        entity.add(stateComponent);
 
         return entity;
     }
@@ -127,22 +127,22 @@ public class BattleWorld {
         Constraint backTopSailConstraint = new Constraint(backBottomSailReference, backTopSail);
         backTopSailConstraint.setVerticalBias(0.85f);
         backTopSailConstraint.setHorizontalBias(0.25f);
+        backBottomSailReference.addConstraint(backTopSailConstraint);
 
         Constraint shipConstraint = new Constraint(backBottomSailReference, mainShip);
         shipConstraint.setVerticalBias(-0.3f);
         shipConstraint.setHorizontalBias(0.27f);
+        backBottomSailReference.addConstraint(shipConstraint);
 
         Constraint frontSailConstraint = new Constraint(backBottomSailReference, frontSail);
         frontSailConstraint.setHorizontalBias(0.6f);
         frontSailConstraint.setVerticalBias(0.4f);
+        backBottomSailReference.addConstraint(frontSailConstraint);
 
-        ConstraintsComponent partComponent = engine.createComponent(ConstraintsComponent.class);
+        ShipComponent partComponent = engine.createComponent(ShipComponent.class);
         partComponent.reference = backBottomSailReference;
-        List<Constraint> constraints = new ArrayList<Constraint>();
-        constraints.add(backTopSailConstraint);
-        constraints.add(shipConstraint);
-        constraints.add(frontSailConstraint);
-        partComponent.constraints = constraints;
+
+        ShipStateComponent stateComponent = engine.createComponent(ShipStateComponent.class);
 
         entity.add(playerComponent);
         entity.add(hpComponent);
@@ -150,6 +150,7 @@ public class BattleWorld {
         entity.add(evasionComponent);
         entity.add(coinComponent);
         entity.add(partComponent);
+        entity.add(stateComponent);
 
         return entity;
     }
