@@ -105,11 +105,38 @@ public class BattleWorld {
         CoinComponent coinComponent = engine.createComponent(CoinComponent.class);
         coinComponent.value = 0;
 
+        TextureRegion bottomSail = loadPart(ShipTexture.BACK_BOTTOM_SAIL, true);
+        TextureSkeleton.TextureSkeletonEntity bottomSailEntity = new TextureSkeleton.TextureSkeletonEntity(bottomSail);
+        TextureSkeleton skeleton = new TextureSkeleton(bottomSailEntity);
+        skeleton.setAnchorPosition(0.1f * Constants.UNIT, (Constants.MIDDLE_ROUNDED_HEIGHT + 1) * Constants.UNIT);
+
+        TextureRegion topSail = loadPart(ShipTexture.BACK_TOP_SAIL, true);
+        TextureSkeleton.TextureSkeletonEntity topSailEntity = new TextureSkeleton.TextureSkeletonEntity(topSail);
+        topSailEntity.setVerticalBias(0.85f);
+        topSailEntity.setHorizontalBias(0.27f);
+        skeleton.addEntity(topSailEntity, bottomSailEntity);
+
+        TextureRegion ship = loadPart(ShipTexture.MAIN_SHIP, true);
+        TextureSkeleton.TextureSkeletonEntity shipEntity = new TextureSkeleton.TextureSkeletonEntity(ship);
+        shipEntity.setVerticalBias(-0.3f);
+        shipEntity.setHorizontalBias(0.27f);
+        skeleton.addEntity(shipEntity, bottomSailEntity);
+
+        TextureRegion frontSail = loadPart(ShipTexture.FRONT_SAIL, true);
+        TextureSkeleton.TextureSkeletonEntity frontSailEntity = new TextureSkeleton.TextureSkeletonEntity(frontSail);
+        frontSailEntity.setVerticalBias(0.8f);
+        frontSailEntity.setHorizontalBias(0.35f);
+        skeleton.addEntity(frontSailEntity, shipEntity);
+
+        TextureSkeletonComponent textureSkeletonComponent = engine.createComponent(TextureSkeletonComponent.class);
+        textureSkeletonComponent.skeleton = skeleton;
+
         entity.add(aiComponent);
         entity.add(hpComponent);
         entity.add(damageComponent);
         entity.add(evasionComponent);
         entity.add(coinComponent);
+        entity.add(textureSkeletonComponent);
 
         return entity;
     }
