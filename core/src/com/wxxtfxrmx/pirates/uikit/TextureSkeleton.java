@@ -37,6 +37,22 @@ public class TextureSkeleton {
         entities.add(entity);
     }
 
+    public Rectangle getBounds() {
+        float minX = Integer.MAX_VALUE;
+        float minY = Integer.MAX_VALUE;
+        float maxX = Integer.MIN_VALUE;
+        float maxY = Integer.MIN_VALUE;
+
+        for (TextureSkeletonEntity entity: entities) {
+            minX = Math.min(entity.bounds.x, minX);
+            minY = Math.min(entity.bounds.y, minY);
+            maxX = Math.max(entity.bounds.x + entity.bounds.width, maxX);
+            maxY = Math.max(entity.bounds.y + entity.bounds.height, maxY);
+        }
+
+        return new Rectangle(minX, minY, maxX - minX, maxY - minY);
+    }
+
     public void draw(SpriteBatch spriteBatch) {
         spriteBatch.begin();
 

@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CannonBallDistributionComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CollectedTilesComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CurrentTurnComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.DamageComponent;
@@ -63,10 +62,5 @@ public class ApplyDamageSystem extends IteratingSystem {
         int cannonBallsHit = cannonBallSize - (int) (cannonBallSize * evasion.percent);
 
         defenderHp.value -= attackerDamage.value * cannonBallsHit;
-
-        CannonBallDistributionComponent cannonBallDistributionComponent = engine.createComponent(CannonBallDistributionComponent.class);
-        cannonBallDistributionComponent.hit = cannonBallsHit;
-        cannonBallDistributionComponent.miss = cannonBallSize - cannonBallsHit;
-        attacker.add(cannonBallDistributionComponent);
     }
 }
