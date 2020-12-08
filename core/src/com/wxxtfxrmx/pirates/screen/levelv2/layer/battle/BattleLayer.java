@@ -2,7 +2,6 @@ package com.wxxtfxrmx.pirates.screen.levelv2.layer.battle;
 
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyCoinsSystem;
@@ -10,24 +9,27 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyDamageSyste
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyEvasionSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ProcessShotDistributionSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.TextureSkeletonRenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ValidateAiHpSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ValidatePlayerHpSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.world.BattleWorld;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.world.ShipTextureLoader;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class BattleLayer implements Layer {
 
+    private final ShipTextureLoader loader = new ShipTextureLoader();
     private final BattleWorld world;
     private final List<? extends EntitySystem> inputSystems;
     private final List<? extends EntitySystem> logicSystems;
     private final List<? extends EntitySystem> renderingSystems;
 
     public BattleLayer(PooledEngine engine, SpriteBatch batch) {
-        world = new BattleWorld(engine);
+        world = new BattleWorld(loader, engine);
         inputSystems = Arrays.asList();
         logicSystems = Arrays.asList(
                 new ApplyRepairSystem(),
@@ -37,7 +39,8 @@ public class BattleLayer implements Layer {
                 new ValidateAiHpSystem(),
                 new ValidatePlayerHpSystem(engine),
                 new CountDownTimeSystem(),
-                new SwitchTurnSystem(engine)
+                new SwitchTurnSystem(engine),
+                new ProcessShotDistributionSystem(engine, loader)
         );
 
         renderingSystems = Arrays.asList(

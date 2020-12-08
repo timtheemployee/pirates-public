@@ -15,7 +15,7 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.CleanupEntitiesOn
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.CleanupLessThan3PickedSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.DropDownTilesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.MarkMatchedEntitiesSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.MoveEntityToDestinationSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.MoveTileToDestinationSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.SendCollectedTilesSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.SetEntitiesTouchedSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.SetTileTypeSystem;
@@ -65,7 +65,7 @@ public class BoardLayer implements Layer {
                 new UpdateAnimationStateSystem(),
                 new PlayAnimationSystem(),
                 new RemoveAnimationSystem(),
-                new MoveEntityToDestinationSystem(engine),
+                new MoveTileToDestinationSystem(engine),
                 new DropDownTilesSystem(),
                 new SetTileTypeSystem(tileTexturesFactory, tileTypeFactory),
                 new SpawnUsedTileSystem()
