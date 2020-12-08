@@ -8,15 +8,24 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
+import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.AiComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CannonBallComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CannonballsComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.CannonBallDistributionComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.PlayerComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.ShipComponent;
 
+import java.util.Random;
+
 public class ProcessCannonBallsSystem extends IteratingSystem {
 
-    private final ComponentMapper<CannonballsComponent> cannonballsMapper = ComponentMapper.getFor(CannonballsComponent.class);
+    private final static float MAX_CANNON_SHOOT_DELTA = 0.3f;
+
+    private final static Vector2 MIN_VELOCITY = new Vector2(0.1f, 0.0f);
+    private final static Vector2 MAX_VELOCITY = new Vector2(0.3f, 0.0f);
+    private final Random random = new Random();
+
+    private final ComponentMapper<CannonBallDistributionComponent> cannonballsMapper = ComponentMapper.getFor(CannonBallDistributionComponent.class);
     private final ComponentMapper<PlayerComponent> playerMapper = ComponentMapper.getFor(PlayerComponent.class);
     private final ComponentMapper<ShipComponent> shipMapper = ComponentMapper.getFor(ShipComponent.class);
     private final TextureRegion bombTexture;
@@ -27,7 +36,7 @@ public class ProcessCannonBallsSystem extends IteratingSystem {
 
     public ProcessCannonBallsSystem(TextureRegion bombTexture, PooledEngine engine) {
         super(Family
-                .all(CannonballsComponent.class, ShipComponent.class)
+                .all(CannonBallDistributionComponent.class, ShipComponent.class)
                 .one(PlayerComponent.class, AiComponent.class)
                 .get()
         );
@@ -37,6 +46,15 @@ public class ProcessCannonBallsSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
+
+        CannonBallDistributionComponent cannonBallDistributionComponent = cannonballsMapper.get(entity);
+        if (cannonBallDistributionComponent.lastCannonballDelta <= MAX_CANNON_SHOOT_DELTA) {
+            cannonBallDistributionComponent.lastCannonballDelta += deltaTime;
+            return;
+        }
+
+        cannonBallDistributionComponent.lastCannonballDelta = 0f;
+
         ShipComponent shipComponent = shipMapper.get(entity);
 
         Entity opposite;
@@ -53,31 +71,52 @@ public class ProcessCannonBallsSystem extends IteratingSystem {
         Vector2 endPosition = new Vector2();
         endPosition = oppositeShipComponent.reference.getBounds().getPosition(endPosition);
 
-        CannonballsComponent cannonballsComponent = cannonballsMapper.get(entity);
-
-        for (int i = 0; i < cannonballsComponent.hit; i++) {
+        if (cannonBallDistributionComponent.hit != 0) {
             Entity hitEntity = engine.createEntity();
             CannonBallComponent hitComponent = engine.createComponent(CannonBallComponent.class);
+            hitComponent.startPoint = startPosition;
             hitComponent.currentPoint = startPosition;
             hitComponent.hitPoint = endPosition;
-            hitComponent.texture = bombTexture;
+            setVelocity(hitComponent);
+
+            TextureComponent texture = engine.createComponent(TextureComponent.class);
+            texture.region = bombTexture;
 
             hitEntity.add(hitComponent);
+            hitEntity.add(texture);
             engine.addEntity(hitEntity);
+            cannonBallDistributionComponent.hit -= 1;
         }
 
-        for (int i = 0; i < cannonballsComponent.miss; i++) {
+        if (cannonBallDistributionComponent.miss != 0) {
             Entity hitEntity = engine.createEntity();
             CannonBallComponent hitComponent = engine.createComponent(CannonBallComponent.class);
+            hitComponent.startPoint = startPosition;
             hitComponent.currentPoint = startPosition;
+            setVelocity(hitComponent);
             //TODO REFACTOR IT
             hitComponent.hitPoint = new Vector2(Constants.WIDTH * 0.5f * Constants.UNIT,
                     Constants.MIDDLE_ROUNDED_HEIGHT * Constants.UNIT);
 
-            hitComponent.texture = bombTexture;
+            TextureComponent texture = engine.createComponent(TextureComponent.class);
+            texture.region = bombTexture;
 
             hitEntity.add(hitComponent);
+            hitEntity.add(texture);
             engine.addEntity(hitEntity);
+            cannonBallDistributionComponent.miss -= 1;
         }
+
+        if (cannonBallDistributionComponent.hit == 0 && cannonBallDistributionComponent.miss == 0) {
+            entity.remove(CannonBallDistributionComponent.class);
+        }
+    }
+
+    private boolean isMaxVelocity() {
+        return random.nextBoolean();
+    }
+
+    private void setVelocity(CannonBallComponent cannonBallComponent) {
+        cannonBallComponent.velocity = isMaxVelocity() ? MAX_VELOCITY : MIN_VELOCITY;
     }
 }

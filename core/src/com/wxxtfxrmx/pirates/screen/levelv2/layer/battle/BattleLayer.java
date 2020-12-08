@@ -10,6 +10,9 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyDamageSyste
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyEvasionSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.MoveCannonBallSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ProcessCannonBallsSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.RenderCannonBallSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ShipIdleAnimationSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ShipRenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
@@ -39,9 +42,12 @@ public class BattleLayer implements Layer {
                 new ValidatePlayerHpSystem(engine),
                 new CountDownTimeSystem(),
                 new SwitchTurnSystem(engine),
-                new ShipIdleAnimationSystem()
+                new ShipIdleAnimationSystem(),
+                new ProcessCannonBallsSystem(world.getBombTexture(), engine),
+                new MoveCannonBallSystem()
         );
         renderingSystems = Arrays.asList(
+                new RenderCannonBallSystem(batch),
                 new ShipRenderingSystem(batch, camera)
         );
 

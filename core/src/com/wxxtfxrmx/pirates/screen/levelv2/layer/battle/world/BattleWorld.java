@@ -31,6 +31,11 @@ public class BattleWorld {
         this.engine = engine;
     }
 
+    public TextureRegion getBombTexture() {
+        TextureAtlas.AtlasRegion region = shipParts.findRegion(ShipTexture.BOMB.getTextureName());
+        return new TextureRegion(region);
+    }
+
     public void create() {
         Entity player = createPlayer(engine);
         Entity ai = createAi(engine);
@@ -44,6 +49,7 @@ public class BattleWorld {
     private Entity createPlayer(PooledEngine engine) {
         Entity entity = engine.createEntity();
 
+        AiComponent aiComponent = engine.createComponent(AiComponent.class);
         PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
         CurrentTurnComponent currentTurnComponent = engine.createComponent(CurrentTurnComponent.class);
         HpComponent hpComponent = engine.createComponent(HpComponent.class);
@@ -87,7 +93,7 @@ public class BattleWorld {
 
         ShipStateComponent stateComponent = engine.createComponent(ShipStateComponent.class);
 
-        entity.add(playerComponent);
+        entity.add(aiComponent);
         entity.add(currentTurnComponent);
         entity.add(hpComponent);
         entity.add(damageComponent);
@@ -102,7 +108,8 @@ public class BattleWorld {
     private Entity createAi(PooledEngine engine) {
         Entity entity = engine.createEntity();
 
-        AiComponent playerComponent = engine.createComponent(AiComponent.class);
+        PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
+        AiComponent aiComponent = engine.createComponent(AiComponent.class);
         HpComponent hpComponent = engine.createComponent(HpComponent.class);
         hpComponent.value = 5;
 
