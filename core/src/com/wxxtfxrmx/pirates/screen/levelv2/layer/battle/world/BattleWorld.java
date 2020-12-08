@@ -14,13 +14,8 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.EvasionCompon
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.HpComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.PlayerComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.RemainedTimeComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.ShipComponent;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.ShipStateComponent;
-import com.wxxtfxrmx.pirates.uikit.utils.Constraint;
-import com.wxxtfxrmx.pirates.uikit.utils.Reference;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.TextureSkeletonComponent;
+import com.wxxtfxrmx.pirates.uikit.TextureSkeleton;
 
 public class BattleWorld {
 
@@ -29,11 +24,6 @@ public class BattleWorld {
 
     public BattleWorld(PooledEngine engine) {
         this.engine = engine;
-    }
-
-    public TextureRegion getBombTexture() {
-        TextureAtlas.AtlasRegion region = shipParts.findRegion(ShipTexture.BOMB.getTextureName());
-        return new TextureRegion(region);
     }
 
     public void create() {
@@ -49,7 +39,6 @@ public class BattleWorld {
     private Entity createPlayer(PooledEngine engine) {
         Entity entity = engine.createEntity();
 
-        AiComponent aiComponent = engine.createComponent(AiComponent.class);
         PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
         CurrentTurnComponent currentTurnComponent = engine.createComponent(CurrentTurnComponent.class);
         HpComponent hpComponent = engine.createComponent(HpComponent.class);
@@ -64,43 +53,38 @@ public class BattleWorld {
         CoinComponent coinComponent = engine.createComponent(CoinComponent.class);
         coinComponent.value = 0;
 
-        TextureRegion backBottomSail = loadPart(ShipTexture.BACK_BOTTOM_SAIL, false);
-        TextureRegion backTopSail = loadPart(ShipTexture.BACK_TOP_SAIL, false);
-        TextureRegion mainShip = loadPart(ShipTexture.MAIN_SHIP, false);
+        TextureRegion bottomSail = loadPart(ShipTexture.BACK_BOTTOM_SAIL, false);
+        TextureSkeleton.TextureSkeletonEntity bottomSailEntity = new TextureSkeleton.TextureSkeletonEntity(bottomSail);
+        TextureSkeleton skeleton = new TextureSkeleton(bottomSailEntity);
+        skeleton.setAnchorPosition((Constants.WIDTH - 2.5f) * Constants.UNIT, (Constants.MIDDLE_ROUNDED_HEIGHT + 1) * Constants.UNIT);
+
+        TextureRegion topSail = loadPart(ShipTexture.BACK_TOP_SAIL, false);
+        TextureSkeleton.TextureSkeletonEntity topSailEntity = new TextureSkeleton.TextureSkeletonEntity(topSail);
+        topSailEntity.setVerticalBias(0.85f);
+        skeleton.addEntity(topSailEntity, bottomSailEntity);
+
+        TextureRegion ship = loadPart(ShipTexture.MAIN_SHIP, false);
+        TextureSkeleton.TextureSkeletonEntity shipEntity = new TextureSkeleton.TextureSkeletonEntity(ship);
+        shipEntity.setVerticalBias(-0.3f);
+        shipEntity.setHorizontalBias(-0.13f);
+        skeleton.addEntity(shipEntity, bottomSailEntity);
+
         TextureRegion frontSail = loadPart(ShipTexture.FRONT_SAIL, false);
+        TextureSkeleton.TextureSkeletonEntity frontSailEntity = new TextureSkeleton.TextureSkeletonEntity(frontSail);
+        frontSailEntity.setVerticalBias(0.8f);
+        frontSailEntity.setHorizontalBias(-0.2f);
+        skeleton.addEntity(frontSailEntity, shipEntity);
 
-        float referenceX = (Constants.WIDTH) * Constants.UNIT - backBottomSail.getRegionWidth();
-        float referenceY = (Constants.MIDDLE_ROUNDED_HEIGHT + 1) * Constants.UNIT;
-        Reference backBottomSailReference = new Reference(backBottomSail, referenceX, referenceY);
+        TextureSkeletonComponent textureSkeletonComponent = engine.createComponent(TextureSkeletonComponent.class);
+        textureSkeletonComponent.skeleton = skeleton;
 
-        Constraint backTopSailConstraint = new Constraint(backBottomSailReference, backTopSail);
-        backTopSailConstraint.setVerticalBias(0.85f);
-        backTopSailConstraint.setHorizontalBias(0f);
-        backBottomSailReference.addConstraint(backTopSailConstraint);
-
-        Constraint shipConstraint = new Constraint(backBottomSailReference, mainShip);
-        shipConstraint.setVerticalBias(-0.3f);
-        shipConstraint.setHorizontalBias(-0.13f);
-        backBottomSailReference.addConstraint(shipConstraint);
-
-        Constraint frontSailConstraint = new Constraint(backBottomSailReference, frontSail);
-        frontSailConstraint.setHorizontalBias(-0.3f);
-        frontSailConstraint.setVerticalBias(0.4f);
-        backBottomSailReference.addConstraint(frontSailConstraint);
-
-        ShipComponent partComponent = engine.createComponent(ShipComponent.class);
-        partComponent.reference = backBottomSailReference;
-
-        ShipStateComponent stateComponent = engine.createComponent(ShipStateComponent.class);
-
-        entity.add(aiComponent);
+        entity.add(playerComponent);
         entity.add(currentTurnComponent);
         entity.add(hpComponent);
         entity.add(damageComponent);
         entity.add(evasionComponent);
         entity.add(coinComponent);
-        entity.add(partComponent);
-        entity.add(stateComponent);
+        entity.add(textureSkeletonComponent);
 
         return entity;
     }
@@ -108,7 +92,6 @@ public class BattleWorld {
     private Entity createAi(PooledEngine engine) {
         Entity entity = engine.createEntity();
 
-        PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
         AiComponent aiComponent = engine.createComponent(AiComponent.class);
         HpComponent hpComponent = engine.createComponent(HpComponent.class);
         hpComponent.value = 5;
@@ -122,42 +105,11 @@ public class BattleWorld {
         CoinComponent coinComponent = engine.createComponent(CoinComponent.class);
         coinComponent.value = 0;
 
-        TextureRegion backBottomSail = loadPart(ShipTexture.BACK_BOTTOM_SAIL, true);
-        TextureRegion backTopSail = loadPart(ShipTexture.BACK_TOP_SAIL, true);
-        TextureRegion mainShip = loadPart(ShipTexture.MAIN_SHIP, true);
-        TextureRegion frontSail = loadPart(ShipTexture.FRONT_SAIL, true);
-
-        float referenceX = backBottomSail.getRegionWidth() - 2.3f * Constants.UNIT;
-        float referenceY = (Constants.MIDDLE_ROUNDED_HEIGHT + 1) * Constants.UNIT;
-        Reference backBottomSailReference = new Reference(backBottomSail, referenceX, referenceY);
-
-        Constraint backTopSailConstraint = new Constraint(backBottomSailReference, backTopSail);
-        backTopSailConstraint.setVerticalBias(0.85f);
-        backTopSailConstraint.setHorizontalBias(0.25f);
-        backBottomSailReference.addConstraint(backTopSailConstraint);
-
-        Constraint shipConstraint = new Constraint(backBottomSailReference, mainShip);
-        shipConstraint.setVerticalBias(-0.3f);
-        shipConstraint.setHorizontalBias(0.27f);
-        backBottomSailReference.addConstraint(shipConstraint);
-
-        Constraint frontSailConstraint = new Constraint(backBottomSailReference, frontSail);
-        frontSailConstraint.setHorizontalBias(0.6f);
-        frontSailConstraint.setVerticalBias(0.4f);
-        backBottomSailReference.addConstraint(frontSailConstraint);
-
-        ShipComponent partComponent = engine.createComponent(ShipComponent.class);
-        partComponent.reference = backBottomSailReference;
-
-        ShipStateComponent stateComponent = engine.createComponent(ShipStateComponent.class);
-
-        entity.add(playerComponent);
+        entity.add(aiComponent);
         entity.add(hpComponent);
         entity.add(damageComponent);
         entity.add(evasionComponent);
         entity.add(coinComponent);
-        entity.add(partComponent);
-        entity.add(stateComponent);
 
         return entity;
     }

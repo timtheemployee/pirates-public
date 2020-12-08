@@ -10,12 +10,8 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyDamageSyste
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyEvasionSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.MoveCannonBallSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ProcessCannonBallsSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.RenderCannonBallSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ShipIdleAnimationSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ShipRenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.TextureSkeletonRenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ValidateAiHpSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ValidatePlayerHpSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.world.BattleWorld;
@@ -30,7 +26,7 @@ public class BattleLayer implements Layer {
     private final List<? extends EntitySystem> logicSystems;
     private final List<? extends EntitySystem> renderingSystems;
 
-    public BattleLayer(PooledEngine engine, SpriteBatch batch, OrthographicCamera camera) {
+    public BattleLayer(PooledEngine engine, SpriteBatch batch) {
         world = new BattleWorld(engine);
         inputSystems = Arrays.asList();
         logicSystems = Arrays.asList(
@@ -41,14 +37,11 @@ public class BattleLayer implements Layer {
                 new ValidateAiHpSystem(),
                 new ValidatePlayerHpSystem(engine),
                 new CountDownTimeSystem(),
-                new SwitchTurnSystem(engine),
-                new ShipIdleAnimationSystem(),
-                new ProcessCannonBallsSystem(world.getBombTexture(), engine),
-                new MoveCannonBallSystem()
+                new SwitchTurnSystem(engine)
         );
+
         renderingSystems = Arrays.asList(
-                new RenderCannonBallSystem(batch),
-                new ShipRenderingSystem(batch, camera)
+                new TextureSkeletonRenderingSystem(batch)
         );
 
         for (EntitySystem inputSystem : inputSystems) {
