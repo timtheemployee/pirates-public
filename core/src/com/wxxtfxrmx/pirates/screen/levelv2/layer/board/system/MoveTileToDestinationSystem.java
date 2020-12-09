@@ -5,12 +5,11 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.math.Vector2;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.DestinationComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.ReadyToReuseComponent;
 
-//TODO Make it more universal
-@Deprecated
 public class MoveTileToDestinationSystem extends IteratingSystem {
 
     private final static float VELOCITY = 8f;
@@ -23,28 +22,28 @@ public class MoveTileToDestinationSystem extends IteratingSystem {
         this.pooledEngine = pooledEngine;
     }
 
-    //TODO REMOVING TILE FROM SCREEN
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         BoundsComponent boundsComponent = boundsMapper.get(entity);
         DestinationComponent destinationComponent = destinationMapper.get(entity);
 
-        if (boundsComponent.bounds.x >= destinationComponent.destination.x &&
-                boundsComponent.bounds.y >= destinationComponent.destination.y) {
+        Vector2 entityPosition = new Vector2();
+        boundsComponent.bounds.getPosition(entityPosition);
 
-            //TODO Remove it in another system
+        Vector2 destinationPosition = destinationComponent.destination;
+
+        float actualDistance = entityPosition.dst(destinationPosition);
+
+        if (actualDistance <= VELOCITY) {
             entity.add(pooledEngine.createComponent(ReadyToReuseComponent.class));
             entity.remove(DestinationComponent.class);
             return;
         }
 
-        //TODO Use linear algebra instead of manual coordinates calculation
-        float differenceX = destinationComponent.destination.x - boundsComponent.bounds.x;
-        float signX = Math.signum(differenceX);
-        boundsComponent.bounds.x += signX * VELOCITY;
+        Vector2 direction = destinationPosition.cpy().sub(entityPosition).nor();
+        direction.scl(VELOCITY);
 
-        float differenceY = destinationComponent.destination.y - boundsComponent.bounds.y;
-        float signY = Math.signum(differenceY);
-        boundsComponent.bounds.y += signY * VELOCITY;
+        entityPosition.add(direction);
+        boundsComponent.bounds.setPosition(entityPosition);
     }
 }

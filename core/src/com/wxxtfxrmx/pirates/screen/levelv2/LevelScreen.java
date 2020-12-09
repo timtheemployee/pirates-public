@@ -27,8 +27,8 @@ public class LevelScreen extends BaseScreen {
         );
         Random random = new Random(888L);
         board = new BoardLayer(engine, random, camera, batch);
-        ui = new UiLayer(stage, navigator, engine);
         battle = new BattleLayer(engine, batch);
+        ui = new UiLayer(stage, navigator, engine);
     }
 
     @Override

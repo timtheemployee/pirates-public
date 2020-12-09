@@ -60,7 +60,7 @@ public class ProcessShotDistributionSystem extends IteratingSystem {
         if (direction == 1) {
             hitX = Constants.WIDTH * Constants.UNIT;
         } else if (direction == -1) {
-            hitX = 9;
+            hitX = 0;
         } else {
             throw new IllegalArgumentException("Are ships on the same positions?");
         }
@@ -95,7 +95,7 @@ public class ProcessShotDistributionSystem extends IteratingSystem {
         scaleComponent.scale = new Vector2(1f, 1f);
         BoundsComponent boundsComponent = engine.createComponent(BoundsComponent.class);
         boundsComponent.bounds = new Rectangle(from.x, from.y, bombTexture.getRegionWidth(), bombTexture.getRegionHeight());
-        boundsComponent.z = -1;
+        boundsComponent.z = 1;
 
         entity.add(textureComponent);
         entity.add(scaleComponent);

@@ -9,6 +9,7 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyDamageSyste
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyEvasionSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.PostProcessShotSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ProcessShotDistributionSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.TextureSkeletonRenderingSystem;
@@ -40,7 +41,9 @@ public class BattleLayer implements Layer {
                 new ValidatePlayerHpSystem(engine),
                 new CountDownTimeSystem(),
                 new SwitchTurnSystem(engine),
-                new ProcessShotDistributionSystem(engine, loader)
+                new ProcessShotDistributionSystem(engine, loader),
+                //FIXME Fix for non blocking board, because, if any entity has ReadyToReuseComponent, enemy input is blocked
+                new PostProcessShotSystem()
         );
 
         renderingSystems = Arrays.asList(
