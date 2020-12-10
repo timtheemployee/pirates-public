@@ -4,8 +4,7 @@ public enum TileType {
     COIN("coin_sheet"),
     BOMB("bomb_sheet"),
     HELM("helm_sheet"),
-    @Deprecated
-    SAMPLE("sample"),
+    SPECIAL("special_purple_sheet"),
     REPAIR("repair_sheet");
 
     private final String atlasPath;

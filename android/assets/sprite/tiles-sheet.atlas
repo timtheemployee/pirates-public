@@ -1,47 +1,62 @@
+
 tiles-sheet.png
-size: 704, 256
+size: 1024,512
 format: RGBA8888
-filter: Linear,Linear
+filter: MipMap,MipMap
 repeat: none
 bomb_sheet
   rotate: false
-  xy: 128, 0
-  size: 448, 64
+  xy: 2, 2
+  size: 444, 64
   orig: 448, 64
-  offset: 0, 0
+  offset: 2, 0
   index: -1
 coin_sheet
   rotate: false
-  xy: 0, 64
-  size: 576, 64
+  xy: 2, 134
+  size: 572, 64
   orig: 576, 64
-  offset: 0, 0
+  offset: 2, 0
   index: -1
 helm_sheet
   rotate: false
-  xy: 0, 128
-  size: 576, 64
+  xy: 2, 68
+  size: 572, 64
   orig: 576, 64
-  offset: 0, 0
+  offset: 2, 0
   index: -1
 picked_border
   rotate: false
-  xy: 0, 0
+  xy: 704, 398
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 repair_sheet
   rotate: false
-  xy: 0, 192
-  size: 704, 64
+  xy: 2, 398
+  size: 700, 64
   orig: 704, 64
-  offset: 0, 0
+  offset: 2, 0
   index: -1
-sample
+special_blue_sheet
   rotate: false
-  xy: 64, 0
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
+  xy: 2, 266
+  size: 572, 64
+  orig: 576, 64
+  offset: 2, 0
+  index: -1
+special_orange_sheet
+  rotate: false
+  xy: 2, 332
+  size: 572, 64
+  orig: 576, 64
+  offset: 2, 0
+  index: -1
+special_purple_sheet
+  rotate: false
+  xy: 2, 200
+  size: 572, 64
+  orig: 576, 64
+  offset: 2, 0
   index: -1
