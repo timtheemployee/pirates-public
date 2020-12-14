@@ -8,10 +8,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
+import com.wxxtfxrmx.pirates.screen.levelv2.UnstoppableSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.HpComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.component.TextureSkeletonComponent;
 
-public class RenderHpSystem extends IteratingSystem {
+public class RenderHpSystem extends IteratingSystem implements UnstoppableSystem {
 
     private static final float HEALTH_BAR_HEIGHT = 8f;
 

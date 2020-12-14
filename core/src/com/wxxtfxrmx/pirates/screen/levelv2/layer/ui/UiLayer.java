@@ -192,7 +192,9 @@ public class UiLayer implements Layer {
 
     private void pauseGameSystems() {
         for (EntitySystem system : engine.getSystems()) {
-            if (system instanceof UnstoppableSystem) continue;
+            if (system instanceof UnstoppableSystem) {
+                continue;
+            }
             system.setProcessing(false);
         }
     }

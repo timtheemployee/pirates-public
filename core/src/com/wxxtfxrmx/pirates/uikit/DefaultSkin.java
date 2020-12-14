@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 
 public class DefaultSkin extends Skin {
@@ -80,21 +82,16 @@ public class DefaultSkin extends Skin {
         return style;
     }
 
-    // FIXME: Under window layer background
     private Drawable getStageBackground() {
         Pixmap stageBg = new Pixmap(
                 Constants.WIDTH * Constants.UNIT,
                 Constants.HEIGHT * Constants.UNIT,
                 Pixmap.Format.RGB888);
 
-        stageBg.setColor(Color.BLACK);
-        stageBg.setBlending(Pixmap.Blending.None);
-        stageBg.fill();
+        Sprite image = new Sprite(new Texture(stageBg));
+        image.setColor(1, 1, 1, 0.7f);
 
-        Image image = new Image(new Texture(stageBg));
-        image.getColor().a = 0.5f;
-
-        return image.getDrawable();
+        return new SpriteDrawable(image);
     }
 
     private NinePatchDrawable getNinePatchDrawable(String name) {
