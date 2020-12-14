@@ -27,6 +27,7 @@ public class ApplyRepairSystem extends IteratingSystem {
         if (collectedTilesMapper.has(entity)) {
             CollectedTilesComponent collectedTilesComponent = collectedTilesMapper.get(entity);
             if (collectedTilesComponent.type != TileType.REPAIR) return;
+            applyRepair(collectedTilesComponent.size);
         } else if (slotMachineMapper.has(entity)) {
             SlotMachineMatchedComponent slotMachineMatchedComponent = slotMachineMapper.get(entity);
             if (slotMachineMatchedComponent.tileType != TileType.REPAIR) return;

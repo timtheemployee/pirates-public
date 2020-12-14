@@ -76,13 +76,8 @@ public class ApplyDamageSystem extends IteratingSystem {
         shotDistributionComponent.hit = cannonBallsHit;
         shotDistributionComponent.miss = cannonBallSize - cannonBallsHit;
 
-        Gdx.app.log("APPLY DAMAGE", String.format("Shot distribution is hit = %d, miss = %d", shotDistributionComponent.hit, shotDistributionComponent.miss));
-
         Rectangle attackersBounds = attackersSkeleton.skeleton.getBounds();
         Rectangle defendersBounds = defendersSkeleton.skeleton.getBounds();
-
-        Gdx.app.log("APPLY DAMAGE", String.format("Attackers bounds %s", attackersBounds.toString()));
-        Gdx.app.log("APPLY DAMAGE", String.format("Defenders bounds %s", defendersBounds.toString()));
 
         Vector2 from = new Vector2();
         attackersBounds.getPosition(from).add(attackersBounds.width * 0.5f, attackersBounds.height * 0.5f);
