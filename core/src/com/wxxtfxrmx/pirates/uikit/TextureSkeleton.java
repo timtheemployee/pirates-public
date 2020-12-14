@@ -25,7 +25,8 @@ public class TextureSkeleton {
     }
 
     public void addEntity(TextureSkeletonEntity entity, TextureSkeletonEntity constraint) {
-        if (!entities.contains(constraint)) throw new IllegalArgumentException("Constraint should already be in skeleton");
+        if (!entities.contains(constraint))
+            throw new IllegalArgumentException("Constraint should already be in skeleton");
 
         Vector2 constraintPosition = new Vector2();
         constraint.bounds.getPosition(constraintPosition);
@@ -43,7 +44,7 @@ public class TextureSkeleton {
         float maxX = Integer.MIN_VALUE;
         float maxY = Integer.MIN_VALUE;
 
-        for (TextureSkeletonEntity entity: entities) {
+        for (TextureSkeletonEntity entity : entities) {
             minX = Math.min(entity.bounds.x, minX);
             minY = Math.min(entity.bounds.y, minY);
             maxX = Math.max(entity.bounds.x + entity.bounds.width, maxX);
@@ -56,7 +57,7 @@ public class TextureSkeleton {
     public void draw(SpriteBatch spriteBatch) {
         spriteBatch.begin();
 
-        for (TextureSkeletonEntity entity: entities) {
+        for (TextureSkeletonEntity entity : entities) {
             spriteBatch.draw(
                     entity.texture,
                     entity.bounds.x,

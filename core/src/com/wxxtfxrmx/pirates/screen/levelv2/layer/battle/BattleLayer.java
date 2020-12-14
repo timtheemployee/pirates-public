@@ -3,6 +3,7 @@ package com.wxxtfxrmx.pirates.screen.levelv2.layer.battle;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyCoinsSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyDamageSystem;
@@ -11,6 +12,7 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSyste
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.PostProcessShotSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ProcessShotDistributionSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.RenderHpSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.SwitchTurnSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.TextureSkeletonRenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ValidateAiHpSystem;
@@ -29,7 +31,7 @@ public class BattleLayer implements Layer {
     private final List<? extends EntitySystem> logicSystems;
     private final List<? extends EntitySystem> renderingSystems;
 
-    public BattleLayer(PooledEngine engine, SpriteBatch batch) {
+    public BattleLayer(PooledEngine engine, SpriteBatch batch, ShapeRenderer renderer) {
         world = new BattleWorld(loader, engine);
         inputSystems = Arrays.asList();
         logicSystems = Arrays.asList(
@@ -47,7 +49,8 @@ public class BattleLayer implements Layer {
         );
 
         renderingSystems = Arrays.asList(
-                new TextureSkeletonRenderingSystem(batch)
+                new TextureSkeletonRenderingSystem(batch),
+                new RenderHpSystem(renderer)
         );
 
         for (EntitySystem inputSystem : inputSystems) {

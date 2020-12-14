@@ -3,7 +3,6 @@ package com.wxxtfxrmx.pirates;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wxxtfxrmx.pirates.navigation.Destination;
 import com.wxxtfxrmx.pirates.navigation.Navigator;
 import com.wxxtfxrmx.pirates.screen.levelv2.LevelScreen;
@@ -13,12 +12,9 @@ import static com.badlogic.gdx.Application.LOG_DEBUG;
 
 public class Application extends Game implements Navigator {
 
-    private SpriteBatch batch;
-
     @Override
     public void create() {
         Gdx.app.setLogLevel(LOG_DEBUG);
-        batch = new SpriteBatch();
         open(Destination.START);
     }
 
@@ -33,7 +29,7 @@ public class Application extends Game implements Navigator {
     public void open(Destination destination) {
         switch (destination) {
             case LEVEL:
-                setScreen(new LevelScreen(batch, this));
+                setScreen(new LevelScreen(this));
                 break;
 
             case START:

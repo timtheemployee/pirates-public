@@ -1,7 +1,6 @@
 package com.wxxtfxrmx.pirates.screen.levelv2;
 
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wxxtfxrmx.pirates.navigation.Navigator;
 import com.wxxtfxrmx.pirates.screen.BaseScreen;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.BattleLayer;
@@ -17,7 +16,7 @@ public class LevelScreen extends BaseScreen {
     private final Layer ui;
     private final Layer battle;
 
-    public LevelScreen(SpriteBatch batch, Navigator navigator) {
+    public LevelScreen(Navigator navigator) {
         super(navigator);
         engine = new PooledEngine();
         camera.position.set(
@@ -26,8 +25,8 @@ public class LevelScreen extends BaseScreen {
                 0f
         );
         Random random = new Random(888L);
-        board = new BoardLayer(engine, random, camera, batch);
-        battle = new BattleLayer(engine, batch);
+        board = new BoardLayer(engine, random, camera, batch, renderer);
+        battle = new BattleLayer(engine, batch, renderer);
         ui = new UiLayer(stage, navigator, engine);
     }
 

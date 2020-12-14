@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,13 +24,11 @@ public class RenderingSystem extends IteratingSystem implements UnstoppableSyste
     private final ComponentMapper<ScaleComponent> scale = ComponentMapper.getFor(ScaleComponent.class);
     private final ComponentMapper<TextureComponent> texture = ComponentMapper.getFor(TextureComponent.class);
     private final ComponentMapper<TilePickedComponent> state = ComponentMapper.getFor(TilePickedComponent.class);
-    private final OrthographicCamera camera;
 
     private final SpriteBatch batch;
 
-    public RenderingSystem(OrthographicCamera camera, SpriteBatch batch) {
+    public RenderingSystem(SpriteBatch batch) {
         super(Family.all(BoundsComponent.class, ScaleComponent.class, TextureComponent.class).get());
-        this.camera = camera;
         this.batch = batch;
     }
 
@@ -45,10 +42,7 @@ public class RenderingSystem extends IteratingSystem implements UnstoppableSyste
             }
         });
 
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
         batch.begin();
-
         for (Entity entity : renderQueue) {
             render(batch, entity);
         }

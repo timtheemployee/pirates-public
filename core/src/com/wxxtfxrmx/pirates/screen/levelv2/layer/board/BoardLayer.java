@@ -43,7 +43,8 @@ public class BoardLayer implements Layer {
     public BoardLayer(final PooledEngine engine,
                       final Random random,
                       final OrthographicCamera camera,
-                      final SpriteBatch batch) {
+                      final SpriteBatch batch,
+                      final ShapeRenderer renderer) {
 
         TileTexturesFactory tileTexturesFactory = new TileTexturesFactory();
         TileTypeFactory tileTypeFactory = new TileTypeFactory(random);
@@ -71,11 +72,9 @@ public class BoardLayer implements Layer {
                 new SpawnUsedTileSystem()
         );
 
-        ShapeRenderer shapeRenderer = new ShapeRenderer();
-
         renderingSystems = Arrays.asList(
-                new EnvRenderingSystem(shapeRenderer, camera),
-                new RenderingSystem(camera, batch)
+                new EnvRenderingSystem(renderer),
+                new RenderingSystem(batch)
         );
 
         world = new BoardWorld(engine, tileTypeFactory, tileTexturesFactory);

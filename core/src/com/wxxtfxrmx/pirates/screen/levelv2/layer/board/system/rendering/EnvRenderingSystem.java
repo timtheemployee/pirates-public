@@ -10,27 +10,23 @@ import com.wxxtfxrmx.pirates.screen.levelv2.UnstoppableSystem;
 public class EnvRenderingSystem extends EntitySystem implements UnstoppableSystem {
 
     private final ShapeRenderer shapeRenderer;
-    private final OrthographicCamera camera;
     private final float skyY = (Constants.MIDDLE_ROUNDED_HEIGHT + 1) * Constants.UNIT;
     private final float waterY = (Constants.MIDDLE_ROUNDED_HEIGHT) * Constants.UNIT;
     private final float underWaterY = Constants.MIDDLE_ROUNDED_HEIGHT * Constants.UNIT;
     private final float width = Constants.WIDTH * Constants.UNIT;
 
-    public EnvRenderingSystem(ShapeRenderer shapeRenderer, OrthographicCamera camera) {
+    public EnvRenderingSystem(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
-        this.camera = camera;
         shapeRenderer.setAutoShapeType(true);
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        camera.update();
         renderBackground();
     }
 
     private void renderBackground() {
-        shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin();
         shapeRenderer.set(ShapeRenderer.ShapeType.Filled);
         Color blue = Color.valueOf("#1976D2");

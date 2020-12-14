@@ -3,6 +3,8 @@ package com.wxxtfxrmx.pirates.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -17,6 +19,9 @@ public abstract class BaseScreen implements Screen {
             Constants.WIDTH * Constants.UNIT,
             Constants.HEIGHT * Constants.UNIT
     );
+
+    protected final ShapeRenderer renderer = new ShapeRenderer();
+    protected final SpriteBatch batch = new SpriteBatch();
 
     protected final Viewport viewport = new ScalingViewport(
             Scaling.stretch,
@@ -41,6 +46,10 @@ public abstract class BaseScreen implements Screen {
     public void render(float delta) {
         stage.act(delta);
         stage.draw();
+
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+        renderer.setProjectionMatrix(camera.combined);
     }
 
     @Override
