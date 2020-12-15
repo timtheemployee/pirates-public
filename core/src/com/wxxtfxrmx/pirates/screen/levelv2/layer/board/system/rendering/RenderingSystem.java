@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.wxxtfxrmx.pirates.screen.levelv2.UnstoppableSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.BoundsComponent;
+import com.wxxtfxrmx.pirates.screen.levelv2.component.RotationComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.ScaleComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.component.TextureComponent;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.component.TilePickedComponent;
@@ -24,6 +25,7 @@ public class RenderingSystem extends IteratingSystem implements UnstoppableSyste
     private final ComponentMapper<ScaleComponent> scale = ComponentMapper.getFor(ScaleComponent.class);
     private final ComponentMapper<TextureComponent> texture = ComponentMapper.getFor(TextureComponent.class);
     private final ComponentMapper<TilePickedComponent> state = ComponentMapper.getFor(TilePickedComponent.class);
+    private final ComponentMapper<RotationComponent> rotationMapper = ComponentMapper.getFor(RotationComponent.class);
 
     private final SpriteBatch batch;
 
@@ -68,6 +70,8 @@ public class RenderingSystem extends IteratingSystem implements UnstoppableSyste
 
         TilePickedComponent stateComponent = this.state.get(entity);
 
+        float rotation = rotationMapper.has(entity) ? rotationMapper.get(entity).angle : 0f;
+
         if (stateComponent != null) {
             batch.draw(
                     border,
@@ -75,7 +79,7 @@ public class RenderingSystem extends IteratingSystem implements UnstoppableSyste
                     originX, originY,
                     width, height,
                     scale.x, scale.y,
-                    0f
+                    rotation
             );
         }
 
@@ -85,7 +89,7 @@ public class RenderingSystem extends IteratingSystem implements UnstoppableSyste
                 originX, originY,
                 width, height,
                 scale.x, scale.y,
-                0f
+                rotation
         );
     }
 

@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wxxtfxrmx.pirates.screen.levelv2.Layer;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTexturesFactory;
 import com.wxxtfxrmx.pirates.screen.levelv2.factory.TileTypeFactory;
@@ -25,7 +24,6 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.animation.PlayAni
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.animation.RemoveAnimationSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.animation.SetTileAnimationSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.animation.UpdateAnimationStateSystem;
-import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.rendering.EnvRenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.system.rendering.RenderingSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.BoardWorld;
 
@@ -43,8 +41,7 @@ public class BoardLayer implements Layer {
     public BoardLayer(final PooledEngine engine,
                       final Random random,
                       final OrthographicCamera camera,
-                      final SpriteBatch batch,
-                      final ShapeRenderer renderer) {
+                      final SpriteBatch batch) {
 
         TileTexturesFactory tileTexturesFactory = new TileTexturesFactory();
         TileTypeFactory tileTypeFactory = new TileTypeFactory(random);
@@ -73,7 +70,6 @@ public class BoardLayer implements Layer {
         );
 
         renderingSystems = Arrays.asList(
-                new EnvRenderingSystem(renderer),
                 new RenderingSystem(batch)
         );
 

@@ -10,8 +10,9 @@ public enum ShipTexture {
     MAIN_SHIP_HIT("main_ship_hit"),
     FRONT_SAIL_HIT("front_sail_hit"),
     BACK_BOTTOM_SAIL_HIT("back_bottom_sail_hit"),
-    BACK_TOP_SAIL_HIT("back_top_sail_hit");
+    BACK_TOP_SAIL_HIT("back_top_sail_hit"),
 
+    REPAIR_HAMMER("repair_hammer");
 
     private final String textureName;
 

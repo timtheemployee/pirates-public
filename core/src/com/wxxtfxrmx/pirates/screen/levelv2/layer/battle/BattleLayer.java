@@ -10,6 +10,7 @@ import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyDamageSyste
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyEvasionSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ApplyRepairSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.CountDownTimeSystem;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.HandleRepairHammerAnimationTimeSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.PostProcessShotSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.ProcessShotDistributionSystem;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.system.RenderHpSystem;
@@ -35,7 +36,7 @@ public class BattleLayer implements Layer {
         world = new BattleWorld(loader, engine);
         inputSystems = Arrays.asList();
         logicSystems = Arrays.asList(
-                new ApplyRepairSystem(),
+                new ApplyRepairSystem(loader, engine),
                 new ApplyEvasionSystem(),
                 new ApplyDamageSystem(engine),
                 new ApplyCoinsSystem(),
@@ -45,7 +46,8 @@ public class BattleLayer implements Layer {
                 new SwitchTurnSystem(engine),
                 new ProcessShotDistributionSystem(engine, loader),
                 //FIXME Fix for non blocking board, because, if any entity has ReadyToReuseComponent, enemy input is blocked
-                new PostProcessShotSystem()
+                new PostProcessShotSystem(),
+                new HandleRepairHammerAnimationTimeSystem()
         );
 
         renderingSystems = Arrays.asList(

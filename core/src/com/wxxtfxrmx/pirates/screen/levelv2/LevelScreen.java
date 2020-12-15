@@ -5,6 +5,7 @@ import com.wxxtfxrmx.pirates.navigation.Navigator;
 import com.wxxtfxrmx.pirates.screen.BaseScreen;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.battle.BattleLayer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.BoardLayer;
+import com.wxxtfxrmx.pirates.screen.levelv2.layer.environment.EnvironmentLayer;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.ui.UiLayer;
 
 import java.util.Random;
@@ -12,6 +13,7 @@ import java.util.Random;
 public class LevelScreen extends BaseScreen {
 
     private final PooledEngine engine;
+    private final Layer environment;
     private final Layer board;
     private final Layer ui;
     private final Layer battle;
@@ -25,17 +27,19 @@ public class LevelScreen extends BaseScreen {
                 0f
         );
         Random random = new Random(888L);
-        board = new BoardLayer(engine, random, camera, batch, renderer);
+        environment = new EnvironmentLayer(engine, renderer);
         battle = new BattleLayer(engine, batch, renderer);
+        board = new BoardLayer(engine, random, camera, batch);
         ui = new UiLayer(stage, navigator, engine);
     }
 
     @Override
     public void show() {
         super.show();
+        environment.create();
+        battle.create();
         board.create();
         ui.create();
-        battle.create();
     }
 
     @Override

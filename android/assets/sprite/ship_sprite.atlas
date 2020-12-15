@@ -67,3 +67,10 @@ main_ship_hit
   orig: 128, 97
   offset: 0, 0
   index: -1
+repair_hammer
+  rotate: false
+  xy: 152, 15
+  size: 29, 29
+  orig: 29, 29
+  offset: 0, 0
+  index: -1

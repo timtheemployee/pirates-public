@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.UnstoppableSystem;
 
-public class EnvRenderingSystem extends EntitySystem implements UnstoppableSystem {
+public class EnvironmentRenderingSystem extends EntitySystem implements UnstoppableSystem {
 
     private final ShapeRenderer shapeRenderer;
     private final float skyY = (Constants.MIDDLE_ROUNDED_HEIGHT + 1) * Constants.UNIT;
@@ -15,7 +15,7 @@ public class EnvRenderingSystem extends EntitySystem implements UnstoppableSyste
     private final float underWaterY = Constants.MIDDLE_ROUNDED_HEIGHT * Constants.UNIT;
     private final float width = Constants.WIDTH * Constants.UNIT;
 
-    public EnvRenderingSystem(ShapeRenderer shapeRenderer) {
+    public EnvironmentRenderingSystem(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
         shapeRenderer.setAutoShapeType(true);
     }
