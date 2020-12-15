@@ -1,39 +1,68 @@
+
 ship_sprite.png
-size: 256, 211
+size: 512,256
 format: RGBA8888
-filter: Linear,Linear
+filter: MipMapNearestNearest,MipMap
 repeat: none
 back_bottom_sail
   rotate: false
-  xy: 108, 97
+  xy: 2, 12
+  size: 148, 114
+  orig: 148, 114
+  offset: 0, 0
+  index: -1
+back_bottom_sail_hit
+  rotate: false
+  xy: 2, 128
   size: 148, 114
   orig: 148, 114
   offset: 0, 0
   index: -1
 back_top_sail
   rotate: false
-  xy: 8, 0
+  xy: 282, 151
+  size: 111, 91
+  orig: 111, 91
+  offset: 0, 0
+  index: -1
+back_top_sail_hit
+  rotate: false
+  xy: 282, 58
   size: 111, 91
   orig: 111, 91
   offset: 0, 0
   index: -1
 bomb
   rotate: false
-  xy: 0, 0
+  xy: 2, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
 front_sail
   rotate: false
-  xy: 0, 97
+  xy: 395, 28
+  size: 108, 106
+  orig: 108, 106
+  offset: 0, 0
+  index: -1
+front_sail_hit
+  rotate: false
+  xy: 395, 136
   size: 108, 106
   orig: 108, 106
   offset: 0, 0
   index: -1
 main_ship
   rotate: false
-  xy: 119, 0
+  xy: 152, 46
+  size: 128, 97
+  orig: 128, 97
+  offset: 0, 0
+  index: -1
+main_ship_hit
+  rotate: false
+  xy: 152, 145
   size: 128, 97
   orig: 128, 97
   offset: 0, 0

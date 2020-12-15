@@ -54,23 +54,27 @@ public class BattleWorld {
         coinComponent.value = 0;
 
         TextureRegion bottomSail = loader.load(ShipTexture.BACK_BOTTOM_SAIL, false);
-        TextureSkeleton.TextureSkeletonEntity bottomSailEntity = new TextureSkeleton.TextureSkeletonEntity(bottomSail);
+        TextureRegion bottomSailHit = loader.load(ShipTexture.BACK_BOTTOM_SAIL_HIT, false);
+        TextureSkeleton.TextureSkeletonEntity bottomSailEntity = new TextureSkeleton.TextureSkeletonEntity(bottomSail, bottomSailHit);
         TextureSkeleton skeleton = new TextureSkeleton(bottomSailEntity);
         skeleton.setAnchorPosition((Constants.WIDTH - 2.5f) * Constants.UNIT, (Constants.MIDDLE_ROUNDED_HEIGHT + 1) * Constants.UNIT);
 
         TextureRegion topSail = loader.load(ShipTexture.BACK_TOP_SAIL, false);
-        TextureSkeleton.TextureSkeletonEntity topSailEntity = new TextureSkeleton.TextureSkeletonEntity(topSail);
+        TextureRegion topSailHit = loader.load(ShipTexture.BACK_TOP_SAIL_HIT, false);
+        TextureSkeleton.TextureSkeletonEntity topSailEntity = new TextureSkeleton.TextureSkeletonEntity(topSail, topSailHit);
         topSailEntity.setVerticalBias(0.85f);
         skeleton.addEntity(topSailEntity, bottomSailEntity);
 
         TextureRegion ship = loader.load(ShipTexture.MAIN_SHIP, false);
-        TextureSkeleton.TextureSkeletonEntity shipEntity = new TextureSkeleton.TextureSkeletonEntity(ship);
+        TextureRegion shipHit = loader.load(ShipTexture.MAIN_SHIP_HIT, false);
+        TextureSkeleton.TextureSkeletonEntity shipEntity = new TextureSkeleton.TextureSkeletonEntity(ship, shipHit);
         shipEntity.setVerticalBias(-0.3f);
         shipEntity.setHorizontalBias(-0.13f);
         skeleton.addEntity(shipEntity, bottomSailEntity);
 
         TextureRegion frontSail = loader.load(ShipTexture.FRONT_SAIL, false);
-        TextureSkeleton.TextureSkeletonEntity frontSailEntity = new TextureSkeleton.TextureSkeletonEntity(frontSail);
+        TextureRegion frontSailHit = loader.load(ShipTexture.FRONT_SAIL_HIT, false);
+        TextureSkeleton.TextureSkeletonEntity frontSailEntity = new TextureSkeleton.TextureSkeletonEntity(frontSail, frontSailHit);
         frontSailEntity.setVerticalBias(0.8f);
         frontSailEntity.setHorizontalBias(-0.2f);
         skeleton.addEntity(frontSailEntity, shipEntity);
@@ -107,24 +111,28 @@ public class BattleWorld {
         coinComponent.value = 0;
 
         TextureRegion bottomSail = loader.load(ShipTexture.BACK_BOTTOM_SAIL, true);
-        TextureSkeleton.TextureSkeletonEntity bottomSailEntity = new TextureSkeleton.TextureSkeletonEntity(bottomSail);
+        TextureRegion bottomSailHit = loader.load(ShipTexture.BACK_BOTTOM_SAIL_HIT, true);
+        TextureSkeleton.TextureSkeletonEntity bottomSailEntity = new TextureSkeleton.TextureSkeletonEntity(bottomSail, bottomSailHit);
         TextureSkeleton skeleton = new TextureSkeleton(bottomSailEntity);
         skeleton.setAnchorPosition(0.1f * Constants.UNIT, (Constants.MIDDLE_ROUNDED_HEIGHT + 1) * Constants.UNIT);
 
         TextureRegion topSail = loader.load(ShipTexture.BACK_TOP_SAIL, true);
-        TextureSkeleton.TextureSkeletonEntity topSailEntity = new TextureSkeleton.TextureSkeletonEntity(topSail);
+        TextureRegion topSailHit = loader.load(ShipTexture.BACK_TOP_SAIL_HIT, true);
+        TextureSkeleton.TextureSkeletonEntity topSailEntity = new TextureSkeleton.TextureSkeletonEntity(topSail, topSailHit);
         topSailEntity.setVerticalBias(0.85f);
         topSailEntity.setHorizontalBias(0.27f);
         skeleton.addEntity(topSailEntity, bottomSailEntity);
 
         TextureRegion ship = loader.load(ShipTexture.MAIN_SHIP, true);
-        TextureSkeleton.TextureSkeletonEntity shipEntity = new TextureSkeleton.TextureSkeletonEntity(ship);
+        TextureRegion shipHit = loader.load(ShipTexture.MAIN_SHIP_HIT, true);
+        TextureSkeleton.TextureSkeletonEntity shipEntity = new TextureSkeleton.TextureSkeletonEntity(ship, shipHit);
         shipEntity.setVerticalBias(-0.3f);
         shipEntity.setHorizontalBias(0.27f);
         skeleton.addEntity(shipEntity, bottomSailEntity);
 
         TextureRegion frontSail = loader.load(ShipTexture.FRONT_SAIL, true);
-        TextureSkeleton.TextureSkeletonEntity frontSailEntity = new TextureSkeleton.TextureSkeletonEntity(frontSail);
+        TextureRegion frontSailHit = loader.load(ShipTexture.FRONT_SAIL_HIT, true);
+        TextureSkeleton.TextureSkeletonEntity frontSailEntity = new TextureSkeleton.TextureSkeletonEntity(frontSail, frontSailHit);
         frontSailEntity.setVerticalBias(0.8f);
         frontSailEntity.setHorizontalBias(0.35f);
         skeleton.addEntity(frontSailEntity, shipEntity);

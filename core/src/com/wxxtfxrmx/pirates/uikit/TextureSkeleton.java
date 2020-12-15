@@ -38,6 +38,12 @@ public class TextureSkeleton {
         entities.add(entity);
     }
 
+    public void setHitTextureDrawing(boolean isOpposite) {
+        for (TextureSkeletonEntity entity: entities) {
+            entity.drawingTexture = isOpposite ? entity.hitTexture : entity.texture;
+        }
+    }
+
     public Rectangle getBounds() {
         float minX = Integer.MAX_VALUE;
         float minY = Integer.MAX_VALUE;
@@ -59,12 +65,16 @@ public class TextureSkeleton {
 
         for (TextureSkeletonEntity entity : entities) {
             spriteBatch.draw(
-                    entity.texture,
+                    entity.drawingTexture,
                     entity.bounds.x,
                     entity.bounds.y,
                     entity.bounds.width,
                     entity.bounds.height
             );
+
+            if (entity.drawingTexture == entity.hitTexture) {
+                entity.drawingTexture = entity.texture;
+            }
         }
 
         spriteBatch.end();
@@ -73,12 +83,21 @@ public class TextureSkeleton {
     public static class TextureSkeletonEntity {
 
         private final TextureRegion texture;
+        private final TextureRegion hitTexture;
+        private TextureRegion drawingTexture;
         private final Rectangle bounds;
         private float verticalBias = 0f;
         private float horizontalBias = 0f;
 
-        public TextureSkeletonEntity(TextureRegion texture) {
+        public TextureSkeletonEntity(TextureRegion texture, TextureRegion hitTexture) {
             this.texture = texture;
+            this.hitTexture = hitTexture;
+            this.drawingTexture = texture;
+
+            if (texture.getRegionWidth() != hitTexture.getRegionWidth()
+                    && texture.getRegionHeight() != hitTexture.getRegionWidth())
+                throw new IllegalArgumentException("Hit texture should be same size as main texture");
+
             bounds = new Rectangle();
             bounds.setWidth(texture.getRegionWidth());
             bounds.setHeight(texture.getRegionHeight());
