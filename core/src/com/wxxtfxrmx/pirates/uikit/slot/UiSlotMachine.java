@@ -3,17 +3,19 @@ package com.wxxtfxrmx.pirates.uikit.slot;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.wxxtfxrmx.pirates.screen.levelv2.Constants;
 import com.wxxtfxrmx.pirates.screen.levelv2.layer.board.world.TileType;
 import com.wxxtfxrmx.pirates.uikit.DefaultSkin;
+import com.wxxtfxrmx.pirates.uikit.HorizontalMargin;
 import com.wxxtfxrmx.pirates.uikit.UiLabel;
+import com.wxxtfxrmx.pirates.uikit.dialog.UiDialog;
 
 import java.util.Random;
 
-public class UiSlotMachine extends Table {
+public class UiSlotMachine extends UiDialog {
 
     private final Image first = new Image();
     private final Image second = new Image();
@@ -29,8 +31,12 @@ public class UiSlotMachine extends Table {
     private float delayTime = 0f;
 
     public UiSlotMachine() {
-        setSkin(new DefaultSkin());
-        setSize(Constants.UNIT * 5, Constants.UNIT * 3);
+        super(new DefaultSkin());
+        pad(HorizontalMargin.LARGE.getValue());
+        getTitleTable().defaults().height(Constants.UNIT);
+        getTitleTable().defaults().width(getPrefWidth() - HorizontalMargin.LARGE.getValue() * 2);
+        getButtonTable().defaults().height(Constants.UNIT);
+        getButtonTable().defaults().width(getPrefWidth() - HorizontalMargin.LARGE.getValue() * 2);
         configureTitle();
         configureUi();
 
@@ -42,10 +48,13 @@ public class UiSlotMachine extends Table {
         configureImage(second, secondType);
         configureImage(third, thirdType);
 
-        add(first).colspan(1);
-        add(second).colspan(1);
-        add(third).colspan(1).expandY();
-        row();
+        getContentTable().add(first).colspan(1);
+        getContentTable().add(second).colspan(1);
+        getContentTable().add(third).colspan(1).expandY();
+        getContentTable().row();
+        setModal(true);
+        setMovable(false);
+        setResizable(false);
     }
 
     public void setListener(OnSpinCompleteListener listener) {
@@ -74,13 +83,13 @@ public class UiSlotMachine extends Table {
     }
 
     @Override
-    public void setPosition(float x, float y) {
-        super.setPosition(x - getWidth() / 2, y - getHeight() / 2);
-    }
-
-    @Override
     public void act(float delta) {
         super.act(delta);
+
+        if (!ascendantsVisible()) {
+            return;
+        }
+
         if (currentShuffleTime <= 1f) {
             currentShuffleTime += delta;
             firstType = getRandomType();
@@ -90,13 +99,13 @@ public class UiSlotMachine extends Table {
             updateImage(first, firstType);
             updateImage(second, secondType);
             updateImage(third, thirdType);
-        } else if (delayTime <= 1f) {
+        } else if (delayTime <= 1.4f) {
             delayTime += delta;
         } else {
             currentShuffleTime = 0f;
             delayTime = 0f;
             processSpin();
-            remove();
+            hide();
         }
     }
 
@@ -112,9 +121,21 @@ public class UiSlotMachine extends Table {
 
     private void configureTitle() {
         UiLabel label = new UiLabel("LUCKY SLOTS");
-        label.getStyle().background = null;
-        add(label).colspan(3).expandY();
-        row();
+        label.setFontScale(1.5f);
+        label.setAlignment(Align.center);
+        getTitleTable().add(label).center();
+    }
+
+    @Override
+    public float getPrefWidth() {
+        //Three in row and paddings
+        return Constants.UNIT * (Constants.WIDTH - 2);
+    }
+
+    @Override
+    public float getPrefHeight() {
+        //Title, three in row and bottom
+        return Constants.UNIT * 3;
     }
 
     public interface OnSpinCompleteListener {

@@ -47,7 +47,7 @@ public class HandleCoinsCountSystem extends IteratingSystem {
 
         if (coinComponent.value >= 10) {
             coinComponent.value -= 10;
-            stage.addActor(slotMachine);
+            slotMachine.show(stage);
             pause();
         } else if (!slotMachine.hasParent()) {
             resume();

@@ -116,9 +116,6 @@ public class UiLayer implements Layer {
     }
 
     private void prepareSlotMachine() {
-        float x = (Constants.WIDTH / 2f) * Constants.UNIT;
-        float y = (Constants.HEIGHT - 3) * Constants.UNIT;
-        slotMachine.setPosition(x, y);
         slotMachine.setListener(new UiSlotMachine.OnSpinCompleteListener() {
             @Override
             public void onMatchSuccess(TileType matchedType) {
@@ -131,12 +128,12 @@ public class UiLayer implements Layer {
 
                 engine.addEntity(entity);
 
-                slotMachine.remove();
+                slotMachine.hide();
             }
 
             @Override
             public void onMatchFailure() {
-                slotMachine.remove();
+                slotMachine.hide();
             }
         });
     }
