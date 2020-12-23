@@ -41,8 +41,8 @@ public class BattleWorld {
         PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
         CurrentTurnComponent currentTurnComponent = engine.createComponent(CurrentTurnComponent.class);
         HpComponent hpComponent = engine.createComponent(HpComponent.class);
-        hpComponent.value = 100;
-        hpComponent.maxValue = 100;
+        hpComponent.value = 5;
+        hpComponent.maxValue = 5;
 
         DamageComponent damageComponent = engine.createComponent(DamageComponent.class);
         damageComponent.value = 1;
@@ -98,8 +98,8 @@ public class BattleWorld {
 
         AiComponent aiComponent = engine.createComponent(AiComponent.class);
         HpComponent hpComponent = engine.createComponent(HpComponent.class);
-        hpComponent.value = 100;
-        hpComponent.maxValue = 100;
+        hpComponent.value = 5;
+        hpComponent.maxValue = 5;
 
         DamageComponent damageComponent = engine.createComponent(DamageComponent.class);
         damageComponent.value = 1;
